@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:theme="@style/Theme.Freebite2"
+    android:background="@drawable/bg2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:layout_gravity="center"
+    >
+
+
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="472dp"
+        android:layout_height="400dp"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/hoho"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/kanita"
+        android:text="@string/offrez_un_sourire_partagez_un_repas"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+    <Button
+        android:id="@+id/sInscBtn"
+        android:layout_width="332dp"
+        android:layout_height="50dp"
+
+        android:layout_marginTop="156dp"
+        android:background="@drawable/btn"
+        android:fontFamily="@font/kanita"
+        android:gravity="center"
+        android:paddingStart="@dimen/_20ssp"
+        android:paddingEnd="@dimen/_20ssp"
+        android:text="@string/s_inscrire"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
+        android:layout_marginTop="36dp"
+        android:fontFamily="@font/kanita"
+
+        android:text="@string/avez_vous_un_compte"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button3"
+        app:layout_constraintStart_toStartOf="@+id/sInscBtn"
+        app:layout_constraintTop_toBottomOf="@+id/sInscBtn" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="184dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/btn"
+        android:fontFamily="@font/kanita"
+        android:text="@string/se_connecter"
+        app:layout_constraintEnd_toEndOf="@+id/sInscBtn"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/sInscBtn" />
+</androidx.constraintlayout.widget.ConstraintLayout>

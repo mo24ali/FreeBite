@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">FreeBite</string>
+    <string name="s_inscrire">S\'inscrire</string>
+    <string name="s_authentifier">s\'authentifier</string>
+    <string name="si_tu_as_d_j_un_compte_veuillez_s_authentifier">Si tu as déjà un compte veuillez s\'authentifier !</string>
+    <string name="pr_nom">Prénom</string>
+    <string name="nom">Nom</string>
+    <string name="mot_de_passe">Mot de passe</string>
+    <string name="e_mail">E-mail</string>
+    <string name="se_connecter">Se connecter</string>
+    <string name="bienvenue">Bienvenue!</string>
+    <string name="veuillez_entrez_vos_informations">Veuillez entrez vos informations !</string>
+    <string name="souvient_de_moi">Souvient de moi</string>
+    <string name="j_ai_oubli_mon_mot_de_passe">J\'ai oublié mon mot de passe</string>
+    <string name="login">LOGIN</string>
+    <string name="num_ro_de_telephone">Numéro de Telephone</string>
+    <string name="date_de_naissance">Date de naissance</string>
+    <string name="admin">Admin</string>
+    <string name="avez_vous_un_compte">Avez vous un compte ?</string>
+    <string name="offrez_un_sourire_partagez_un_repas">Offrez un sourire, \npartagez un repas!</string>
+    <string name="locate_me">Locate Me !</string>
+    <string name="freebite2">FreeBite</string>
+    <string name="title_activity_location2">LocationActivity2</string>
+    <string name="google_maps_api_key">AIzaSyAkNosC08B52n0fUBwHw7dA8iM-uUUHC3A</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="ok_allons_y">OK, allons-y!</string>
+    <string name="hello_user">Salut </string>
+    <string name="avant_de_pouvoir_partager_votre_pi_ce_de_rechange_nous_avons_besoin_de_conna_tre_votre_emplacement">Avant de pouvoir partager votre pièce de rechange, nous avons besoin de connaître votre emplacement.</string>
+    <string name="afin_que_nous_puissions_afficher_les_annonces_proximit_et_savoir_combien_d_autres_personnes_attendent_de_partager_avec_vous">afin que nous puissions afficher les annonces à proximité et savoir combien d\'autres personnes attendent de partager avec vous</string>
+</resources>

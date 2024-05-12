@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "427499812414",
+    "project_id": "freebite-9ee7f",
+    "storage_bucket": "freebite-9ee7f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427499812414:android:8e3fa716d8b8914bdd436f",
+        "android_client_info": {
+          "package_name": "com.example.freebite2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4ziHYscuxS2Y4N-B3faoIdE5u4R_dctY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

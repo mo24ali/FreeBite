@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AfterSignUpHelloActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="28dp"
+        android:orientation="vertical"
+        >
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="73dp"
+            android:src="@drawable/waving_hand"
+            tools:layout_editor_absoluteX="-16dp"
+            tools:layout_editor_absoluteY="0dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            />
+        <TextView
+            android:id="@+id/greetingTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{viewModel.fullName}"
+            android:textSize="@dimen/_20ssp"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_20ssp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/avant_de_pouvoir_partager_votre_pi_ce_de_rechange_nous_avons_besoin_de_conna_tre_votre_emplacement"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="@dimen/_20ssp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50ssp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+
+            android:text="@string/afin_que_nous_puissions_afficher_les_annonces_proximit_et_savoir_combien_d_autres_personnes_attendent_de_partager_avec_vous"
+            android:alpha="0.5"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="140dp"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/verificationBtn"
+            android:layout_width="350dp"
+            android:layout_height="60dp"
+            android:layout_marginVertical="@dimen/_1"
+            android:background="@drawable/btn"
+            android:text="@string/ok_allons_y"
+            android:textColor="@color/black"
+            app:cornerRadius="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="744dp"
+             />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
