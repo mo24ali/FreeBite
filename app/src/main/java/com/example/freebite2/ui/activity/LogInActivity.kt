@@ -2,6 +2,7 @@ package com.example.freebite2.ui.activity
 
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -28,16 +29,49 @@ class LogInActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         }
 
+        val preferences = getSharedPreferences("checkbox", MODE_PRIVATE)
+        val checkbox = preferences.getString("remember", "")
+
+        if (checkbox == "true") {
+            val intent = Intent(this, MainHomeActivity::class.java)
+            startActivity(intent)
+        } else if (checkbox == "false") {
+            Toast.makeText(this, "Vauillez s'inscrire SVP!.", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.lgBtn.setOnClickListener {
+            val intent = Intent(this, MainHomeActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.rememberBtn.setOnCheckedChangeListener { _, isChecked ->
+            val editor = preferences.edit()
+            if (isChecked) {
+                editor.putString("remember", "true")
+                Toast.makeText(this, "Je me souvient !", Toast.LENGTH_SHORT).show()
+            } else {
+                editor.putString("remember", "false")
+            }
+            editor.apply()
+        }
         /*firebaseDB = FirebaseDatabase.getInstance()
         dbReference = firebaseDB.reference.child("users")*/
         binding.lgBtn.setOnClickListener{
 
             val logInMail = binding.mail.text.toString()
-            val logInMdp = binding.pass.text.toString()
+            val logInMdp = binding.pass.toString()
             if(logInMail.isNotEmpty() && logInMdp.isNotEmpty()){
                 logInUser(logInMail,logInMdp)
             }else{
                 Toast.makeText(this,"Tout les champs sont obligatoires !",Toast.LENGTH_SHORT).show()
+            }
+        }
+        binding.forgotPasswordTextView.setOnClickListener {
+            val email = binding.mail.text.toString()
+            if (email.isNotEmpty()) {
+                resetPassword(email)
+            } else {
+                Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -72,14 +106,17 @@ class LogInActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in successful
-                    //val user = auth.currentUser
                     Toast.makeText(this@LogInActivity, "Connecté !", Toast.LENGTH_SHORT).show()
 
-                    // Proceed to dashboard activity
+                    // Set "remember" preference to "true"
+                    val preferences = getSharedPreferences("checkbox", MODE_PRIVATE)
+                    val editor = preferences.edit()
+                    editor.putString("remember", "true")
+                    editor.apply()
 
-                    val intent = Intent(this@LogInActivity, MapsActivity::class.java)
+                    // Proceed to dashboard activity
+                    val intent = Intent(this@LogInActivity, MainHomeActivity::class.java)
                     startActivity(intent)
-                   // finish()
                 } else {
                     // Sign in failed
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
@@ -91,7 +128,17 @@ class LogInActivity : AppCompatActivity() {
                     }
                 }
             }
-
+    }
+    private fun resetPassword(email: String) {
+        val auth = FirebaseAuth.getInstance()
+        auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(this, "Lien de mise à jour de mot de passe, est envoyé à ton email", Toast.LENGTH_SHORT).show()
+                } else {
+                        Toast.makeText(this, "Impossible d'envoyer un e-mail de réinitialisation", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
    // fun onImageClick(view: View) {}

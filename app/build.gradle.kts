@@ -84,9 +84,10 @@ dependencies {
     //implementation 'com.github.d-max:spots-dialog:1.1@aar'
     // Libraries
 
+    implementation("com.google.android.gms:play-services-location:18.0.0")
 
-
-
+    implementation("com.google.firebase:firebase-analytics")
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
 
 
     testImplementation(libs.junit)

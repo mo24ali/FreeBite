@@ -21,10 +21,12 @@
     <string name="locate_me">Locate Me !</string>
     <string name="freebite2">FreeBite</string>
     <string name="title_activity_location2">LocationActivity2</string>
-    <string name="google_maps_api_key">AIzaSyAkNosC08B52n0fUBwHw7dA8iM-uUUHC3A</string>
+    <string name="google_maps_api_key">AIzaSyCSaVZcDyaA0yKzTIbrriB8_4BW2b7kFyg</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="ok_allons_y">OK, allons-y!</string>
     <string name="hello_user">Salut </string>
-    <string name="avant_de_pouvoir_partager_votre_pi_ce_de_rechange_nous_avons_besoin_de_conna_tre_votre_emplacement">Avant de pouvoir partager votre pièce de rechange, nous avons besoin de connaître votre emplacement.</string>
+    <string name="avant_de_pouvoir_partager_votre_pi_ce_de_rechange_nous_avons_besoin_de_conna_tre_votre_emplacement">Avant de pouvoir partager votre repas, nous avons besoin de connaître votre emplacement.</string>
     <string name="afin_que_nous_puissions_afficher_les_annonces_proximit_et_savoir_combien_d_autres_personnes_attendent_de_partager_avec_vous">afin que nous puissions afficher les annonces à proximité et savoir combien d\'autres personnes attendent de partager avec vous</string>
+    <string name="bonjour">Salut !\n</string>
+    <string name="entrez_votre_mot_de_passe">Entrez votre mot de passe</string>
 </resources>
