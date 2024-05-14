@@ -1,4 +1,4 @@
-package com.example.freebite2
+package com.example.freebite2.ui.activity
 
 import android.Manifest
 import android.content.Intent
@@ -9,8 +9,6 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.freebite2.databinding.ActivitySignUpBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -60,7 +58,7 @@ class SignUpActivity : AppCompatActivity() {
                     Toast.makeText(this@SignUpActivity, "Inscription réussie !", Toast.LENGTH_SHORT).show()
                     updateUserProfile(user!!, prenom, nom)
                     updateLocation(user)
-                    startActivity(Intent(this,AfterSignUpHelloActivity::class.java))
+                    startActivity(Intent(this, AfterSignUpHelloActivity::class.java))
                 } else {
                     if (task.exception is FirebaseAuthUserCollisionException) {
                         Toast.makeText(this@SignUpActivity, "L'utilisateur existe déjà ! Veuillez se connecter.", Toast.LENGTH_SHORT).show()

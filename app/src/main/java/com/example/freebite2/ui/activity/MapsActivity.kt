@@ -1,6 +1,7 @@
-package com.example.freebite2
+package com.example.freebite2.ui.activity
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -11,10 +12,6 @@ import androidx.core.app.ActivityCompat
 import com.example.freebite2.databinding.ActivityMapsBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.UserProfileChangeRequest
 
 class MapsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMapsBinding
@@ -65,6 +62,8 @@ class MapsActivity : AppCompatActivity() {
                         "Latitude: ${location.latitude}, Longitude: ${location.longitude}",
                         Toast.LENGTH_SHORT
                     ).show()
+                    val intent = Intent(this@MapsActivity, DashboardActivity::class.java)
+                    startActivity(intent)
                 } else {
                     Toast.makeText(this@MapsActivity, "Location not found", Toast.LENGTH_SHORT)
                         .show()

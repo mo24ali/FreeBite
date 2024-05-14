@@ -1,8 +1,9 @@
-package com.example.freebite2
+package com.example.freebite2.ui.activity
 
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -10,11 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.freebite2.databinding.ActivityLogInBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 
 class LogInActivity : AppCompatActivity() {
@@ -29,7 +25,7 @@ class LogInActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.backL.setOnClickListener{
-            startActivity(Intent(this,MainActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
         /*firebaseDB = FirebaseDatabase.getInstance()
@@ -80,9 +76,10 @@ class LogInActivity : AppCompatActivity() {
                     Toast.makeText(this@LogInActivity, "Connecté !", Toast.LENGTH_SHORT).show()
 
                     // Proceed to dashboard activity
-                    val intent = Intent(this@LogInActivity, DashboardActivity::class.java)
+
+                    val intent = Intent(this@LogInActivity, MapsActivity::class.java)
                     startActivity(intent)
-                    finish()
+                   // finish()
                 } else {
                     // Sign in failed
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
@@ -96,4 +93,6 @@ class LogInActivity : AppCompatActivity() {
             }
 
     }
+
+   // fun onImageClick(view: View) {}
 }

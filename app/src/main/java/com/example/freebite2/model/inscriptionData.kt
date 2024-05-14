@@ -1,4 +1,4 @@
-package com.example.freebite2
+package com.example.freebite2.model
 
 
 
