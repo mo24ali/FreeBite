@@ -6,7 +6,7 @@
     android:id="@+id/SignUp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUpActivity"
+    tools:context=".ui.activity.SignUpActivity"
     android:background="@drawable/bg2">
     <ImageView
         android:padding="@dimen/_20ssp"
