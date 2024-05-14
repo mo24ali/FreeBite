@@ -62,7 +62,7 @@ class MapsActivity : AppCompatActivity() {
                         "Latitude: ${location.latitude}, Longitude: ${location.longitude}",
                         Toast.LENGTH_SHORT
                     ).show()
-                    val intent = Intent(this@MapsActivity, DashboardActivity::class.java)
+                    val intent = Intent(this@MapsActivity, MainHomeActivity::class.java)
                     startActivity(intent)
                 } else {
                     Toast.makeText(this@MapsActivity, "Location not found", Toast.LENGTH_SHORT)
