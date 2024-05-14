@@ -25,6 +25,8 @@
         android:layout_height="@dimen/zero_dimens"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
+        android:shadowColor="@color/black"
+        android:shadowRadius="99"
         android:src="@drawable/profileiamge"
         app:layout_constraintBottom_toBottomOf="@id/app_bar_container"
         app:layout_constraintEnd_toEndOf="@id/app_bar_container"
@@ -66,90 +68,104 @@
             app:layout_constraintEnd_toStartOf="@+id/ic_search"
             app:layout_constraintTop_toTopOf="@+id/ic_search" />
     -->
-      <TextView
-          android:id="@+id/profile_name"
-          android:layout_width="wrap_content"
-          android:layout_height="@dimen/zero_dimens"
-          android:layout_marginStart="@dimen/margin_16"
-          android:fontFamily="@font/poppins_medium"
-          android:text="@string/profile_name"
-          android:textColor="@color/btn"
-          android:textSize="@dimen/font_28"
-          android:textStyle="bold"
-          app:layout_constraintBottom_toTopOf="@id/profile_status"
-          app:layout_constraintStart_toStartOf="@id/app_bar_container" />
 
-      <TextView
-          android:id="@+id/profile_status"
-          android:layout_width="wrap_content"
-          android:layout_height="@dimen/zero_dimens"
-          android:layout_marginBottom="@dimen/margin_16"
-          android:text="@string/profile_status"
-          android:textColor="@color/btn"
-          android:textSize="@dimen/font_16"
-          app:layout_constraintBottom_toBottomOf="@id/app_bar_container"
-          app:layout_constraintStart_toStartOf="@id/profile_name" />
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
 
-      <com.google.android.material.floatingactionbutton.FloatingActionButton
-          android:id="@+id/floating_action_button"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="@dimen/margin_16"
-          android:contentDescription="@string/adding_profile_photo"
-          android:src="@drawable/ic_add_a_photo"
-          app:backgroundTint="@color/bottom"
-          app:layout_constraintBottom_toBottomOf="@id/app_bar_container"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/app_bar_container"
-          app:shapeAppearanceOverlay="@style/floatingActionButtonStyle" />
+        android:background="#36112429"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintBottom_toBottomOf="@+id/app_bar_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/app_bar_container"
+        app:layout_constraintTop_toTopOf="@+id/profile_name" />
 
-      <androidx.core.widget.NestedScrollView
-          android:id="@+id/scrollView"
-          android:layout_width="match_parent"
-          android:layout_height="@dimen/zero_dimens"
-          android:scrollbars="none"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/app_bar_container">
+    <TextView
+        android:id="@+id/profile_name"
+        android:layout_width="291dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/profile_name"
+        android:textColor="@color/btn"
+        android:textSize="@dimen/font_28"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/profile_status"
+        app:layout_constraintStart_toStartOf="@id/app_bar_container" />
 
-          <LinearLayout
-              android:id="@+id/body_container"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toBottomOf="@id/app_bar_container">
+    <TextView
+        android:id="@+id/profile_status"
+        android:layout_width="291dp"
+        android:layout_height="@dimen/zero_dimens"
+        android:layout_marginBottom="@dimen/margin_16"
+        android:text="@string/profile_status"
+        android:textColor="@color/btn"
+        android:textSize="@dimen/font_16"
+        app:layout_constraintBottom_toBottomOf="@id/app_bar_container"
+        app:layout_constraintStart_toStartOf="@id/profile_name" />
 
-              <LinearLayout style="@style/generalLinearLayoutStyle">
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:contentDescription="@string/adding_profile_photo"
+        android:src="@drawable/ic_add_a_photo"
+        app:backgroundTint="@color/bottom"
+        app:layout_constraintBottom_toBottomOf="@id/app_bar_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/app_bar_container"
+        app:shapeAppearanceOverlay="@style/floatingActionButtonStyle" />
 
-                  <TextView
-                      style="@style/generalTextTitleStyle"
-                      android:text="@string/account" />
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/zero_dimens"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/app_bar_container">
 
-                  <LinearLayout
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:layout_marginTop="@dimen/margin_4"
-                      android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/body_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar_container">
 
-                      <TextView
-                          style="@style/generalTextSubtitleStyle"
-                          android:text="@string/user_email" />
+            <LinearLayout style="@style/generalLinearLayoutStyle">
 
-                      <TextView
-                          style="@style/generalTextHintStyle"
-                          android:text="@string/phone_number_desc" />
+                <TextView
+                    style="@style/generalTextTitleStyle"
+                    android:text="@string/account" />
 
-                      <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:orientation="vertical">
 
-                      <LinearLayout
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:orientation="vertical">
+                    <TextView
+                        style="@style/generalTextSubtitleStyle"
+                        android:text="@string/user_email" />
 
-                          <!--
+                    <TextView
+                        style="@style/generalTextHintStyle"
+                        android:text="@string/phone_number_desc" />
+
+                    <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!--
                             <TextView
                                 style="@style/generalTextSubtitleStyle"
                                 android:text="@string/username" />
@@ -160,50 +176,50 @@
 
                             <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
     -->
-                          <LinearLayout
-                              android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
-                              android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
-                              <TextView
-                                  style="@style/generalTextSubtitleStyle"
-                                  android:text="@string/bio" />
+                            <TextView
+                                style="@style/generalTextSubtitleStyle"
+                                android:text="@string/bio" />
 
-                              <TextView
-                                  style="@style/generalTextHintStyle"
-                                  android:text="@string/bio_desc" />
+                            <TextView
+                                style="@style/generalTextHintStyle"
+                                android:text="@string/bio_desc" />
 
-                          </LinearLayout>
-                      </LinearLayout>
-                  </LinearLayout>
-              </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
 
-              <LinearLayout
-                  style="@style/generalLinearLayoutStyle"
-                  android:layout_marginTop="@dimen/margin_8">
+            <LinearLayout
+                style="@style/generalLinearLayoutStyle"
+                android:layout_marginTop="@dimen/margin_8">
 
-                  <TextView
-                      style="@style/generalTextTitleStyle"
-                      android:layout_marginBottom="@dimen/margin_8"
-                      android:text="@string/settings" />
+                <TextView
+                    style="@style/generalTextTitleStyle"
+                    android:layout_marginBottom="@dimen/margin_8"
+                    android:text="@string/settings" />
 
-                  <TextView
-                      style="@style/generalTextSubtitleStyle"
-                      android:drawablePadding="@dimen/margin_16"
-                      android:text="@string/notifications_and_sounds"
-                      app:drawableStartCompat="@drawable/ic_notifications"
-                      app:drawableTint="@color/md_theme_light_outline" />
+                <TextView
+                    style="@style/generalTextSubtitleStyle"
+                    android:drawablePadding="@dimen/margin_16"
+                    android:text="@string/notifications_and_sounds"
+                    app:drawableStartCompat="@drawable/ic_notifications"
+                    app:drawableTint="@color/md_theme_light_outline" />
 
-                  <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
+                <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
 
-                  <TextView
-                      style="@style/generalTextSubtitleStyle"
-                      android:drawablePadding="@dimen/margin_16"
-                      android:text="@string/privacy_and_security"
-                      app:drawableStartCompat="@drawable/ic_lock"
-                      app:drawableTint="@color/md_theme_light_outline" />
+                <TextView
+                    style="@style/generalTextSubtitleStyle"
+                    android:drawablePadding="@dimen/margin_16"
+                    android:text="@string/privacy_and_security"
+                    app:drawableStartCompat="@drawable/ic_lock"
+                    app:drawableTint="@color/md_theme_light_outline" />
 
-                  <!--
+                <!--
                   <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
 
                                <TextView
@@ -252,17 +268,17 @@
                         app:drawableStartCompat="@drawable/ic_devices"
                         app:drawableTint="@color/md_theme_light_outline" />
     -->
-                    <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
+                <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
 
-                    <TextView
-                        style="@style/generalTextSubtitleStyle"
-                        android:drawablePadding="@dimen/margin_16"
-                        android:text="@string/language"
-                        app:drawableStartCompat="@drawable/ic_language"
-                        app:drawableTint="@color/md_theme_light_outline" />
+                <TextView
+                    style="@style/generalTextSubtitleStyle"
+                    android:drawablePadding="@dimen/margin_16"
+                    android:text="@string/language"
+                    app:drawableStartCompat="@drawable/ic_language"
+                    app:drawableTint="@color/md_theme_light_outline" />
 
-                </LinearLayout>
-    <!--
+            </LinearLayout>
+            <!--
                 <LinearLayout
                     style="@style/generalLinearLayoutStyle"
                     android:layout_marginTop="@dimen/margin_8">
@@ -294,36 +310,36 @@
 
                                 <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
                 -->
-                                <TextView
-                                    style="@style/generalTextSubtitleStyle"
-                                    android:drawablePadding="@dimen/margin_16"
-                                    android:text="@string/freebite_faq"
-                                    app:drawableStartCompat="@drawable/ic_question_mark"
-                                    app:drawableTint="@color/md_theme_light_outline" />
+                <TextView
+                    style="@style/generalTextSubtitleStyle"
+                    android:drawablePadding="@dimen/margin_16"
+                    android:text="@string/freebite_faq"
+                    app:drawableStartCompat="@drawable/ic_question_mark"
+                    app:drawableTint="@color/md_theme_light_outline" />
 
-                                <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
+                <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
 
-                                <TextView
-                                    style="@style/generalTextSubtitleStyle"
-                                    android:drawablePadding="@dimen/margin_16"
-                                    android:text="@string/privacy_policy"
-                                    app:drawableStartCompat="@drawable/ic_police"
-                                    app:drawableTint="@color/md_theme_light_outline" />
+                <TextView
+                    style="@style/generalTextSubtitleStyle"
+                    android:drawablePadding="@dimen/margin_16"
+                    android:text="@string/privacy_policy"
+                    app:drawableStartCompat="@drawable/ic_police"
+                    app:drawableTint="@color/md_theme_light_outline" />
 
-                            </LinearLayout>
+            </LinearLayout>
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/margin_16"
-                                android:fontFamily="@font/poppins_regular"
-                                android:gravity="center"
-                                android:text="@string/footer_sentence"
-                                android:textColor="@color/md_theme_light_outline"
-                                android:textSize="@dimen/font_12" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_16"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center"
+                android:text="@string/footer_sentence"
+                android:textColor="@color/md_theme_light_outline"
+                android:textSize="@dimen/font_12" />
 
-                        </LinearLayout>
+        </LinearLayout>
 
-                    </androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
-                </androidx.constraintlayout.motion.widget.MotionLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>

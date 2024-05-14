@@ -136,8 +136,8 @@
 
         <Constraint
             android:id="@+id/profile_pic"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:layout_marginStart="16dp"
             motion:layout_constraintBottom_toBottomOf="@id/app_bar_container"
             motion:layout_constraintStart_toEndOf="@id/ic_back"
@@ -156,5 +156,11 @@
                 motion:attributeName="textSize"
                 motion:customFloatValue="14" />
         </Constraint>
+        <Constraint
+            android:id="@+id/materialToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="gone"
+             />
     </ConstraintSet>
 </MotionScene>
