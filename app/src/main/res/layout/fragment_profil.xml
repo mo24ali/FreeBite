@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fprofil"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bottom"
-    app:layoutDescription="@xml/profil_fragment_scene"
     tools:context=".ui.fragment.ProfilFragment">
+<androidx.constraintlayout.motion.widget.MotionLayout
+     android:background="@color/bottom"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     app:layoutDescription="@xml/profil_fragment_scene">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/app_bar_container"
@@ -340,3 +343,4 @@
     </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
+</FrameLayout>
