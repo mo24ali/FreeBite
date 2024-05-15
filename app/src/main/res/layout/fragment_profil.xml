@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.ProfilFragment">
 <androidx.constraintlayout.motion.widget.MotionLayout
-     android:background="@color/bottom"
+     android:background="@drawable/back"
      android:layout_width="match_parent"
      android:layout_height="match_parent"
      app:layoutDescription="@xml/profil_fragment_scene">

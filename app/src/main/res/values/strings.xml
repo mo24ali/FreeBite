@@ -32,14 +32,12 @@
 
     <!--              ################               -->
     <string name="app_nam">TelegramProfileChallenge</string>
-    <string name="profile_name">Mohamed Shaban</string>
+    <string name="profile_name">3aalal 9adoos</string>
     <string name="profile_status">online</string>
     <string name="adding_profile_photo">Adding profile photo</string>
     <string name="account">Account</string>
     <string name="user_email">example@example.com</string>
     <string name="phone_number_desc">Tap to change email</string>
-    <string name="username">\@M7MD43BAN</string>
-    <string name="username_desc">Username</string>
     <string name="bio_desc">Bio</string>
     <string name="bio">Your life is a book Don\'t be bad author</string>
     <string name="settings">Settings</string>

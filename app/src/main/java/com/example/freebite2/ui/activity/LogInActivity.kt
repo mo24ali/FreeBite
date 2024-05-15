@@ -25,7 +25,7 @@ class LogInActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.backL.setOnClickListener{
-            startActivity(Intent(this, MainHomeActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
         /*firebaseDB = FirebaseDatabase.getInstance()

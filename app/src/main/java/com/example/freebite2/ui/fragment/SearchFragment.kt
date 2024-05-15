@@ -5,17 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.freebite2.databinding.FragmentProfilBinding
+import com.example.freebite2.databinding.FragmentSearchBinding
 
-class ProfilFragment : Fragment() {
-    private lateinit var binding: FragmentProfilBinding
+class SearchFragment : Fragment() {
+    private lateinit var binding: FragmentSearchBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentProfilBinding.inflate(inflater, container, false)
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
