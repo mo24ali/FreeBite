@@ -59,7 +59,7 @@ class LogInActivity : AppCompatActivity() {
         binding.lgBtn.setOnClickListener{
 
             val logInMail = binding.mail.text.toString()
-            val logInMdp = binding.password.text.toString()
+            val logInMdp = binding.password.toString()
             if(logInMail.isNotEmpty() && logInMdp.isNotEmpty()){
                 logInUser(logInMail,logInMdp)
             }else{

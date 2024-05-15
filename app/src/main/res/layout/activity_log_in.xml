@@ -110,7 +110,7 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/pass"
+                android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints=""
@@ -120,7 +120,6 @@
                 android:inputType="textPassword"
                 tools:ignore="LabelFor" >
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
