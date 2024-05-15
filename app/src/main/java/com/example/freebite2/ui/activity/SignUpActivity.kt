@@ -38,7 +38,7 @@ class SignUpActivity : AppCompatActivity() {
             val signUpUsername = binding.pnom.text.toString()
             val signUpUsername2 = binding.nom.text.toString()
             val signUpMail = binding.mail.text.toString()
-            val signUpMdp = binding.pass.text.toString()
+            val signUpMdp = binding.pass.toString()
             if (signUpUsername.isNotEmpty() && signUpMail.isNotEmpty() && signUpMdp.isNotEmpty() && signUpUsername2.isNotEmpty()) {
                 signUpUser(signUpUsername2, signUpUsername, signUpMail, signUpMdp)
 

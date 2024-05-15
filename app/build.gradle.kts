@@ -83,10 +83,12 @@ dependencies {
     //implementation(libs.firebase.ml.vision)
     //implementation 'com.github.d-max:spots-dialog:1.1@aar'
     // Libraries
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+    implementation("com.google.android.gms:play-services-location:18.0.0")
 
-
-
-
+    implementation("com.google.firebase:firebase-analytics")
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
 
 
     testImplementation(libs.junit)

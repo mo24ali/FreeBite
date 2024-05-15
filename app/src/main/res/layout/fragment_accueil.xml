@@ -33,7 +33,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
 
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@mipmap/logo" />
 
                     <TextView
                         android:id="@+id/textView2"

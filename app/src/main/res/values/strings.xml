@@ -21,40 +21,12 @@
     <string name="locate_me">Locate Me !</string>
     <string name="freebite2">FreeBite</string>
     <string name="title_activity_location2">LocationActivity2</string>
-    <string name="google_maps_api_key">AIzaSyAkNosC08B52n0fUBwHw7dA8iM-uUUHC3A</string>
+    <string name="google_maps_api_key">AIzaSyCSaVZcDyaA0yKzTIbrriB8_4BW2b7kFyg</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="ok_allons_y">OK, allons-y!</string>
     <string name="hello_user">Salut </string>
-    <string name="avant_de_pouvoir_partager_votre_pi_ce_de_rechange_nous_avons_besoin_de_conna_tre_votre_emplacement">Avant de pouvoir partager votre pièce de rechange, nous avons besoin de connaître votre emplacement.</string>
+    <string name="avant_de_pouvoir_partager_votre_pi_ce_de_rechange_nous_avons_besoin_de_conna_tre_votre_emplacement">Avant de pouvoir partager votre repas, nous avons besoin de connaître votre emplacement.</string>
     <string name="afin_que_nous_puissions_afficher_les_annonces_proximit_et_savoir_combien_d_autres_personnes_attendent_de_partager_avec_vous">afin que nous puissions afficher les annonces à proximité et savoir combien d\'autres personnes attendent de partager avec vous</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <!--              ################               -->
-    <string name="app_nam">TelegramProfileChallenge</string>
-    <string name="profile_name">3aalal 9adoos</string>
-    <string name="profile_status">online</string>
-    <string name="adding_profile_photo">Adding profile photo</string>
-    <string name="account">Account</string>
-    <string name="user_email">example@example.com</string>
-    <string name="phone_number_desc">Tap to change email</string>
-    <string name="bio_desc">Bio</string>
-    <string name="bio">Your life is a book Don\'t be bad author</string>
-    <string name="settings">Settings</string>
-    <string name="notifications_and_sounds">Notifications and Sounds</string>
-    <string name="privacy_and_security">Privacy and Security</string>
-    <string name="data_and_storage">Data and Storage</string>
-    <string name="chat_settings">Chat Settings</string>
-    <string name="stickers_and_emoji">Stickers and Emoji</string>
-    <string name="chat_folders">Chat Folders</string>
-    <string name="devices">Devices</string>
-    <string name="language">Language</string>
-    <string name="telegram_premium">Telegram Premium</string>
-    <string name="help">Help</string>
-    <string name="ask_a_question">Ask a Question</string>
-    <string name="freebite_faq">FreeBite FAQ</string>
-    <string name="privacy_policy">Privacy Policy</string>
-    <string name="footer_sentence">FreeBite copyright 2024</string>
-    <!--              ################               -->
-
+    <string name="bonjour">Salut !\n</string>
+    <string name="entrez_votre_mot_de_passe">Entrez votre mot de passe</string>
 </resources>

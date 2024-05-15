@@ -109,15 +109,24 @@
                 android:text="@string/mot_de_passe"
                 android:textStyle="bold" />
 
-            <EditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/pass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints=""
-                android:drawableEnd="@drawable/lock_icon2"
+                android:background="@android:color/transparent"
                 android:drawablePadding="@dimen/_120ssp"
+                app:passwordToggleEnabled="true"
                 android:inputType="textPassword"
-                tools:ignore="LabelFor" />
+                tools:ignore="LabelFor" >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:background="@android:color/transparent"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -132,12 +141,15 @@
                     android:text="@string/souvient_de_moi" />
 
                 <TextView
+                    android:id="@+id/forgotPasswordTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:text="@string/j_ai_oubli_mon_mot_de_passe"
-                    tools:ignore="RelativeOverlap" />
+                    tools:ignore="RelativeOverlap"
+                    android:clickable="true"
+                    />
 
             </RelativeLayout>
 
