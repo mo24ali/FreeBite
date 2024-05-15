@@ -20,10 +20,11 @@ class MainHomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main_home)
 
-      //  bottomNav = findViewById(R.id.bottomNavView)
-      //  bottomNav.setOnItemSelectedListener { menuItem ->
+        // Proper initialization of the binding property
+        binding = ActivityMainHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         binding.bottomNavView.setOnItemSelectedListener {  menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_accueil -> setCurrentFragment(accueilF)

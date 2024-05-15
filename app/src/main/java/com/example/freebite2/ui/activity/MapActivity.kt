@@ -50,7 +50,7 @@ class MapActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 44)
         }
 
-        val dashBoardBtn = findViewById<Button>(R.id.dashboardButton)
+        val dashBoardBtn = findViewById<Button>(R.id.nextActivityButtonDashBoard)
         dashBoardBtn.setOnClickListener {
             val intent = Intent(this, MainHomeActivity::class.java)
             startActivity(intent)
