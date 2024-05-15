@@ -1,126 +1,114 @@
 package com.example.freebite2.ui.activity
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
-import android.widget.Toast
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.freebite2.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.database.DatabaseReference
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.net.HttpURLConnection
+import java.net.URL
 import com.google.firebase.database.FirebaseDatabase
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback {
-    private val FINE_PERMISSION_CODE = 1
-    private var myMap: GoogleMap? = null
-    private var currentLocation: Location? = null
+class MapActivity : AppCompatActivity() {
+    private lateinit var btFind: Button
+    private lateinit var supportMapFragment: SupportMapFragment
+    private lateinit var map: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-
-
-
-
-    // Add a Firebase Database reference
-    private lateinit var database: FirebaseDatabase
-    private lateinit var locationRef: DatabaseReference
+    private var currentLat = 0.0
+    private var currentLong = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_map)
 
-        // Initialize Firebase Database
-        database = FirebaseDatabase.getInstance()
-        locationRef = database.getReference("locations")
-
+        // Initialize variables
+        btFind = findViewById(R.id.dashboardButton)
+        supportMapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
-        // Request location permission and get last location
-        requestLocationPermissionAndGetCurrentLocation()
-    }
-
-    private fun requestLocationPermissionAndGetCurrentLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_PERMISSION_CODE)
-            return
+        // Check permission
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            // If permission granted, get current location
+            getCurrentLocation()
+        } else {
+            // When permission denied, request permission
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 44)
         }
 
-        // If permission is granted, get last location
-        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-            if (location != null) {
-                currentLocation = location
-                // Initialize map
-                val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-                mapFragment.getMapAsync(this@MapActivity)
+        val dashBoardBtn = findViewById<Button>(R.id.dashboardButton)
+        dashBoardBtn.setOnClickListener {
+            val intent = Intent(this, MainHomeActivity::class.java)
+            startActivity(intent)
+        }
+
+        btFind.setOnClickListener {
+            val url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
+                    "?location=$currentLat,$currentLong" +
+                    "&radius=500" +
+                    "&sensor=true" +
+                    "&key=" + getString(R.string.google_maps_api_key)
+
+            // Execute place task method to download JSON data
+            lifecycleScope.launch(Dispatchers.IO) {
+                val data = downloadUrl(url)
+                // Parse data here and update UI on main thread
+                launch(Dispatchers.Main) {
+                    // Update the UI with the parsed data
+                }
             }
         }
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        myMap = googleMap
-
-        // Check if currentLocation is not null before using it
-        currentLocation?.let { location ->
-            val myLoc = LatLng(location.latitude, location.longitude)
-            myMap?.moveCamera(CameraUpdateFactory.newLatLng(myLoc))
-            val options = MarkerOptions().position(myLoc).title("My location")
-            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-            myMap?.addMarker(options)
-        }
-    }
-
-
-    private fun getLastLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_PERMISSION_CODE)
+    private fun getCurrentLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return
         }
 
-        val task: Task<Location> = fusedLocationProviderClient.lastLocation
-        task.addOnSuccessListener(OnSuccessListener { location ->
+        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
             if (location != null) {
-                currentLocation = location
-
-                val mapFragment = supportFragmentManager
-                    .findFragmentById(R.id.map) as SupportMapFragment
-                mapFragment.getMapAsync(this@MapActivity)
+                currentLong = location.longitude
+                currentLat = location.latitude
+                supportMapFragment.getMapAsync { googleMap ->
+                    map = googleMap
+                    // Zoom current location on map
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(currentLat, currentLong), 10f))
+                    // Add a marker at the current location
+                    map.addMarker(MarkerOptions().position(LatLng(currentLat, currentLong)).title("Current Location"))
+                }
             }
-        })
+        }
     }
 
+    private suspend fun downloadUrl(str: String): String {
+        val url = URL(str)
+        val connection = url.openConnection() as HttpURLConnection
+        return try {
+            connection.inputStream.bufferedReader().use { it.readText() }
+        } finally {
+            connection.disconnect()
+        }
+    }
 
-
-    /*override fun onMapReady(googleMap: GoogleMap) {
-
-        myMap = googleMap
-
-        val myLoc = LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
-        myMap!!.moveCamera(CameraUpdateFactory.newLatLng(myLoc))
-        val options = MarkerOptions().position(myLoc).title("My location")
-        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-        myMap!!.addMarker(options)
-    }*/
-
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == FINE_PERMISSION_CODE) {
+        if (requestCode == 44) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getLastLocation()
-            } else {
-                Toast.makeText(this, "Location permission is denied, please allow the permission", Toast.LENGTH_SHORT).show()
+                // When permission granted, get current location
+                getCurrentLocation()
             }
         }
     }

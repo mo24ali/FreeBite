@@ -75,7 +75,7 @@ class AfterSignUpHelloActivity : AppCompatActivity() {
      //   binding.executePendingBindings()
 
         binding.verificationBtn.setOnClickListener{
-            startActivity(Intent(this, MapActivity::class.java))
+            startActivity(Intent(this,MapActivity::class.java))
         }
     }
     companion object {
