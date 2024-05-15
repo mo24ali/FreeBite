@@ -17,6 +17,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.net.HttpURLConnection
@@ -71,6 +72,19 @@ class MapActivity : AppCompatActivity() {
                 }
             }
         }
+
+        // Get location and save to Firebase
+        fusedLocationProviderClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    // Save location to Firebase
+                    val user = FirebaseAuth.getInstance().currentUser
+                    if (user != null) {
+                        val database = FirebaseDatabase.getInstance().getReference("Users")
+                        database.child(user.uid).child("location").setValue(location)
+                    }
+                }
+            }
     }
 
     private fun getCurrentLocation() {

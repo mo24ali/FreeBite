@@ -52,7 +52,7 @@ class AfterSignUpHelloActivity : AppCompatActivity() {
         }
 
 // Get location
-        fusedLocationClient.lastLocation
+       /* fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     // Save location to Firebase
@@ -67,7 +67,7 @@ class AfterSignUpHelloActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
                 }
-            }
+            }*/
         // Create an instance of YourViewModel with fullName parameter
         // val fullName : String = finalGreetingText // Replace this with the actual full name
      //   binding.viewModel = NameViewModel(fullName) // Set the ViewModel
