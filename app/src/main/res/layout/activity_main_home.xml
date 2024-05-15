@@ -22,11 +22,10 @@
      android:layout_height="wrap_content"
 
      app:backgroundTint="@color/btn"
-     app:itemTextColor="@color/bottom"
      app:itemIconTint="@color/ic_bottom_nav"
-     app:menu="@menu/bottom_nav_menu"
      app:itemPaddingBottom="1dp"
-   />
+     app:itemTextColor="@color/bottom"
+     app:menu="@menu/bottom_nav_menu" />
 
 
 </LinearLayout>

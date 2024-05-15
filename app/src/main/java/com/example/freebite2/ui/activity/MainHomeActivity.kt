@@ -10,7 +10,7 @@ import com.example.freebite2.databinding.ActivityMainHomeBinding
 
 class MainHomeActivity : AppCompatActivity() {
 
-    //private lateinit var bottomNav: BottomNavigationView
+    private lateinit var bottomNav: BottomNavigationView
 
     private val accueilF = AccueilFragment()
     private val profilF = ProfilFragment()
@@ -20,11 +20,10 @@ class MainHomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main_home)
 
-        // Initialize the binding property
-        binding = ActivityMainHomeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
+      //  bottomNav = findViewById(R.id.bottomNavView)
+      //  bottomNav.setOnItemSelectedListener { menuItem ->
         binding.bottomNavView.setOnItemSelectedListener {  menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_accueil -> setCurrentFragment(accueilF)
