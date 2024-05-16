@@ -23,33 +23,7 @@ class AfterSignUpHelloActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAfterSignUpHelloBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        val user = FirebaseAuth.getInstance().currentUser
-        val displayName = user?.displayName
 
-        if (!displayName.isNullOrEmpty()) {
-            //val greetingText = getString(R.string.hello_user, displayName)
-            val greetingText = getString(R.string.hello_user)
-            val finalGreetingText = "$greetingText $displayName"
-            binding.greetingTextView.text = finalGreetingText
-        }
-        // Request location permission
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                REQUEST_LOCATION_PERMISSION
-            )
-            return
-        }
 
 // Get location
        /* fusedLocationClient.lastLocation
@@ -78,7 +52,5 @@ class AfterSignUpHelloActivity : AppCompatActivity() {
             startActivity(Intent(this,MapActivity::class.java))
         }
     }
-    companion object {
-        private const val REQUEST_LOCATION_PERMISSION = 1
-    }
+
 }

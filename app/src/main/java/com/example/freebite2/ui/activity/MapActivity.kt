@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
@@ -50,14 +51,14 @@ class MapActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 44)
         }
 
-        val dashBoardBtn = findViewById<Button>(R.id.nextActivityButtonDashBoard)
+        /*val dashBoardBtn = findViewById<Button>(R.id.nextActivityButtonDashBoard)
         dashBoardBtn.setOnClickListener {
             val intent = Intent(this, MainHomeActivity::class.java)
             startActivity(intent)
-        }
+        }*/
 
         btFind.setOnClickListener {
-            val url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
+            /*val url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
                     "?location=$currentLat,$currentLong" +
                     "&radius=500" +
                     "&sensor=true" +
@@ -70,11 +71,29 @@ class MapActivity : AppCompatActivity() {
                 launch(Dispatchers.Main) {
                     // Update the UI with the parsed data
                 }
-            }
+            }*/
+            fusedLocationProviderClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    if (location != null) {
+                        // Save location to Firebase
+                        val user = FirebaseAuth.getInstance().currentUser
+                        if (user != null) {
+                            val database = FirebaseDatabase.getInstance().getReference("Users")
+                            database.child(user.uid).child("location").setValue(location)
+                        }
+                    }
+                    Toast.makeText(this@MapActivity, "Tout est bon ! on passe à la page principale", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, MainHomeActivity::class.java)
+                    startActivity(intent)
+                }
+            /*Toast.makeText(this@MapActivity, "Tout est bon ! on passe à la page principale", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, MainHomeActivity::class.java)
+            startActivity(intent)*/
+
         }
 
         // Get location and save to Firebase
-        fusedLocationProviderClient.lastLocation
+        /*fusedLocationProviderClient.lastLocation
             .addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     // Save location to Firebase
@@ -84,7 +103,7 @@ class MapActivity : AppCompatActivity() {
                         database.child(user.uid).child("location").setValue(location)
                     }
                 }
-            }
+            }*/
     }
 
     private fun getCurrentLocation() {
