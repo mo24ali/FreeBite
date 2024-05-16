@@ -100,7 +100,18 @@
         <item name="android:textColor">@color/md_theme_dark_outline</item>
         <item name="android:textSize">@dimen/font_14</item>
     </style>
+    <style name="roundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
 
+    </style>
+
+    <style name="half_round">
+        <item name="cornerFamilyBottomRight">rounded</item>
+        <item name="cornerSize">15%</item>
+        <item name="cornerSizeTopRight">0%</item>
+        <item name="cornerSizeBottomRight">0%</item>
+    </style>
 
 
 </resources>
