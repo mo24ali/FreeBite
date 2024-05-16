@@ -9,7 +9,6 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.lifecycleScope
 import com.example.freebite2.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -19,10 +18,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.net.HttpURLConnection
-import java.net.URL
 import com.google.firebase.database.FirebaseDatabase
 
 class MapActivity : AppCompatActivity() {
@@ -51,59 +46,14 @@ class MapActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 44)
         }
 
-        /*val dashBoardBtn = findViewById<Button>(R.id.nextActivityButtonDashBoard)
-        dashBoardBtn.setOnClickListener {
-            val intent = Intent(this, MainHomeActivity::class.java)
-            startActivity(intent)
-        }*/
-
         btFind.setOnClickListener {
-            /*val url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
-                    "?location=$currentLat,$currentLong" +
-                    "&radius=500" +
-                    "&sensor=true" +
-                    "&key=" + getString(R.string.google_maps_api_key)
-
-            // Execute place task method to download JSON data
-            lifecycleScope.launch(Dispatchers.IO) {
-                val data = downloadUrl(url)
-                // Parse data here and update UI on main thread
-                launch(Dispatchers.Main) {
-                    // Update the UI with the parsed data
-                }
-            }*/
-            fusedLocationProviderClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
-                    if (location != null) {
-                        // Save location to Firebase
-                        val user = FirebaseAuth.getInstance().currentUser
-                        if (user != null) {
-                            val database = FirebaseDatabase.getInstance().getReference("Users")
-                            database.child(user.uid).child("location").setValue(location)
-                        }
-                    }
-                    Toast.makeText(this@MapActivity, "Tout est bon ! on passe à la page principale", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, MainHomeActivity::class.java)
-                    startActivity(intent)
-                }
-            /*Toast.makeText(this@MapActivity, "Tout est bon ! on passe à la page principale", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, MainHomeActivity::class.java)
-            startActivity(intent)*/
-
+            // Check if location is captured
+            if (currentLat != 0.0 && currentLong != 0.0) {
+                saveLocationToFirebase()
+            } else {
+                Toast.makeText(this, "Location is not captured yet", Toast.LENGTH_SHORT).show()
+            }
         }
-
-        // Get location and save to Firebase
-        /*fusedLocationProviderClient.lastLocation
-            .addOnSuccessListener { location: Location? ->
-                if (location != null) {
-                    // Save location to Firebase
-                    val user = FirebaseAuth.getInstance().currentUser
-                    if (user != null) {
-                        val database = FirebaseDatabase.getInstance().getReference("Users")
-                        database.child(user.uid).child("location").setValue(location)
-                    }
-                }
-            }*/
     }
 
     private fun getCurrentLocation() {
@@ -118,21 +68,36 @@ class MapActivity : AppCompatActivity() {
                 supportMapFragment.getMapAsync { googleMap ->
                     map = googleMap
                     // Zoom current location on map
-                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(currentLat, currentLong), 10f))
+                    val currentLocation = LatLng(currentLat, currentLong)
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
                     // Add a marker at the current location
-                    map.addMarker(MarkerOptions().position(LatLng(currentLat, currentLong)).title("Current Location"))
+                    map.addMarker(MarkerOptions().position(currentLocation).title("Current Location"))
                 }
+            } else {
+                Toast.makeText(this, "Failed to get current location", Toast.LENGTH_SHORT).show()
             }
+        }.addOnFailureListener {
+            Toast.makeText(this, "Failed to get current location", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private suspend fun downloadUrl(str: String): String {
-        val url = URL(str)
-        val connection = url.openConnection() as HttpURLConnection
-        return try {
-            connection.inputStream.bufferedReader().use { it.readText() }
-        } finally {
-            connection.disconnect()
+    private fun saveLocationToFirebase() {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            val database = FirebaseDatabase.getInstance().getReference("Users")
+            val locationData = mapOf("latitude" to currentLat, "longitude" to currentLong)
+            database.child(user.uid).child("location").setValue(locationData)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Location saved successfully", Toast.LENGTH_SHORT).show()
+                    // Start new Activity
+                    val intent = Intent(this, MainHomeActivity::class.java)
+                    startActivity(intent)
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Failed to save location", Toast.LENGTH_SHORT).show()
+                }
+        } else {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -142,6 +107,8 @@ class MapActivity : AppCompatActivity() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // When permission granted, get current location
                 getCurrentLocation()
+            } else {
+                Toast.makeText(this, "Permission denied. Unable to get location.", Toast.LENGTH_SHORT).show()
             }
         }
     }
