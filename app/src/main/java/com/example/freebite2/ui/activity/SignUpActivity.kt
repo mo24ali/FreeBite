@@ -93,9 +93,9 @@ class SignUpActivity : AppCompatActivity() {
 
                     user.updateProfile(profileUpdates).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            Toast.makeText(this@SignUpActivity, "Location updated successfully", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@SignUpActivity, "Bien localisé", Toast.LENGTH_SHORT).show()
                         } else {
-                            Toast.makeText(this@SignUpActivity, "Location update failed", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@SignUpActivity, "Mal localisé", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
