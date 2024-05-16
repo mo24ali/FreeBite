@@ -10,9 +10,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.example.freebite2" />
-                  <option name="mobileSdkAppId" value="1:59118902850:android:a130b7bef5b23aa965d7db" />
-                  <option name="projectId" value="freebite2-8aed8" />
-                  <option name="projectNumber" value="59118902850" />
+                  <option name="mobileSdkAppId" value="1:888804339692:android:7cb18e2d00d0144fde9ac9" />
+                  <option name="projectId" value="freebite-d9a56" />
+                  <option name="projectNumber" value="888804339692" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

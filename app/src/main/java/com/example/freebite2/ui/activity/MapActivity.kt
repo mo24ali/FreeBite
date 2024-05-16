@@ -58,7 +58,7 @@ class MapActivity : AppCompatActivity() {
         }*/
 
         btFind.setOnClickListener {
-            val url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
+            /*val url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
                     "?location=$currentLat,$currentLong" +
                     "&radius=500" +
                     "&sensor=true" +
@@ -71,15 +71,29 @@ class MapActivity : AppCompatActivity() {
                 launch(Dispatchers.Main) {
                     // Update the UI with the parsed data
                 }
-            }
-            Toast.makeText(this@MapActivity, "Tout est bon ! on passe à la page principale", Toast.LENGTH_SHORT).show()
+            }*/
+            fusedLocationProviderClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    if (location != null) {
+                        // Save location to Firebase
+                        val user = FirebaseAuth.getInstance().currentUser
+                        if (user != null) {
+                            val database = FirebaseDatabase.getInstance().getReference("Users")
+                            database.child(user.uid).child("location").setValue(location)
+                        }
+                    }
+                    Toast.makeText(this@MapActivity, "Tout est bon ! on passe à la page principale", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, MainHomeActivity::class.java)
+                    startActivity(intent)
+                }
+            /*Toast.makeText(this@MapActivity, "Tout est bon ! on passe à la page principale", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, MainHomeActivity::class.java)
-            startActivity(intent)
+            startActivity(intent)*/
 
         }
 
         // Get location and save to Firebase
-        fusedLocationProviderClient.lastLocation
+        /*fusedLocationProviderClient.lastLocation
             .addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     // Save location to Firebase
@@ -89,7 +103,7 @@ class MapActivity : AppCompatActivity() {
                         database.child(user.uid).child("location").setValue(location)
                     }
                 }
-            }
+            }*/
     }
 
     private fun getCurrentLocation() {
