@@ -20,7 +20,7 @@ class LogInActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLogInBinding
     private lateinit var auth : FirebaseAuth
-
+    private lateinit var sharedPreferences: SharedPreferences
     /*private lateinit var firebaseDB: FirebaseDatabase
     private lateinit var dbReference: DatabaseReference*/
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +29,7 @@ class LogInActivity : AppCompatActivity() {
         binding = ActivityLogInBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
+        sharedPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE)
 
         binding.backL.setOnClickListener{
             startActivity(Intent(this, MainActivity::class.java))
@@ -36,12 +37,34 @@ class LogInActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
+        binding.forgotPasswordTextView.setOnClickListener{
+            resetPassword(binding.mail.text.toString())
+        }
+
+        val savedEmail = sharedPreferences.getString("email", "")
+        val savedPassword = sharedPreferences.getString("password", "")
+        if (savedEmail != "" && savedPassword != "") {
+            binding.mail.setText(savedEmail)
+            binding.passwordTxtLgnIn.setText(savedPassword)
+            binding.rememberBtn.isChecked = true
+        }
         binding.lgBtn.setOnClickListener{
            val email = binding.mail.text.toString()
             val pass = binding.passwordTxtLgnIn.text.toString()
 
             // if true meaning all fiels have been well settedd
             if(checkAllfield()){
+                // Save login information if "Remember Me" is checked
+                if (binding.rememberBtn.isChecked) {
+                    val editor = sharedPreferences.edit()
+                    editor.putString("email", email)
+                    editor.putString("password", pass)
+                    editor.apply()
+                } else {
+                    val editor = sharedPreferences.edit()
+                    editor.clear()
+                    editor.apply()
+                }
                 auth.signInWithEmailAndPassword(email, pass)
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
@@ -66,7 +89,46 @@ class LogInActivity : AppCompatActivity() {
         }
 
 
+    /*// Define SharedPreferences
+private lateinit var sharedPreferences: SharedPreferences
 
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    // ...
+
+    // Initialize SharedPreferences
+    sharedPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE)
+
+    // Check if there is saved login information
+    val savedEmail = sharedPreferences.getString("email", "")
+    val savedPassword = sharedPreferences.getString("password", "")
+    if (savedEmail != "" && savedPassword != "") {
+        binding.mail.setText(savedEmail)
+        binding.passwordTxtLgnIn.setText(savedPassword)
+        binding.rememberMeCheckbox.isChecked = true
+    }
+
+    binding.lgBtn.setOnClickListener {
+        val email = binding.mail.text.toString()
+        val pass = binding.passwordTxtLgnIn.text.toString()
+
+        if (checkAllfield()) {
+            // ...
+
+            // Save login information if "Remember Me" is checked
+            if (binding.rememberMeCheckbox.isChecked) {
+                val editor = sharedPreferences.edit()
+                editor.putString("email", email)
+                editor.putString("password", pass)
+                editor.apply()
+            } else {
+                val editor = sharedPreferences.edit()
+                editor.clear()
+                editor.apply()
+            }
+        }
+    }
+}*/
 
     }
 
