@@ -4,6 +4,8 @@ package com.example.freebite2.ui.activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
+import android.util.Patterns
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -17,10 +19,13 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 class LogInActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLogInBinding
+    private lateinit var auth : FirebaseAuth
+
     /*private lateinit var firebaseDB: FirebaseDatabase
     private lateinit var dbReference: DatabaseReference*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //set view binding
         binding = ActivityLogInBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
@@ -29,106 +34,44 @@ class LogInActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         }
 
-        val preferences = getSharedPreferences("checkbox", MODE_PRIVATE)
-        val checkbox = preferences.getString("remember", "")
+        auth = FirebaseAuth.getInstance()
 
-        if (checkbox == "true") {
-            val intent = Intent(this, MainHomeActivity::class.java)
-            startActivity(intent)
-        } else if (checkbox == "false") {
-            Toast.makeText(this, "Vauillez s'inscrire SVP!.", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.lgBtn.setOnClickListener {
-            val intent = Intent(this, MainHomeActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.rememberBtn.setOnCheckedChangeListener { _, isChecked ->
-            val editor = preferences.edit()
-            if (isChecked) {
-                editor.putString("remember", "true")
-                Toast.makeText(this, "Je me souvient !", Toast.LENGTH_SHORT).show()
-            } else {
-                editor.putString("remember", "false")
-            }
-            editor.apply()
-        }
-        /*firebaseDB = FirebaseDatabase.getInstance()
-        dbReference = firebaseDB.reference.child("users")*/
         binding.lgBtn.setOnClickListener{
+           val email = binding.mail.text.toString()
+            val pass = binding.passwordTxtLgnIn.text.toString()
 
-            val logInMail = binding.mail.text.toString()
-            val logInMdp = binding.passwordText.text.toString()
-            if(logInMail.isNotEmpty() && logInMdp.isNotEmpty()){
-                logInUser(logInMail,logInMdp)
-            }else{
-                Toast.makeText(this,"Tout les champs sont obligatoires !",Toast.LENGTH_SHORT).show()
-            }
-        }
-        binding.forgotPasswordTextView.setOnClickListener {
-            val email = binding.mail.text.toString()
-            if (email.isNotEmpty()) {
-                resetPassword(email)
-            } else {
-                Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-    }
-    /*private fun logInUser(mail:String, mdp : String){
-        dbReference.orderByChild("email").equalTo(mail).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(datasnapshot: DataSnapshot) {
-                if(datasnapshot.exists()){
-                    for(userSnapshot in datasnapshot.children){
-                        val userData = userSnapshot.getValue(InscriptionData::class.java)
-                        if(userData != null && userData.mdp == mdp){
-                            Toast.makeText(this@LogInActivity,"Connecté !",Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this@LogInActivity,DashboardActivity::class.java))
+            // if true meaning all fiels have been well settedd
+            if(checkAllfield()){
+                auth.signInWithEmailAndPassword(email, pass)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Toast.makeText(baseContext, "Connexion réussie", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this, MainHomeActivity::class.java))
+                            //finish to destroy the activity
                             finish()
-                            return
+                        } else {
+                            // Handle the exceptions
+                            when (task.exception) {
+                                is FirebaseAuthInvalidCredentialsException -> {
+                                    Toast.makeText(baseContext, "Mot de passe ou email incorrect", Toast.LENGTH_SHORT).show()
+                                }
+                                else -> {
+                                    Toast.makeText(baseContext, "Erreur de connexion", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         }
-                        Toast.makeText(this@LogInActivity,"Connexion échoué",Toast.LENGTH_SHORT).show()
                     }
-                }
             }
+        }
 
-            override fun onCancelled(databaseError:DatabaseError) {
-                Toast.makeText(this@LogInActivity,"Erreur ${databaseError.message}",Toast.LENGTH_SHORT).show()
 
-            }
 
-        })
-    }*/
-    private fun logInUser(mail:String, mdp : String){
-        val auth = FirebaseAuth.getInstance()
-        auth.signInWithEmailAndPassword(mail, mdp)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in successful
-                    Toast.makeText(this@LogInActivity, "Connecté !", Toast.LENGTH_SHORT).show()
 
-                    // Set "remember" preference to "true"
-                    val preferences = getSharedPreferences("checkbox", MODE_PRIVATE)
-                    val editor = preferences.edit()
-                    editor.putString("remember", "true")
-                    editor.apply()
-
-                    // Proceed to dashboard activity
-                    val intent = Intent(this@LogInActivity, MainHomeActivity::class.java)
-                    startActivity(intent)
-                } else {
-                    // Sign in failed
-                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                        // Invalid credentials
-                        Toast.makeText(this@LogInActivity, "Mot de passe ou email invalide !", Toast.LENGTH_SHORT).show()
-                    } else {
-                        // Other errors
-                        Toast.makeText(this@LogInActivity, "Connexion échouée! veuillez réesayer.", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
     }
+
+
+
     private fun resetPassword(email: String) {
         val auth = FirebaseAuth.getInstance()
         auth.sendPasswordResetEmail(email)
@@ -139,6 +82,29 @@ class LogInActivity : AppCompatActivity() {
                         Toast.makeText(this, "Impossible d'envoyer un e-mail de réinitialisation", Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+    private fun checkAllfield(): Boolean {
+        val email =  binding.mail.text.toString()
+        if(binding.mail.text.toString() == ""){
+            binding.mail.error = "Ce champs est obligatoires"
+            return false
+        }
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            binding.mail.error = "Verifiez la structure de ton email"
+            return false
+        }
+        //also note password should be at least a characters
+        if(binding.passwordTxtLgnIn.text.toString()==""){
+            binding.passwordLgnTextInputLayout.error = "Ce champs est obligatoires"
+            binding.passwordLgnTextInputLayout.errorIconDrawable = null
+            return false
+        }
+        if(binding.passwordTxtLgnIn.length() <= 8) {
+            binding.passwordLgnTextInputLayout.error = "Le mot de passe doit contenir au moins 8 caractères"
+            binding.passwordLgnTextInputLayout.errorIconDrawable = null
+            return false
+        }
+        return true
     }
 
    // fun onImageClick(view: View) {}
