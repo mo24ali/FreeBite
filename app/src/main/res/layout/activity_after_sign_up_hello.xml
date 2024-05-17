@@ -61,7 +61,7 @@
             android:alpha="0.5"/>
         <View
             android:layout_width="match_parent"
-            android:layout_height="140dp"/>
+            android:layout_height="80dp"/>
         <com.google.android.material.button.MaterialButton
             android:id="@+id/verificationBtn"
             android:layout_width="350dp"
