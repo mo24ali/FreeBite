@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.sInscBtn.setOnClickListener {
-            val scInt = Intent( this@MainActivity, MainHomeActivity::class.java)
+            val scInt = Intent( this@MainActivity, SignUpActivity::class.java)
             startActivity(scInt)
         }
 

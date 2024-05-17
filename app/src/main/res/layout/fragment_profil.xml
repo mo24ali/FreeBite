@@ -83,10 +83,10 @@
         app:layout_constraintBottom_toBottomOf="@+id/app_bar_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/app_bar_container"
-        app:layout_constraintTop_toTopOf="@+id/profile_name" />
+        app:layout_constraintTop_toTopOf="@+id/profileSmya" />
 
     <TextView
-        android:id="@+id/profile_name"
+        android:id="@+id/profileSmya"
         android:layout_width="291dp"
         android:layout_height="56dp"
         android:layout_marginStart="@dimen/margin_16"
@@ -107,7 +107,7 @@
         android:textColor="@color/btn"
         android:textSize="@dimen/font_16"
         app:layout_constraintBottom_toBottomOf="@id/app_bar_container"
-        app:layout_constraintStart_toStartOf="@id/profile_name" />
+        app:layout_constraintStart_toStartOf="@id/profileSmya" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_action_button"
@@ -154,6 +154,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tvEmail"
                         style="@style/generalTextSubtitleStyle"
                         android:text="@string/user_email" />
 

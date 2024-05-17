@@ -51,7 +51,7 @@
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent" />
         <Constraint
-            android:id="@+id/profile_name"
+            android:id="@+id/profileSmya"
             android:layout_width="@dimen/zero_dimens"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -79,7 +79,7 @@
             android:layout_height="@dimen/zero_dimens"
             android:layout_marginBottom="16dp"
             motion:layout_constraintBottom_toBottomOf="@id/app_bar_container"
-            motion:layout_constraintStart_toStartOf="@id/profile_name">
+            motion:layout_constraintStart_toStartOf="@id/profileSmya">
             <CustomAttribute
                 motion:attributeName="textSize"
                 motion:customFloatValue="16" />
@@ -122,7 +122,7 @@
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent" />
         <Constraint
-            android:id="@+id/profile_name"
+            android:id="@+id/profileSmya"
             android:layout_width="@dimen/zero_dimens"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -151,7 +151,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/zero_dimens"
             motion:layout_constraintBottom_toBottomOf="@id/profile_pic"
-            motion:layout_constraintStart_toStartOf="@id/profile_name">
+            motion:layout_constraintStart_toStartOf="@id/profileSmya">
             <CustomAttribute
                 motion:attributeName="textSize"
                 motion:customFloatValue="14" />
