@@ -6,6 +6,7 @@ import android.location.Location
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import android.os.Bundle
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.freebite2.R
 import com.example.freebite2.model.OffreModel
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import kotlin.math.*
 
 class MapsFragment : Fragment() {
@@ -55,13 +59,24 @@ class MapsFragment : Fragment() {
             return
         }
 
-        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-            if (location != null) {
-                val currentUserLocation = LatLng(location.latitude, location.longitude)
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentUserLocation, 15f))
-                fetchNearbyOffers(currentUserLocation)
-            }
+        val locationRequest = LocationRequest.create().apply {
+            interval = 10000 // Update location every 10 seconds
+            fastestInterval = 5000 // Update location every 5 seconds in the fastest case
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                for (location in locationResult.locations){
+                    if (location != null) {
+                        val currentLocation = LatLng(location.latitude, location.longitude)
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
+                        googleMap.addMarker(MarkerOptions().position(currentLocation).title("Current Location"))
+                        fetchNearbyOffers(currentLocation)
+                    }
+                }
+            }
+        }, Looper.getMainLooper())
     }
 
     private fun fetchNearbyOffers(currentUserLocation: LatLng) {

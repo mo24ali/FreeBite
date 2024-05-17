@@ -5,12 +5,16 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.os.Looper
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.freebite2.R
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -19,6 +23,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+
 
 class MapActivity : AppCompatActivity() {
     private lateinit var btFind: Button
@@ -61,24 +66,32 @@ class MapActivity : AppCompatActivity() {
             return
         }
 
-        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
-            if (location != null) {
-                currentLong = location.longitude
-                currentLat = location.latitude
-                supportMapFragment.getMapAsync { googleMap ->
-                    map = googleMap
-                    // Zoom current location on map
-                    val currentLocation = LatLng(currentLat, currentLong)
-                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
-                    // Add a marker at the current location
-                    map.addMarker(MarkerOptions().position(currentLocation).title("Current Location"))
-                }
-            } else {
-                Toast.makeText(this, "Failed to get current location", Toast.LENGTH_SHORT).show()
-            }
-        }.addOnFailureListener {
-            Toast.makeText(this, "Failed to get current location", Toast.LENGTH_SHORT).show()
+        val locationRequest = LocationRequest.create().apply {
+            interval = 10000 // Update location every 10 seconds
+            fastestInterval = 5000 // Update location every 5 seconds in the fastest case
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
+
+        LocationServices.getFusedLocationProviderClient(this).requestLocationUpdates(locationRequest, object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                for (location in locationResult.locations){
+                    if (location != null) {
+                        currentLong = location.longitude
+                        currentLat = location.latitude
+                        supportMapFragment.getMapAsync { googleMap ->
+                            map = googleMap
+                            // Zoom current location on map
+                            val currentLocation = LatLng(currentLat, currentLong)
+                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
+                            // Add a marker at the current location
+                            map.addMarker(MarkerOptions().position(currentLocation).title("Current Location"))
+                        }
+                    } else {
+                        Toast.makeText(this@MapActivity, "Failed to get current location", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }, Looper.getMainLooper())
     }
 
     private fun saveLocationToFirebase() {
