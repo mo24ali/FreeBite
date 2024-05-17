@@ -2,12 +2,13 @@ package com.example.freebite2.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.freebite2.adapter.OffreAdapter
+import com.example.freebite2.adapter.OffersAdapter
 import com.example.freebite2.databinding.FragmentAccueilBinding
 import com.example.freebite2.model.OffreModel
 import com.example.freebite2.ui.activity.AddOffreActivity
@@ -17,7 +18,7 @@ class AccueilFragment : Fragment() {
 
     private var _binding: FragmentAccueilBinding? = null
     private val binding get() = _binding!!
-    private lateinit var offreAdapter: OffreAdapter
+    private lateinit var offreAdapter: OffersAdapter
     private lateinit var offreList: MutableList<OffreModel>
     private lateinit var database: DatabaseReference
 
@@ -33,7 +34,7 @@ class AccueilFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         offreList = mutableListOf()
-        offreAdapter = OffreAdapter(offreList)
+        offreAdapter = OffersAdapter(offreList)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = offreAdapter
 
@@ -58,6 +59,7 @@ class AccueilFragment : Fragment() {
 
             override fun onCancelled(error: DatabaseError) {
                 // Handle database error
+                Log.e("DatabaseError", error.message)
             }
         })
     }

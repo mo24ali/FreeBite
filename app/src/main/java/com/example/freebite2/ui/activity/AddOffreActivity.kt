@@ -27,7 +27,10 @@ class AddOffreActivity : AppCompatActivity() {
 
             if (offreName.isNotEmpty() && offreDescription.isNotEmpty()  && offreDuration.isNotEmpty()) {
                 val offreId = database.push().key ?: ""
-                val offre = OffreModel(offreName, offreDescription, 22, offreDuration)
+                val offre = OffreModel(offreName, offreDescription, "22", offreDuration.toDoubleOrNull())
+                // Rest of your code...
+
+
                 database.child(offreId).setValue(offre).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         binding.etOffreName.text.clear()

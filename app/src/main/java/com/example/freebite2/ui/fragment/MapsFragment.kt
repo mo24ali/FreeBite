@@ -9,8 +9,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -21,7 +19,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.freebite2.R
-import com.example.freebite2.model.Offers
+import com.example.freebite2.model.OffreModel
 import kotlin.math.*
 
 class MapsFragment : Fragment() {
@@ -46,21 +44,6 @@ class MapsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.fmap) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
-        view.findViewById<Button>(R.id.searchOfferBtn).setOnClickListener {
-            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 1)
-            } else {
-                fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                    if (location != null) {
-                        val currentUserLocation = LatLng(location.latitude, location.longitude)
-                        fetchNearbyOffers(currentUserLocation)
-                    }else{
-                        Toast.makeText(context, "Location not found", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
     }
 
     private fun initializeLocation() {
@@ -75,58 +58,25 @@ class MapsFragment : Fragment() {
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
             if (location != null) {
                 val currentUserLocation = LatLng(location.latitude, location.longitude)
-                googleMap.addMarker(MarkerOptions().position(currentUserLocation).title("You are here"))
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentUserLocation, 15f))
                 fetchNearbyOffers(currentUserLocation)
             }
         }
     }
-    /*private fun initializeLocation() {
-    // ...
-    fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-        if (location != null) {
-            val currentUserLocation = LatLng(location.latitude, location.longitude)
-            googleMap.addMarker(MarkerOptions().position(currentUserLocation).title("You are here"))
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentUserLocation, 15f))
-            fetchNearbyOffers(currentUserLocation)
-        }
-    }
-}*/
-    /*private fun displayNearbyOffers(offers: List<Offers>) {
-    for (offer in offers) {
-        val markerOptions = MarkerOptions()
-            .position(LatLng(offer.latitude, offer.longitude))
-            .title(offer.details)
-        googleMap.addMarker(markerOptions)
-    }
-    if (offers.isNotEmpty()) {
-        val notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val channel = NotificationChannel("NearbyOffers", "Nearby Offers", NotificationManager.IMPORTANCE_DEFAULT)
-        notificationManager.createNotificationChannel(channel)
-
-        val notification = NotificationCompat.Builder(requireContext(), "NearbyOffers")
-            .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("Nearby Offers")
-            .setContentText("Found ${offers.size} nearby offers")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .build()
-
-        notificationManager.notify(1, notification)
-    }
-}*/
 
     private fun fetchNearbyOffers(currentUserLocation: LatLng) {
         val db = FirebaseFirestore.getInstance()
         db.collection("users").get().addOnSuccessListener { result ->
-            val nearbyOffers = mutableListOf<Offers>()
+            val nearbyOffers = mutableListOf<OffreModel>()
             for (document in result) {
+                val userID = document.id
                 val userLocation = document.getGeoPoint("location")
                 if (userLocation != null) {
                     val distance = calculateDistance(currentUserLocation, LatLng(userLocation.latitude, userLocation.longitude))
                     if (distance <= radius) {
-                        val offers = document.get("offers") as Map<String,String>
+                        val offers = document.get("offers") as? Map<String, String> ?: continue
                         for ((offerID, details) in offers) {
-                            nearbyOffers.add(Offers(offerID, details, distance, userLocation.latitude, userLocation.longitude))
+                            nearbyOffers.add(OffreModel(userID, offerID, details, distance, userLocation.latitude, userLocation.longitude))
                         }
                     }
                 }
@@ -146,26 +96,12 @@ class MapsFragment : Fragment() {
         return earthRadius * c
     }
 
-    /*private fun displayNearbyOffers(offers: List<Offers>) {
-    for (offer in offers) {
-        val markerOptions = MarkerOptions()
-            .position(LatLng(offer.latitude, offer.longitude))
-            .title(offer.details)
-        googleMap.addMarker(markerOptions)
-    }
-    if (offers.isNotEmpty()) {
-        Toast.makeText(context, "Found ${offers.size} nearby offers", Toast.LENGTH_SHORT).show()
-    }
-}*/
-    private fun displayNearbyOffers(offers: List<Offers>) {
+    private fun displayNearbyOffers(offers: List<OffreModel>) {
         for (offer in offers) {
             val markerOptions = MarkerOptions()
-                .position(LatLng(offer.latitude, offer.longitude))
+                .position(LatLng(offer.latitude!!, offer.longitude!!))
                 .title(offer.details)
             googleMap.addMarker(markerOptions)
-        }
-        if (offers.isNotEmpty()) {
-            Toast.makeText(context, "Found ${offers.size} nearby offers", Toast.LENGTH_SHORT).show()
         }
     }
 }

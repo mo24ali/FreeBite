@@ -19,3 +19,13 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keepclassmembers class com.example.freebite2.model.OffreModel {
+    public <init>();
+    public <init>(...);
+}
+-keepclassmembers class * {
+    @com.google.firebase.database.PropertyName <fields>;
+}
+-keep class androidx.databinding.** { *; }
+-keep class com.example.freebite2.databinding.** { *; }
+-keep class com.example.freebite2.BR { *; }

@@ -5,7 +5,10 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("com.google.gms.google-services")
     alias(libs.plugins.googleAndroidLibrariesMapsplatformSecretsGradlePlugin)
+    id("com.github.ben-manes.versions")
+
 }
+
 
 android {
     namespace = "com.example.freebite2"

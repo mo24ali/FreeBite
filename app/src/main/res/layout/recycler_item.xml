@@ -43,7 +43,7 @@
                     android:textSize="@dimen/font_18"
                     android:textColor="@color/black"
                     android:layout_height="wrap_content"
-                    android:text="@{offre.offreName}" />
+                    android:text="@{offre.offerID}" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -66,7 +66,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"
                         android:layout_height="wrap_content"
-                        android:text="@{offre.offreName}" />
+                        android:text="@{offre.userID}" />
                 </LinearLayout>
 
                 <TextView
@@ -76,7 +76,7 @@
                     android:textSize="@dimen/font_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{offre.offreDuration}" />
+                    android:text="@{offre.details}" />
             </LinearLayout>
 
         </LinearLayout>

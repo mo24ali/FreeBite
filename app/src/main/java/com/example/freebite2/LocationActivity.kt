@@ -53,7 +53,7 @@ class LocationActivity : AppCompatActivity() {
                 Toast.makeText(this@LocationActivity, "Location saved successfully", Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this, AfterSignUpHelloActivity::class.java))
             }
-            .addOnFailureListener { e ->
+            .addOnFailureListener { _ ->
                 Toast.makeText(this@LocationActivity, "Failed to save location", Toast.LENGTH_SHORT).show()
             }
     }
