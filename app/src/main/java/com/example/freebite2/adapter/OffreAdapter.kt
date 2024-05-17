@@ -9,7 +9,7 @@ import com.example.freebite2.model.OffreModel
 
 class OffreAdapter(private val offreList: List<OffreModel>) : RecyclerView.Adapter<OffreAdapter.OffreViewHolder>() {
 
-    class OffreViewHolder(val binding: RecyclerItemBinding) : RecyclerView.ViewHolder(binding.root)
+    class OffreViewHolder(val binding : RecyclerItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OffreViewHolder {
         val inflater = LayoutInflater.from(parent.context)

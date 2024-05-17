@@ -1,0 +1,47 @@
+<!-- activity_add_offre.xml -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="offre"
+            type="com.example.freebite2.model.OffreModel" />
+
+    </data>
+
+    <!-- Your layout content here -->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/et_offre_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Offer Name" />
+
+    <EditText
+        android:id="@+id/et_offre_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Offer Description" />
+
+
+
+    <EditText
+        android:id="@+id/et_offre_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Offer Duration" />
+
+    <Button
+        android:id="@+id/btn_add_offre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Offer" />
+</LinearLayout>
+
+
+</layout>

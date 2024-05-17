@@ -1,69 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+        <!-- Data binding elements, if any -->
     </data>
+
     <FrameLayout
         android:id="@+id/fhome"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/teal_200"
         tools:context=".ui.fragment.AccueilFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ScrollView
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/back">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:ignore="MissingConstraints">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="60dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/btn"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:background="@color/btn"
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal">
+                    <ImageView
+                        android:id="@+id/imageView3"
+                        android:layout_width="53dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:src="@mipmap/logo" />
 
-                        <ImageView
-                            android:id="@+id/imageView3"
-                            android:layout_width="53dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:src="@mipmap/logo" />
-
-                        <TextView
-                            android:id="@+id/textView2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="20dp"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:text="@string/app_name" />
-
-                        <ImageView
-                            android:id="@+id/btn_search"
-                            android:layout_width="40dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="30dp"
-                            android:backgroundTint="@color/black"
-                            android:clickable="true"
-                            android:gravity="center_vertical"
-                            android:src="@drawable/baseline_search_24" />
-                    </LinearLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        tools:listitem="@layout/recycler_item" />
+                        android:layout_marginStart="20dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="@string/app_name" />
+
+                    <ImageView
+                        android:id="@+id/btn_search"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="30dp"
+                        android:backgroundTint="@color/black"
+                        android:clickable="true"
+                        android:gravity="center_vertical"
+                        android:src="@drawable/baseline_search_24" />
                 </LinearLayout>
-            </ScrollView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/recycler_item" />
+            </LinearLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/add_offre_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:src="@drawable/ic_star"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.87"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout"
+                app:layout_constraintVertical_bias="0.92" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 </layout>

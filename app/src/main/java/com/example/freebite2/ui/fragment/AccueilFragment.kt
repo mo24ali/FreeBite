@@ -1,5 +1,6 @@
 package com.example.freebite2.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.freebite2.adapter.OffreAdapter
 import com.example.freebite2.databinding.FragmentAccueilBinding
 import com.example.freebite2.model.OffreModel
+import com.example.freebite2.ui.activity.AddOffreActivity
 import com.google.firebase.database.*
 
 class AccueilFragment : Fragment() {
@@ -34,6 +36,11 @@ class AccueilFragment : Fragment() {
         offreAdapter = OffreAdapter(offreList)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = offreAdapter
+
+        binding.addOffreButton.setOnClickListener {
+            val addIntent = Intent(activity, AddOffreActivity::class.java)
+            startActivity(addIntent)
+        }
 
         database = FirebaseDatabase.getInstance().getReference("offres")
 
