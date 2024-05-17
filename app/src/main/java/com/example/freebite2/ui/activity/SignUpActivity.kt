@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.database.FirebaseDatabase
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
@@ -38,7 +40,7 @@ class SignUpActivity : AppCompatActivity() {
             val signUpUsername = binding.pnom.text.toString()
             val signUpUsername2 = binding.nom.text.toString()
             val signUpMail = binding.mail.text.toString()
-            val signUpMdp = binding.pass.toString()
+            val signUpMdp = binding.passTxtSgnUp.text.toString()
             if (signUpUsername.isNotEmpty() && signUpMail.isNotEmpty() && signUpMdp.isNotEmpty() && signUpUsername2.isNotEmpty()) {
                 signUpUser(signUpUsername2, signUpUsername, signUpMail, signUpMdp)
 
@@ -48,8 +50,52 @@ class SignUpActivity : AppCompatActivity() {
 
         }
     }
+    private fun checkAllFields(): Boolean {
+        val email = binding.mail.text.toString()
+        val password = binding.passTxtSgnUp.text.toString()
+        val confirmPassword = binding.confirmPassTxtSgnUp.text.toString()
+
+        if (email == "") {
+            binding.mail.error = "This is a required field"
+            return false
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.mail.error = "Check email format"
+            return false
+        }
+
+        if (password == "") {
+            binding.passTxtSgnUp.error = "This is a required field"
+            binding.passTxtSgnUpLayout.errorIconDrawable = null
+            return false
+        }
+
+        if (password.length <= 7) {
+            binding.passTxtSgnUp.error = "Password should be at least 8 characters long"
+            binding.passTxtSgnUpLayout.errorIconDrawable = null
+            return false
+        }
+
+        if (confirmPassword == "") {
+            binding.confirmPassTxtSgnUp.error = "This is a required field"
+            binding.confirmPassTxtSgnUpLayout.errorIconDrawable = null
+            return false
+        }
+
+        if (password != confirmPassword) {
+            binding.passTxtSgnUp.error = "Passwords do not match"
+            binding.confirmPassTxtSgnUpLayout.errorIconDrawable = null
+            return false
+        }
+
+        return true
+    }
 
     private fun signUpUser(prenom: String, nom: String, email: String, mdp: String) {
+        if(!checkAllFields()) {
+            return
+        }
         val auth = FirebaseAuth.getInstance()
         auth.createUserWithEmailAndPassword(email, mdp)
             .addOnCompleteListener(this) { task ->
@@ -84,7 +130,7 @@ class SignUpActivity : AppCompatActivity() {
             return
         }
 
-        fusedLocationClient.lastLocation
+        /*fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     val profileUpdates = UserProfileChangeRequest.Builder()
@@ -98,6 +144,29 @@ class SignUpActivity : AppCompatActivity() {
                             Toast.makeText(this@SignUpActivity, "Mal localisé", Toast.LENGTH_SHORT).show()
                         }
                     }
+                }
+            }*/
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    val database = FirebaseDatabase.getInstance().getReference("Users")
+                    val prenom = binding.pnom.text.toString()
+                    val nom = binding.nom.text.toString()
+                    val userData = mapOf(
+                        "prenom" to prenom,
+                        "nom" to nom,
+                        "location" to mapOf(
+                            "latitude" to location.latitude,
+                            "longitude" to location.longitude
+                        )
+                    )
+                    database.child(user.uid).setValue(userData)
+                        .addOnSuccessListener {
+                            Toast.makeText(this@SignUpActivity, "Données bien enregistées", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(this@SignUpActivity, "Echec d'enregistrement des données", Toast.LENGTH_SHORT).show()
+                        }
                 }
             }
     }

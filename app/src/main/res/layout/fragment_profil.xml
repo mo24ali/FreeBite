@@ -23,7 +23,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.utils.widget.ImageFilterView
-        android:id="@+id/profile_pic"
+        android:id="@+id/profilePic"
         android:layout_width="match_parent"
         android:layout_height="@dimen/zero_dimens"
         android:contentDescription="@null"
@@ -110,7 +110,7 @@
         app:layout_constraintStart_toStartOf="@id/profileSmya" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_action_button"
+        android:id="@+id/floating_add_pic_action_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_16"
