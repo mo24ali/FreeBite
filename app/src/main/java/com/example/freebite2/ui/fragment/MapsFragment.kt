@@ -124,7 +124,7 @@ class MapsFragment : Fragment() {
                 if (userLocation != null) {
                     val distance = calculateDistance(currentUserLocation, LatLng(userLocation.latitude, userLocation.longitude))
                     if (distance <= radius) {
-                        val offers = document.get("offers") as Map<String, String>
+                        val offers = document.get("offers") as Map<String,String>
                         for ((offerID, details) in offers) {
                             nearbyOffers.add(Offers(offerID, details, distance, userLocation.latitude, userLocation.longitude))
                         }
