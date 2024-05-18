@@ -161,7 +161,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
             binding.passwordLgnTextInputLayout.errorIconDrawable = null
             return false
         }
-        if(binding.passwordTxtLgnIn.length() <= 8) {
+        if(binding.passwordTxtLgnIn.length() <= 7) {
             binding.passwordLgnTextInputLayout.error = "Le mot de passe doit contenir au moins 8 caractères"
             binding.passwordLgnTextInputLayout.errorIconDrawable = null
             return false
