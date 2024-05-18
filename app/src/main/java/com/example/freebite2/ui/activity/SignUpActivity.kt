@@ -37,8 +37,8 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         binding.sgnBtn.setOnClickListener {
-            val signUpUsername = binding.pnom.text.toString()
-            val signUpUsername2 = binding.nom.text.toString()
+            val signUpUsername = binding.pnom.text.trim().toString()
+            val signUpUsername2 = binding.nom.text.trim().toString()
             val signUpMail = binding.mail.text.toString()
             val signUpMdp = binding.passTxtSgnUp.text.toString()
             if (signUpUsername.isNotEmpty() && signUpMail.isNotEmpty() && signUpMdp.isNotEmpty() && signUpUsername2.isNotEmpty()) {
@@ -66,25 +66,25 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         if (password == "") {
-            binding.passTxtSgnUp.error = "This is a required field"
+            binding.passTxtSgnUpLayout.error = "Ce champs est obligatoires"
             binding.passTxtSgnUpLayout.errorIconDrawable = null
             return false
         }
 
         if (password.length <= 7) {
-            binding.passTxtSgnUp.error = "Password should be at least 8 characters long"
+            binding.passTxtSgnUpLayout.error = "Le mot de passe doit contenir au moins 8 caractères"
             binding.passTxtSgnUpLayout.errorIconDrawable = null
             return false
         }
 
         if (confirmPassword == "") {
-            binding.confirmPassTxtSgnUp.error = "This is a required field"
+            binding.confirmPassTxtSgnUpLayout.error = "Ce champs est obligatoires"
             binding.confirmPassTxtSgnUpLayout.errorIconDrawable = null
             return false
         }
 
         if (password != confirmPassword) {
-            binding.passTxtSgnUp.error = "Passwords do not match"
+            binding.confirmPassTxtSgnUpLayout.error = "Les mots de passe ne correspondent pas"
             binding.confirmPassTxtSgnUpLayout.errorIconDrawable = null
             return false
         }
@@ -169,6 +169,30 @@ class SignUpActivity : AppCompatActivity() {
                         }
                 }
             }
+
+        /*fusedLocationClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    val database = FirebaseDatabase.getInstance().getReference("Users")
+                    val prenom = binding.pnom.text.toString()
+                    val nom = binding.nom.text.toString()
+                    val userData = mapOf(
+                        "prenom" to prenom,
+                        "nom" to nom,
+                        "location" to mapOf(
+                            "latitude" to location.latitude,
+                            "longitude" to location.longitude
+                        )
+                    )
+                    database.child(user.uid).setValue(userData)
+                        .addOnSuccessListener {
+                            Toast.makeText(this@SignUpActivity, "Données bien enregistées", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(this@SignUpActivity, "Echec d'enregistrement des données", Toast.LENGTH_SHORT).show()
+                        }
+                }
+            }*/
     }
 
     companion object {

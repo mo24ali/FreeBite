@@ -56,7 +56,7 @@ class MapActivity : AppCompatActivity() {
             if (currentLat != 0.0 && currentLong != 0.0) {
                 saveLocationToFirebase()
             } else {
-                Toast.makeText(this, "Location is not captured yet", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "échec de capturer ta position", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -87,7 +87,7 @@ class MapActivity : AppCompatActivity() {
                             map.addMarker(MarkerOptions().position(currentLocation).title("Current Location"))
                         }
                     } else {
-                        Toast.makeText(this@MapActivity, "Failed to get current location", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MapActivity, "Echec d'obtenir ta position actuelle", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -101,16 +101,16 @@ class MapActivity : AppCompatActivity() {
             val locationData = mapOf("latitude" to currentLat, "longitude" to currentLong)
             database.child(user.uid).child("location").setValue(locationData)
                 .addOnSuccessListener {
-                    Toast.makeText(this, "Location saved successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Localisation capturée en succés", Toast.LENGTH_SHORT).show()
                     // Start new Activity
                     val intent = Intent(this, MainHomeActivity::class.java)
                     startActivity(intent)
                 }
                 .addOnFailureListener {
-                    Toast.makeText(this, "Failed to save location", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "échec d'enregistrer ta position", Toast.LENGTH_SHORT).show()
                 }
         } else {
-            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Utilisateur non connecté", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -121,7 +121,7 @@ class MapActivity : AppCompatActivity() {
                 // When permission granted, get current location
                 getCurrentLocation()
             } else {
-                Toast.makeText(this, "Permission denied. Unable to get location.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Permission refusé.", Toast.LENGTH_SHORT).show()
             }
         }
     }
