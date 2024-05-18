@@ -150,8 +150,8 @@ class SignUpActivity : AppCompatActivity() {
             .addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     val database = FirebaseDatabase.getInstance().getReference("Users")
-                    val prenom = binding.pnom.text.toString()
-                    val nom = binding.nom.text.toString()
+                    val prenom = binding.pnom.text.trim().toString()
+                    val nom = binding.nom.text.trim().toString()
                     val userData = mapOf(
                         "prenom" to prenom,
                         "nom" to nom,
