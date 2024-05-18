@@ -7,11 +7,13 @@
             type="com.example.freebite2.model.OffreModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item_recyclerview"
         android:layout_width="match_parent"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/item_rc"
+        android:clickable="true"
         android:layout_height="100dp">
 
         <LinearLayout
