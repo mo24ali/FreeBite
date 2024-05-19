@@ -6,5 +6,9 @@ data class User(
     val uid: String,
     val firstName: String,
     val lastName: String,
-    val location: Location,
+    val email: String,
+    val profilePictureUrl: String? = null,
+    val rating: Float = 0f,
+    val ratingCount: Int = 0,
+    val location: Location
 )

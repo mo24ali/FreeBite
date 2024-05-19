@@ -2,7 +2,7 @@
 <layoutAnimation xmlns:android="http://schemas.android.com/apk/res/android"
     android:delay="15%"
     android:animationOrder="normal"
-    android:animation="@anim/rotate_in">
+    android:animation="@anim/scale_up">
 
 
 
