@@ -117,6 +117,7 @@
         android:contentDescription="@string/adding_profile_photo"
         android:src="@drawable/ic_add_a_photo"
         app:backgroundTint="@color/bottom"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="@id/app_bar_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_bar_container"
@@ -159,8 +160,11 @@
                         android:text="@string/user_email" />
 
                     <TextView
+                        android:id="@+id/action_ProfilFragment_to_ChangeEmailFragment"
                         style="@style/generalTextHintStyle"
-                        android:text="@string/phone_number_desc" />
+                        android:text="@string/phone_number_desc"
+                        android:clickable="true"
+                        />
 
                     <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
 
@@ -300,7 +304,7 @@
                 <TextView
                     style="@style/generalTextTitleStyle"
                     android:layout_marginBottom="@dimen/margin_8"
-                    android:text="@string/help" />
+                    android:text=" " />
                 <!--
                                 <TextView
                                     style="@style/generalTextSubtitleStyle"
@@ -312,20 +316,18 @@
                                 <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
                 -->
                 <TextView
+                    android:id="@+id/LogOut"
                     style="@style/generalTextSubtitleStyle"
                     android:drawablePadding="@dimen/margin_16"
-                    android:text="@string/freebite_faq"
-                    app:drawableStartCompat="@drawable/ic_question_mark"
-                    app:drawableTint="@color/md_theme_light_outline" />
+                    android:text="Déconnexion"
+                    app:drawableStartCompat="@drawable/baseline_logout_24"
+                    app:drawableTint="@color/md_theme_light_outline"
+                    android:clickable="true"
+                    />
 
                 <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
 
-                <TextView
-                    style="@style/generalTextSubtitleStyle"
-                    android:drawablePadding="@dimen/margin_16"
-                    android:text="@string/privacy_policy"
-                    app:drawableStartCompat="@drawable/ic_police"
-                    app:drawableTint="@color/md_theme_light_outline" />
+
 
             </LinearLayout>
 

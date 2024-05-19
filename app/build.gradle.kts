@@ -20,7 +20,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -78,6 +77,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
+    //implementation(libs.firebase.storage)
     implementation(libs.play.services.location)
     implementation(libs.firebase.functions)
     implementation(libs.firebase.firestore)
@@ -96,8 +96,22 @@ dependencies {
 
     implementation("com.google.firebase:firebase-analytics")
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    implementation(libs.firebase.storage.ktx)
+    implementation(libs.androidx.navigation.fragment.ktx)
+   implementation("com.google.android.datatransport:transport-api:3.0.1")
+    implementation("com.google.firebase:firebase-storage-ktx:21.0.0")
 
+    implementation("androidx.core:core:1.6.0")
 
+    implementation("com.google.firebase:firebase-auth:21.0.1")
+    implementation ("com.google.firebase:firebase-database:20.0.3")
+    implementation ("com.google.firebase:firebase-storage:20.0.1")
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+
+    //implementation("com.github.dhaval2404:imagepicker:2.1")
+    implementation("androidx.activity:activity-ktx:1.2.3")
+    implementation("androidx.fragment:fragment-ktx:1.3.3")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
