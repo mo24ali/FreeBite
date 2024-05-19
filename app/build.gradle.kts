@@ -98,7 +98,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
     implementation(libs.firebase.storage.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
-   implementation("com.google.android.datatransport:transport-api:3.0.1")
+  // implementation("com.google.android.datatransport:transport-api:3.0.1")
     implementation("com.google.firebase:firebase-storage-ktx:21.0.0")
 
     implementation("androidx.core:core:1.6.0")
