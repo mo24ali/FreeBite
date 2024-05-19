@@ -1,5 +1,6 @@
 <paths>
+    <files-path name="my_files" path="files/" />
     <external-files-path
         name="my_images"
-        path="Android/data/${applicationId}/files/Pictures" />
+        path="Android/data/${applicationId}/files/Pictures/" />
 </paths>
