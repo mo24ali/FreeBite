@@ -1,21 +1,31 @@
+// src/main/java/com/example/freebite2/ui/activity/SplashActivity.kt
 package com.example.freebite2.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.freebite2.R
+import com.example.freebite2.util.SharedPreferencesUtil
 
 class SplashActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_splash)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (SharedPreferencesUtil.isUserLoggedIn(this)) {
+                // User is logged in, navigate to MainHomeActivity
+                val intent = Intent(this, MainHomeActivity::class.java)
+                startActivity(intent)
+            } else {
+                // User is not logged in, navigate to SignupActivity
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
+            finish()
+        }, 3000) // 3 seconds delay
     }
 }

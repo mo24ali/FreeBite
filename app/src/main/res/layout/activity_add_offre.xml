@@ -32,9 +32,7 @@
                 android:id="@+id/uploadImgBtn"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/baseline_add_a_photo_24"
-                android:clickable="true"
-                />
+                android:src="@drawable/baseline_add_a_photo_24"/>
 
             <View
                 android:layout_width="match_parent"
@@ -92,8 +90,8 @@
 
         <TextView
             android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:text="Valable jusqu'à" />
+            android:layout_width="match_parent"
+            android:text="Valable jusqu'à" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -112,10 +110,8 @@
             android:layout_width="match_parent"
             android:layout_height="10dp"/>
 
-        <!-- Ajout de la MapView -->
-        <fragment
+        <com.google.android.gms.maps.MapView
             android:id="@+id/offerPosition"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="200dp"/>
 

@@ -12,6 +12,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 
 import com.example.freebite2.databinding.ActivityLogInBinding
+import com.example.freebite2.util.SharedPreferencesUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 
@@ -70,6 +71,7 @@ class LogInActivity : AppCompatActivity() {
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(baseContext, "Connexion réussie", Toast.LENGTH_SHORT).show()
+                            SharedPreferencesUtil.setUserLoggedIn(this, true)
                             startActivity(Intent(this, MainHomeActivity::class.java))
                             //finish to destroy the activity
                             finish()

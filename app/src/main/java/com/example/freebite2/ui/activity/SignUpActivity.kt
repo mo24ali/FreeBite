@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.FirebaseDatabase
+import com.example.freebite2.util.SharedPreferencesUtil
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
@@ -104,6 +105,7 @@ class SignUpActivity : AppCompatActivity() {
                     Toast.makeText(this@SignUpActivity, "Inscription réussie !", Toast.LENGTH_SHORT).show()
                     updateUserProfile(user!!, prenom, nom)
                     updateLocation(user)
+                    SharedPreferencesUtil.setUserLoggedIn(this, true)
                     startActivity(Intent(this, AfterSignUpHelloActivity::class.java))
                 } else {
                     if (task.exception is FirebaseAuthUserCollisionException) {

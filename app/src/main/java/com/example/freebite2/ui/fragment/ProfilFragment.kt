@@ -1,6 +1,7 @@
 package com.example.freebite2.ui.fragment
 
 import android.Manifest
+import android.content.Context
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Intent
@@ -19,9 +20,11 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.freebite2.databinding.FragmentProfilBinding
 import com.example.freebite2.ui.activity.MainActivity
+import com.example.freebite2.util.SharedPreferencesUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+
 
 @Suppress("DEPRECATION")
 class ProfilFragment : Fragment() {
@@ -78,6 +81,7 @@ class ProfilFragment : Fragment() {
         }
         binding.LogOut.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
+            SharedPreferencesUtil.setUserLoggedIn(requireContext(), false)
             val intent = Intent(activity, MainActivity::class.java)
             startActivity(intent)
             activity?.finish()
