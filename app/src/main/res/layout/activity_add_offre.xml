@@ -1,91 +1,129 @@
-<!-- activity_add_offre.xml -->
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <data>
-
-        <variable
-            name="offre"
-            type="com.example.freebite2.model.OffreModel" />
-
-    </data>
-
-    <!-- Your layout content here -->
-<LinearLayout
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    tools:context=".ui.activity.AddOffreActivity">
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
-
-
-    <ImageView
-        android:id="@+id/upload_img"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:src="@drawable/hoho" />
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_gravity="center"
-        android:layout_height="80dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/placeholder" />
-
-    <Button
-        android:id="@+id/btnSelectImage"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content"
-        android:text="Select Image" />
-    <Button
-        android:id="@+id/btnTakePhoto"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content"
-        android:text="Take Photo" />
-
-    <EditText
-        android:id="@+id/et_offre_name"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Offer Name" />
+        android:orientation="vertical"
+        android:layout_marginTop="5dp"
+        android:padding="10dp">
 
-    <EditText
-        android:id="@+id/et_offre_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Offer Description" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/ajoutez_des_images_du_repas" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/et_offre_duration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Offer Duration" />
+            <ImageView
+                android:id="@+id/uploadImgBtn"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/baseline_add_a_photo_24"/>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"/>
+        </RelativeLayout>
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        <RelativeLayout
+            android:id="@+id/offerPicLayout"
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:visibility="gone"
+            android:layout_height="wrap_content">
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chip"
-        android:layout_width="112dp"
-        android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/offerPic"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"/>
+        </RelativeLayout>
 
-    <Button
-        android:id="@+id/btn_add_offre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add Offer" />
-</LinearLayout>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Titre" />
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-</layout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/titreRepas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Entrez le titre de votre repas"
+                android:background="@drawable/edut_text"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Description" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/descritptionRepas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Description de votre repas"
+                android:background="@drawable/edut_text"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Valable jusqu'à" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/horaireRepas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edut_text"
+                android:hint="Aujourd'hui de 12h à 14h" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/offerPosition"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"/>
+
+        <Button
+            android:id="@+id/addOfferBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ajoute un repas"
+            android:background="@drawable/btn"/>
+    </LinearLayout>
+</ScrollView>

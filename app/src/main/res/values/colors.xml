@@ -82,7 +82,7 @@
     <color name="md_theme_dark_surfaceTint">#A7C8FF</color>
     <color name="md_theme_dark_outlineVariant">#43474E</color>
     <color name="md_theme_dark_scrim">#000000</color>
-    <color name="telegram_premium_star_color">#9C27B0</color>
-
+    <color name="telegram_premium_star_color">#F79C27B0</color>
+    <color name ="transparent">#00000000</color>
 
 </resources>
