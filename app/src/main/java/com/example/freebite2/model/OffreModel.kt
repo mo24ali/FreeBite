@@ -8,9 +8,9 @@ data class OffreModel(
     var duration: String? = null,
     var latitude: Double? = null,
     var longitude: Double? = null,
-    var pictureUrl: String? = "app/src/main/res/drawable/waving_hand.png",
+    var pictureUrl: String? = null,
     var provider: User? = null,
 
 ) {
-    constructor() : this(null, null, null, null, null, null,null, "app/src/main/res/drawable/waving_hand.png")
+    constructor() : this(null, null, null, null, null, null,null, null)
 }
