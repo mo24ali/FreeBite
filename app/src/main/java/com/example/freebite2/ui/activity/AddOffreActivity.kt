@@ -34,6 +34,7 @@ class AddOffreActivity : AppCompatActivity() {
 
         binding.btnAddOffre.setOnClickListener {
             val offreName = binding.etOffreName.text.toString().trim()
+           // val offraPicture= binding.uploadImg.
             val offreDescription = binding.etOffreDescription.text.toString().trim()
             val offreDuration = binding.etOffreDuration.text.toString().trim()
 
@@ -44,7 +45,7 @@ class AddOffreActivity : AppCompatActivity() {
                     ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
                 } else {
-                    getLastLocation(userId, offreDescription)
+                    getLastLocation(userId, offreDescription,offreDuration,offreName)
                 }
             } else {
                 showToast("Please fill in all fields")
@@ -56,16 +57,18 @@ class AddOffreActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                val offreName = binding.etOffreName.text.toString().trim()
                 val offreDescription = binding.etOffreDescription.text.toString().trim()
                 val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-                getLastLocation(userId, offreDescription)
+                val offreDuration = binding.etOffreDuration.text.toString().trim()
+                getLastLocation(userId, offreDescription,offreDuration,offreName)
             } else {
                 Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun getLastLocation(userId: String, offreDescription: String) {
+    private fun getLastLocation(userId: String, offreDescription: String, offreDuration: String, offreName: String) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
             ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, "Location permission is not granted", Toast.LENGTH_SHORT).show()
@@ -77,7 +80,7 @@ class AddOffreActivity : AppCompatActivity() {
                 val latitude = location.latitude
                 val longitude = location.longitude
                 val offreId = database.push().key ?: ""
-                val offre = OffreModel(userId, offreId, offreDescription, null, latitude, longitude)
+                val offre = OffreModel( userId,  offreId, offreName ,offreDescription, offreDuration, latitude, longitude,"app/src/main/res/drawable/waving_hand.png")
 
                 database.child(offreId).setValue(offre).addOnCompleteListener { task ->
                     if (task.isSuccessful) {

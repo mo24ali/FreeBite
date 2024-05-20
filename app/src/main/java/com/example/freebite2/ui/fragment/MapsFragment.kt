@@ -72,14 +72,14 @@ class MapsFragment : Fragment() {
                         val currentLocation = LatLng(location.latitude, location.longitude)
                         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
                         googleMap.addMarker(MarkerOptions().position(currentLocation).title("Current Location"))
-                        fetchNearbyOffers(currentLocation)
+                     //   fetchNearbyOffers(currentLocation)
                     }
                 }
             }
         }, Looper.getMainLooper())
     }
 
-    private fun fetchNearbyOffers(currentUserLocation: LatLng) {
+ /*  private fun fetchNearbyOffers(currentUserLocation: LatLng) {
         val db = FirebaseFirestore.getInstance()
         db.collection("users").get().addOnSuccessListener { result ->
             val nearbyOffers = mutableListOf<OffreModel>()
@@ -91,7 +91,7 @@ class MapsFragment : Fragment() {
                     if (distance <= radius) {
                         val offers = document.get("offers") as? Map<String, String> ?: continue
                         for ((offerID, details) in offers) {
-                            nearbyOffers.add(OffreModel(userID, offerID, details, distance, userLocation.latitude, userLocation.longitude))
+                            nearbyOffers.add(OffreModel(userID, offerID, nameoffre=null ,details, duration = null, userLocation.latitude, userLocation.longitude))
                         }
                     }
                 }
@@ -99,7 +99,7 @@ class MapsFragment : Fragment() {
             displayNearbyOffers(nearbyOffers)
         }
     }
-
+*/
     private fun calculateDistance(loc1: LatLng, loc2: LatLng): Double {
         val earthRadius = 6371.0 // Radius of the earth in km
         val dLat = Math.toRadians(loc2.latitude - loc1.latitude)

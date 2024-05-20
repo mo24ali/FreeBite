@@ -1,5 +1,6 @@
 <!-- activity_add_offre.xml -->
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -15,6 +16,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
+
+    <ImageView
+        android:id="@+id/upload_img"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/hoho" />
 
     <EditText
         android:id="@+id/et_offre_name"
@@ -35,6 +48,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Offer Duration" />
+
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip"
+        android:layout_width="112dp"
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/btn_add_offre"

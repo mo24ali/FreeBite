@@ -6,6 +6,7 @@ plugins {
     id("com.google.gms.google-services")
     alias(libs.plugins.googleAndroidLibrariesMapsplatformSecretsGradlePlugin)
     id("com.github.ben-manes.versions")
+    id("kotlin-kapt")
 
 }
 
@@ -100,14 +101,17 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     // implementation("com.google.android.datatransport:transport-api:3.0.1")
     implementation("com.google.firebase:firebase-storage-ktx:21.0.0")
+    implementation(libs.picasso)
 
     implementation("androidx.core:core:1.6.0")
+   // implementation(libs.glide)
+    //kapt(libs.glide.compiler)
 
     implementation("com.google.firebase:firebase-auth:21.0.1")
     implementation ("com.google.firebase:firebase-database:20.0.3")
     implementation ("com.google.firebase:firebase-storage:20.0.1")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
-    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+    kapt ("com.github.bumptech.glide:compiler:4.12.0")
 
     //implementation("com.github.dhaval2404:imagepicker:2.1")
     implementation("androidx.activity:activity-ktx:1.2.3")

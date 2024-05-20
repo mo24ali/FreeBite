@@ -9,12 +9,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/item_recyclerview"
         android:layout_width="match_parent"
-        android:layout_marginEnd="10dp"
+        android:layout_height="100dp"
         android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/item_rc"
-        android:clickable="true"
-        android:layout_height="100dp">
+        android:clickable="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,14 +22,14 @@
             android:orientation="horizontal">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/offer_photo"
                 android:layout_width="150dp"
                 android:layout_height="95dp"
-                android:layout_marginStart="3dp"
                 android:layout_gravity="center"
+                android:layout_marginStart="3dp"
                 android:scaleType="centerCrop"
-                app:shapeAppearanceOverlay="@style/half_round"
-                tools:srcCompat="@drawable/profileiamge" />
+                app:imageUrl="@{offre.pictureUrl}"
+                app:shapeAppearanceOverlay="@style/half_round" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -38,14 +38,14 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/item_titre"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="15dp"
+                    android:id="@+id/offre_name"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="10dp"
+                    android:text="@{offre.nameoffre}"
                     android:textSize="@dimen/font_18"
-                    android:textColor="@color/black"
-                    android:layout_height="28dp"
-                    android:text="@{offre.offerID}" />
+                    android:textColor="@color/black" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -60,27 +60,24 @@
                         android:scaleType="centerCrop"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        tools:srcCompat="@drawable/profileiamge" />
-
+                        app:imageUrl="@{offre.provider.profilePictureUrl}"/>
                     <TextView
                         android:id="@+id/provider_name"
                         android:layout_width="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"
                         android:layout_height="wrap_content"
-                        android:text="@{offre.userID}" />
+                        android:text="@{offre.provider.firstName}" />
                 </LinearLayout>
-
                 <TextView
                     android:id="@+id/item_distance"
-                    android:layout_marginStart="10dp"
-                    android:textColor="@color/low_dark"
-                    android:textSize="@dimen/font_12"
                     android:layout_width="match_parent"
                     android:layout_height="27dp"
-                    android:text="@{offre.details}" />
+                    android:layout_marginStart="10dp"
+                    android:text="@{offre.latitude.toString()}"
+                    android:textSize="@dimen/font_12"
+                    android:textColor="@color/low_dark" />
             </LinearLayout>
-
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
