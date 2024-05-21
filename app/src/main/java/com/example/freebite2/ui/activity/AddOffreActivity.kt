@@ -31,6 +31,11 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.util.UUID
 
 class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -103,9 +108,13 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         binding.uploadImgBtn.setOnClickListener {
+            binding.uploadImgLayout.visibility = android.view.View.GONE
+            binding.offerPicLayout.visibility = android.view.View.VISIBLE
             imagePickDialog()
         }
-
+        binding.offerPic.setOnClickListener{
+            imagePickDialog()
+        }
         binding.addOfferBtn.setOnClickListener {
             saveOfferToFirebase()
         }
@@ -149,6 +158,10 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         }
+        builder.setOnCancelListener {
+            // Allow reopening the dialog if it was dismissed
+            binding.uploadImgBtn.isEnabled = true
+        }
         builder.show()
     }
 
@@ -163,24 +176,29 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun pickImageGallery() {
         galleryActivityResultLauncher.launch("image/*")
     }
+
     private fun uploadImageToFirebase(uri: Uri) {
         val userId = auth.currentUser?.uid ?: return
         val storageReference = FirebaseStorage.getInstance().getReference("offer_images/${UUID.randomUUID()}.jpg")
 
         dialogueProgress.show()
 
-        storageReference.putFile(uri)
-            .addOnSuccessListener { taskSnapshot ->
-                taskSnapshot.storage.downloadUrl.addOnSuccessListener { downloadUri ->
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                storageReference.putFile(uri).await()
+                val downloadUri = storageReference.downloadUrl.await()
+                withContext(Dispatchers.Main) {
                     // Load the new image into the ImageView using Glide
-                    Glide.with(this).load(downloadUri).into(binding.offerPic)
+                    Glide.with(this@AddOffreActivity).load(downloadUri).into(binding.offerPic)
+                    dialogueProgress.dismiss()
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@AddOffreActivity, "Failed to upload image: ${e.message}", Toast.LENGTH_SHORT).show()
                     dialogueProgress.dismiss()
                 }
             }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Failed to upload image: ${e.message}", Toast.LENGTH_SHORT).show()
-                dialogueProgress.dismiss()
-            }
+        }
     }
 
     private fun saveOfferToFirebase() {
@@ -234,6 +252,17 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSIONS_REQUEST_CODE) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                getCurrentLocation()
+            } else {
+                Toast.makeText(this, "Permissions required", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
         getCurrentLocation()
@@ -251,6 +280,12 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
         } else {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_CODE)
+            // Retry getting the location after permissions are granted
+            ActivityCompat.OnRequestPermissionsResultCallback { requestCode, permissions, grantResults ->
+                if (requestCode == PERMISSIONS_REQUEST_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    getCurrentLocation()
+                }
+            }
         }
     }
 }
