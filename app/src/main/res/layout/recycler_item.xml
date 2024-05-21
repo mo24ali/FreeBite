@@ -1,83 +1,48 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    >
     <data>
         <variable
             name="offre"
             type="com.example.freebite2.model.OffreModel" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/item_recyclerview"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/item_rc"
-        android:clickable="true">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/offerImage"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            app:imageUrl="@{offre.pictureUrl}"
+            app:shapeAppearanceOverlay="@style/half_round"
+            />
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/offer_photo"
-                android:layout_width="150dp"
-                android:layout_height="95dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="3dp"
-                android:scaleType="centerCrop"
-                app:imageUrl="@{offre.pictureUrl}"
-                app:shapeAppearanceOverlay="@style/half_round" />
+        <TextView
+            android:id="@+id/offerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{offre.nameoffre}"
+            android:textStyle="bold"
+            android:paddingTop="8dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
+        <TextView
+            android:id="@+id/offerDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Offer Details"
+            android:paddingTop="4dp" />
 
-                <TextView
-                    android:id="@+id/offre_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
-                    android:text="@{offre.nameoffre}"
-                    android:textSize="@dimen/font_18"
-                    android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/offerDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Duration"
+            android:paddingTop="4dp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:orientation="horizontal">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/provider_icon"
-                        app:shapeAppearanceOverlay="@style/roundedImageView"
-                        android:layout_centerInParent="true"
-                        android:scaleType="centerCrop"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        app:imageUrl="@{offre.provider.profilePictureUrl}"/>
-                    <TextView
-                        android:id="@+id/provider_name"
-                        android:layout_width="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="10dp"
-                        android:layout_height="wrap_content"
-                        android:text="@{offre.provider.firstName}" />
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/item_distance"
-                    android:layout_width="match_parent"
-                    android:layout_height="27dp"
-                    android:layout_marginStart="10dp"
-                    android:text="@{offre.latitude.toString()}"
-                    android:textSize="@dimen/font_12"
-                    android:textColor="@color/low_dark" />
-            </LinearLayout>
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>
