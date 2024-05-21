@@ -124,6 +124,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import com.example.freebite2.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -135,14 +136,15 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.firebase.database.*
-import com.example.freebite2.R
-import android.location.Location
-import com.example.freebite2.model.OffreModel
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import kotlin.math.*
-
-
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 
 class MapsFragment : Fragment(), OnMapReadyCallback {
@@ -232,7 +234,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                             val markerOptions = MarkerOptions()
                                 .position(userLocation)
                                 .title("Nearby User")
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker)) // Use a custom icon
+                                // Use a custom icon
 
                             googleMap.addMarker(markerOptions)
                         }
