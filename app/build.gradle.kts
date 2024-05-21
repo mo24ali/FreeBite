@@ -101,6 +101,8 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     // implementation("com.google.android.datatransport:transport-api:3.0.1")
     implementation("com.google.firebase:firebase-storage-ktx:21.0.0")
+    val lottieVersion = "6.4.0"
+    implementation ("com.airbnb.android:lottie:$lottieVersion")
     implementation(libs.picasso)
 
     implementation("androidx.core:core:1.6.0")
