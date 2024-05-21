@@ -1,48 +1,85 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginStart="12dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginEnd="12dp"
     >
     <data>
         <variable
             name="offre"
             type="com.example.freebite2.model.OffreModel" />
     </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:orientation="horizontal"
+        android:background="@color/btn"
+        >
 
         <ImageView
             android:id="@+id/offerImage"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_width="200dp"
+            android:layout_height="175dp"
             android:scaleType="centerCrop"
             app:imageUrl="@{offre.pictureUrl}"
-            app:shapeAppearanceOverlay="@style/half_round"
-            />
+            app:shapeAppearanceOverlay="@style/half_round" />
 
-        <TextView
-            android:id="@+id/offerName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{offre.nameoffre}"
-            android:textStyle="bold"
-            android:paddingTop="8dp" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/offerDetails"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Offer Details"
-            android:paddingTop="4dp" />
+            <TextView
+                android:id="@+id/offerName"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="40dp"
+                android:paddingTop="8dp"
+                android:text="@{offre.nameoffre}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_18"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/offerDuration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Duration"
-            android:paddingTop="4dp" />
+            <TextView
+                android:id="@+id/offerDuration"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="16dp"
+                android:paddingTop="4dp"
+                android:text="@{offre.duration}"
+                app:layout_constraintBottom_toTopOf="@+id/textView4"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="58dp"
+                android:layout_height="21dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="16dp"
+                android:text="offre.getdistance(offre.offerID)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+
+                android:id="@+id/imageView2"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="20dp"
+                android:clickable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_more_vert" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
+
 </layout>

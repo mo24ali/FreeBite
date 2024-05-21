@@ -36,6 +36,7 @@ data class OffreModel(
         parcel.writeDouble((longitude ?: 0.0))
         parcel.writeString(pictureUrl)
     }
+  //  public fun getdistance(oid:String) : String{ return "???km"}
 
     override fun describeContents(): Int {
         return 0
@@ -45,6 +46,7 @@ data class OffreModel(
         override fun createFromParcel(parcel: Parcel): OffreModel {
             return OffreModel(parcel)
         }
+
 
         override fun newArray(size: Int): Array<OffreModel?> {
             return arrayOfNulls(size)

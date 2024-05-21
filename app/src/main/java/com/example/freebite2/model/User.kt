@@ -7,7 +7,7 @@ data class User(
     val firstName: String,
     val lastName: String,
     val email: String,
-    val profilePictureUrl: String? = "app/src/main/res/drawable/profileiamge.png",
+    val profilePictureUrl: String,
     val rating: Float = 0f,
     val ratingCount: Int = 0,
     val location: Location

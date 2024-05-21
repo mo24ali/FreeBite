@@ -46,6 +46,7 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var dialogueProgress: ProgressDialog
 
     private var imageUri: Uri? = null
+    private var imageUploadOffre: Uri? = null
     private lateinit var auth: FirebaseAuth
 
     private val requestCameraPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -187,9 +188,10 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
             try {
                 storageReference.putFile(uri).await()
                 val downloadUri = storageReference.downloadUrl.await()
+                imageUploadOffre = downloadUri
                 withContext(Dispatchers.Main) {
                     // Load the new image into the ImageView using Glide
-                    Glide.with(this@AddOffreActivity).load(downloadUri).into(binding.offerPic)
+                    Glide.with(this@AddOffreActivity).load(imageUri).into(binding.offerPic)
                     dialogueProgress.dismiss()
                 }
             } catch (e: Exception) {
@@ -212,7 +214,7 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
         val description = binding.descritptionRepas.text.toString().trim()
         val duration = binding.horaireRepas.text.toString().trim()
 
-        if (title.isEmpty() || description.isEmpty() || duration.isEmpty() || imageUri == null) {
+        if (title.isEmpty() || description.isEmpty() || duration.isEmpty() || imageUploadOffre == null) {
             Toast.makeText(this, "Please fill in all fields and select an image", Toast.LENGTH_SHORT).show()
             return
         }
@@ -228,7 +230,7 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
                             duration = duration,
                             latitude = location.latitude,
                             longitude = location.longitude,
-                            pictureUrl = imageUri.toString()
+                            pictureUrl = imageUploadOffre.toString()
                         )
 
                         val offreRef = FirebaseDatabase.getInstance().getReference("offres").push()
