@@ -79,7 +79,9 @@ class MapActivity : AppCompatActivity() {
                         currentLong = location.longitude
                         currentLat = location.latitude
                         supportMapFragment.getMapAsync { googleMap ->
+                            googleMap.clear() // clean the map
                             map = googleMap
+
                             // Zoom current location on map
                             val currentLocation = LatLng(currentLat, currentLong)
                             map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
