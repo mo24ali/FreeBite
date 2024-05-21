@@ -55,5 +55,6 @@
     <string name="footer_sentence">FreeBite copyright 2024</string>
     <string name="hello_blank_fragment">hello blank fragment\n</string>
     <string name="ajoutez_des_images_du_repas">Ajoutez des images du repas</string>
+    <string name="refresh">Refresh</string>
 
 </resources>
