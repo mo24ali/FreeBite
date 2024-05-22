@@ -12,74 +12,84 @@
             type="com.example.freebite2.model.OffreModel" />
     </data>
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
+        app:cardCornerRadius="8dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/btn"
-        >
-
-        <ImageView
-            android:id="@+id/offerImage"
-            android:layout_width="200dp"
-            android:layout_height="175dp"
-            android:scaleType="centerCrop"
-            app:imageUrl="@{offre.pictureUrl}"
-            app:shapeAppearanceOverlay="@style/half_round" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        app:cardUseCompatPadding="true">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/offerName"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="40dp"
-                android:paddingTop="8dp"
-                android:text="@{offre.nameoffre}"
-                android:textColor="@color/black"
-                android:textSize="@dimen/font_18"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/imageView2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/offerDuration"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="16dp"
-                android:paddingTop="4dp"
-                android:text="@{offre.duration}"
-                app:layout_constraintBottom_toTopOf="@+id/textView4"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="58dp"
-                android:layout_height="21dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="16dp"
-                android:text="offre.getdistance(offre.offerID)}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+            android:layout_height="wrap_content">
 
             <ImageView
+                android:id="@+id/imageIv"
+                style="@style/ImageViewFrameStyle"
+                android:layout_width="120dp"
+                android:layout_height="150dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/black"
+                android:scaleType="center"
+                android:src="@{offre.pictureUrl}" />
 
-                android:id="@+id/imageView2"
-                android:layout_width="40dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="20dp"
+            <TextView
+                android:id="@+id/titleTv"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@id/imageIv"
+                android:layout_toStartOf="@+id/favBtn"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{offre.nameoffre}"/>
+            <TextView
+                android:id="@+id/titleTvdesc"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@id/imageIv"
+                android:layout_below="@id/titleTv"
+                android:layout_toStartOf="@id/favBtn"
+                android:ellipsize="end"
+                android:lines="3"
+                android:text="@{offre.details}"/>
+
+            <ImageButton
+                android:id="@+id/favBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:src="@drawable/fav"
                 android:clickable="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_more_vert" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_alignParentEnd="true"
+                android:background="@android:color/transparent"/>
 
-    </LinearLayout>
+            <!-- Bouton pour afficher le menu contextuel -->
+            <ImageButton
+                android:id="@+id/menuButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@{offre.pictureUrl}"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/favBtn"
+                android:visibility="gone"
+                android:background="@android:color/transparent"/>
+
+            <TextView
+                android:id="@+id/addressTv"
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{offre.duration}"
+                android:layout_marginTop="20dp"
+                android:layout_toEndOf="@id/imageIv"
+                android:layout_below="@id/titleTvdesc"
+                android:ellipsize="end"
+                android:maxLines="1"/>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
 </layout>
