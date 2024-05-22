@@ -23,6 +23,7 @@ import com.example.freebite2.util.SharedPreferencesUtil
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var emmail: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,6 +103,7 @@ class SignUpActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
+                    emmail=email
                     Toast.makeText(this@SignUpActivity, "Inscription réussie !", Toast.LENGTH_SHORT).show()
                     updateUserProfile(user!!, prenom, nom)
                     updateLocation(user)
@@ -157,6 +159,8 @@ class SignUpActivity : AppCompatActivity() {
                     val userData = mapOf(
                         "prenom" to prenom,
                         "nom" to nom,
+                        "email" to emmail,
+                        "profilePictureUrl" to null, // nzidoha mn ba3d fi prifile
                         "location" to mapOf(
                             "latitude" to location.latitude,
                             "longitude" to location.longitude

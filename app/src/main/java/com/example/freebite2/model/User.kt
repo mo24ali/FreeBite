@@ -8,7 +8,5 @@ data class User(
     val lastName: String,
     val email: String,
     val profilePictureUrl: String,
-    val rating: Float = 0f,
-    val ratingCount: Int = 0,
     val location: Location
 )
