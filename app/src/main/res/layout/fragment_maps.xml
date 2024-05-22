@@ -11,9 +11,17 @@
         android:id="@+id/fmap"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent" />
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="-10dp"
+        android:background="#6F0B4A3B"
+        app:layout_constraintBottom_toBottomOf="@+id/fmap"
+        app:layout_constraintTop_toTopOf="@+id/seekBarDistance"
+        tools:layout_editor_absoluteX="5dp" />
     <Button
         android:id="@+id/btnChooseType"
         android:layout_width="wrap_content"
@@ -21,12 +29,42 @@
         android:background="@drawable/round_button"
         android:fontFamily="@font/kanita"
         android:text="Recherche"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.922"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.943" />
+        app:layout_constraintVertical_bias="0.961" />
+
+    <TextView
+        android:id="@+id/tvDistanceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/btnChooseType"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="52dp"
+        android:text="Radius (km): 50"
+        android:textColor="@color/btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnChooseType"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/btnChooseType"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <SeekBar
+        android:id="@+id/seekBarDistance"
+        android:layout_width="293dp"
+        android:layout_height="0dp"
+        android:layout_above="@id/tvDistanceLabel"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/black"
+        android:max="100"
+        android:progress="50"
+        app:layout_constraintBottom_toTopOf="@+id/btnChooseType"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -179,6 +179,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.SeekBar
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.scale
 import androidx.fragment.app.Fragment
@@ -203,7 +205,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var googleMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var database: DatabaseReference
-    private val radius = 10.0 // Radius in km
+    private var radius = 50 // Default radius in km
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -223,17 +225,43 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         // Set up the manual location update button
-       // val btnUpdateLocation = view.findViewById<Button>(R.id.btnUpdateLocation)
-    //    btnUpdateLocation.setOnClickListener {
-     //       googleMap.clear()
-            //updateLocationManually()
-   //     }
+        // val btnUpdateLocation = view.findViewById<Button>(R.id.btnUpdateLocation)
+        //    btnUpdateLocation.setOnClickListener {
+        //       googleMap.clear()
+        //updateLocationManually()
+        //     }
 
         // Set up the choose type button
         val btnChooseType = view.findViewById<Button>(R.id.btnChooseType)
         btnChooseType.setOnClickListener {
             showChooseTypeDialog()
         }
+
+        // Set up the seek bar
+        val seekBarDistance = view.findViewById<SeekBar>(R.id.seekBarDistance)
+        val tvDistanceLabel = view.findViewById<TextView>(R.id.tvDistanceLabel)
+        seekBarDistance.setOnSeekBarChangeListener(object : SeekBar
+            .OnSeekBarChangeListener {
+             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                radius = progress
+                tvDistanceLabel.text = "Radius (km): $progress"
+             }
+
+             override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                // Do nothing
+             }
+
+             override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                // Do nothing
+             }
+        } )
+
+
+
+
+
+
+
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -312,11 +340,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun fetchNearbyOffers(currentUserLocation: LatLng) {
-        val maxDistance = 50000 // 50 kilometers
+        val maxDistance = radius * 1000 // Convert km to meters
         database.child("offres").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (offreSnapshot in snapshot.children) {
-                  //  val locationSnapshot = userSnapshot.child("location")
+                    //  val locationSnapshot = userSnapshot.child("location")
                     val latitude = offreSnapshot.child("latitude").getValue(Double::class.java)
                     val longitude = offreSnapshot.child("longitude").getValue(Double::class.java)
                     val pictureUrl = offreSnapshot.child("pictureUrl").getValue(String::class.java)
@@ -344,7 +372,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
 
     private fun fetchNearbyUsers(currentUserLocation: LatLng) {
-        val maxDistance = 50000 // 50 kilometers
+        val maxDistance = radius * 1000 // Convert km to meters
         database.child("Users").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (userSnapshot in snapshot.children) {
