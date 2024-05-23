@@ -27,7 +27,7 @@
 
                 android:layout_width="120dp"
                 android:layout_height="150dp"
-                android:layout_marginEnd="30dp"
+                android:layout_marginEnd="40dp"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
                 app:imageUrl="@{offre.pictureUrl}"
@@ -44,21 +44,23 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{offre.nameoffre}"/>
+
             <TextView
                 android:id="@+id/titleTvdesc"
                 style="@style/TextAppearance.MaterialComponents.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_toEndOf="@id/imageIv"
                 android:layout_below="@id/titleTv"
+                android:layout_marginStart="63dp"
+                android:layout_marginTop="34dp"
                 android:layout_toStartOf="@id/favBtn"
+                android:layout_toEndOf="@id/imageIv"
                 android:ellipsize="end"
                 android:lines="3"
-                android:text="@{offre.details}"/>
+                android:text="@{offre.details}" />
 
             <ImageButton
-                android:id="@+id/favBtn"
+                android:id="@+id/moreBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
