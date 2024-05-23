@@ -12,7 +12,11 @@ import com.example.freebite2.adapter.OffersAdapter
 import com.example.freebite2.databinding.FragmentAccueilBinding
 import com.example.freebite2.model.OffreModel
 import com.example.freebite2.ui.activity.AddOffreActivity
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class AccueilFragment : Fragment() {
 
@@ -68,4 +72,5 @@ class AccueilFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }
