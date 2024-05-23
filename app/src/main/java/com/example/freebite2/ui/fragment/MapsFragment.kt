@@ -348,9 +348,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                     val latitude = offreSnapshot.child("latitude").getValue(Double::class.java)
                     val longitude = offreSnapshot.child("longitude").getValue(Double::class.java)
                     val pictureUrl = offreSnapshot.child("pictureUrl").getValue(String::class.java)
-
-                    if (latitude != null && longitude != null && pictureUrl != null) {
+                    val offrename = offreSnapshot.child("pictureUrl").getValue(String::class.java)
+                    if (latitude != null && longitude != null && pictureUrl != null && offrename != null) {
                         val offreLocation = LatLng(latitude, longitude)
+
                         val distance = calculateDistance(
                             currentUserLocation.latitude, currentUserLocation.longitude,
                             offreLocation.latitude, offreLocation.longitude
@@ -358,7 +359,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
                         if (distance <= maxDistance) {
                             // Load the profile image and use it as a marker icon
-                            loadProfileImageAndAddMarker(pictureUrl, offreLocation)
+                            loadProfileImageAndAddMarker(pictureUrl, offreLocation,offrename)
                         }
                     }
                 }
@@ -410,7 +411,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     }
 
 
-    private fun loadProfileImageAndAddMarker(profileImageUrl: String, userLocation: LatLng) {
+    private fun loadProfileImageAndAddMarker(profileImageUrl: String, userLocation: LatLng,offrename: String) {
         Glide.with(this)
             .asBitmap()
             .load(profileImageUrl)
@@ -418,7 +419,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     val markerOptions = MarkerOptions()
                         .position(userLocation)
-                        .title("Nearby to you")
+                        .title(offrename)
                         .icon(BitmapDescriptorFactory.fromBitmap(resource.scale(100,100)))
 
                     googleMap.addMarker(markerOptions)
