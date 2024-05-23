@@ -348,7 +348,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                     val latitude = offreSnapshot.child("latitude").getValue(Double::class.java)
                     val longitude = offreSnapshot.child("longitude").getValue(Double::class.java)
                     val pictureUrl = offreSnapshot.child("pictureUrl").getValue(String::class.java)
-                    val offrename = offreSnapshot.child("pictureUrl").getValue(String::class.java)
+                    val offrename = offreSnapshot.child("nameoffre").getValue(String::class.java)
                     if (latitude != null && longitude != null && pictureUrl != null && offrename != null) {
                         val offreLocation = LatLng(latitude, longitude)
 
