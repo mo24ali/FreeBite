@@ -26,8 +26,8 @@
                 style="@style/ImageViewFrameStyle"
                 android:layout_width="120dp"
                 android:layout_height="150dp"
-                android:layout_marginEnd="10dp"
-                android:scaleType="fitCenter"
+                android:layout_marginEnd="30dp"
+                android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
                 app:imageUrl="@{offre.pictureUrl}"
                  />
