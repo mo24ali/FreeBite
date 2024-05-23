@@ -2,6 +2,7 @@ package com.example.freebite2.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import java.io.Serializable
 
 data class OffreModel(
     var providerID: String? = null,
@@ -13,7 +14,7 @@ data class OffreModel(
     var longitude: Double? = null,
     var pictureUrl: String? = null,
     var provider: User? = null
-) : Parcelable {
+) : Serializable, Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),

@@ -14,6 +14,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
+        android:clickable="true"
         app:cardCornerRadius="8dp"
         android:layout_height="wrap_content"
         app:cardUseCompatPadding="true">
@@ -23,7 +24,7 @@
 
             <ImageView
                 android:id="@+id/imageIv"
-                style="@style/ImageViewFrameStyle"
+
                 android:layout_width="120dp"
                 android:layout_height="150dp"
                 android:layout_marginEnd="30dp"

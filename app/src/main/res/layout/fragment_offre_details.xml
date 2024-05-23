@@ -1,89 +1,125 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fprofil"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.OffreDetailsFragment">
 
-    <data>
-        <variable
-            name="offer"
-            type="com.example.freebite2.model.OffreModel" />
-    </data>
-
-    <ScrollView
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:background="@drawable/back"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layoutDescription="@xml/profil_fragment_scene">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/app_bar_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="@dimen/app_bar_container_height"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/backBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/back_arrow"
-                android:clickable="true"
-                android:tint="@color/black"/>
-
-            <ImageView
-                android:id="@+id/offerImage"
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/offerPicDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@{offer.pictureUrl}"
-                android:layout_marginTop="15dp"
-                android:scaleType="fitXY"/>
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"
+                android:shadowColor="@color/black"
+                android:shadowRadius="99"
+                app:srcCompat="@drawable/profileiamge"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/offerName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{offer.nameoffre}"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginTop="10dp"/>
 
-            <TextView
-                android:id="@+id/offerPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{offer.details}"
-                android:textSize="16sp"
-                android:maxLines="4"
-                android:layout_marginTop="10dp"/>
+
+            <ImageView
+                android:id="@+id/backBtn2"
+                style="@style/appBarIconsStyle"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollViewOfferDetails"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/zero_dimens"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar_container">
 
             <LinearLayout
+                android:id="@+id/body_container_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp">
+                android:orientation="vertical"
+                android:padding="8dp">
 
                 <TextView
-                    android:id="@+id/offerDuration"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Duration"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:id="@+id/offreName"
+                    style="@style/generalTextSubtitleStyle"
+                    android:text="offre" />
+
+                <View
+                    android:id="@+id/divider1"
+                    style="@style/dividerStyle" />
 
                 <TextView
-                    android:id="@+id/offerDurationValue"
-                    android:layout_width="wrap_content"
+                    style="@style/generalTextSubtitleStyle"
+                    android:text="Description de l'offre" />
+
+                <TextView
+                    android:id="@+id/descritptionRepas"
+                    style="@style/generalTextHintStyle"
+                    android:text="Sample description" />
+
+                <View
+                    android:id="@+id/divider2"
+                    style="@style/dividerStyle" />
+
+                <TextView
+                    style="@style/generalTextSubtitleStyle"
+                    android:text="Propriétaire de l'offre" />
+
+                <TextView
+                    android:id="@+id/providerTextView"
+                    style="@style/generalTextHintStyle"
+                    android:text="provider" />
+
+                <View
+                    android:id="@+id/divider3"
+                    style="@style/dividerStyle" />
+
+                <fragment
+                    android:id="@+id/offerPosition"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
+
+                <View
+                    android:id="@+id/divider4"
+                    style="@style/dividerStyle" />
+
+                <Button
+                    android:id="@+id/takeOfferBtn"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{offer.duration}"
-                    android:textSize="16sp"
-                    android:layout_marginStart="10dp"/>
+                    android:text="@string/prend_le_repas"
+                    android:background="@drawable/btn" />
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/addToCartBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Prend"
-                android:textColor="@color/black"
-                android:background="@drawable/btn"
-                android:clickable="true"
-                android:layout_marginTop="20dp"/>
+        </androidx.core.widget.NestedScrollView>
 
-        </LinearLayout>
-    </ScrollView>
-</layout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+
+</FrameLayout>

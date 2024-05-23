@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide
 import com.example.freebite2.databinding.RecyclerItemBinding
 import com.example.freebite2.model.OffreModel
 
-class OffersAdapter(private val offers: List<OffreModel>) : RecyclerView.Adapter<OffersAdapter.OfferViewHolder>() {
+class OffersAdapter(private val offers: List<OffreModel>, private val onOfferClickListener: OnOfferClickListener) : RecyclerView.Adapter<OffersAdapter.OfferViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OfferViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -33,6 +33,17 @@ class OffersAdapter(private val offers: List<OffreModel>) : RecyclerView.Adapter
                     .load(url)
                     .into(binding.imageIv)
             }
+
+            // Set click listener
+            binding.root.setOnClickListener {
+                onOfferClickListener.onOfferClick(offer)
+            }
         }
     }
+
+    // Interface to handle item clicks
+    interface OnOfferClickListener {
+        fun onOfferClick(offer: OffreModel)
+    }
 }
+

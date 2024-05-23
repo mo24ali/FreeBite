@@ -58,5 +58,8 @@
     <string name="refresh">Refresh</string>
     <string name="add_to_cart">Add to Cart</string>
     <string name="size">Size</string>
+    <string name="prend_le_repas">Prend le repas!</string>
+    <string name="descritption_de_l_offre">Descritption de l\'offre</string>
+    <string name="proprietaire_de_l_offre">Proprietaire de l\'offre</string>
 
 </resources>

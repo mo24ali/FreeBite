@@ -49,7 +49,8 @@
             android:layout_height="350dp"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toTopOf="parent" />
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintHorizontal_bias="0.0" />
         <Constraint
             android:id="@+id/profileSmya"
             android:layout_width="@dimen/zero_dimens"

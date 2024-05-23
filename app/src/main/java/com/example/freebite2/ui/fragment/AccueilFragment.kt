@@ -6,8 +6,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.freebite2.R
 import com.example.freebite2.adapter.OffersAdapter
 import com.example.freebite2.databinding.FragmentAccueilBinding
 import com.example.freebite2.model.OffreModel
@@ -18,18 +20,18 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class AccueilFragment : Fragment() {
+class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
 
     private var _binding: FragmentAccueilBinding? = null
-    private val binding get() = _binding!!
-    private lateinit var offreAdapter: OffersAdapter
-    private lateinit var offreList: MutableList<OffreModel>
-    private lateinit var database: DatabaseReference
+    private val binding get() = _binding ?: throw IllegalStateException("Binding is not initialized")
+    private var offreAdapter: OffersAdapter? = null
+    private var offreList: MutableList<OffreModel>? = null
+    private var database: DatabaseReference? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentAccueilBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -38,7 +40,9 @@ class AccueilFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         offreList = mutableListOf()
-        offreAdapter = OffersAdapter(offreList)
+
+        // Pass the fragment instance as the OnOfferClickListener
+        offreAdapter = OffersAdapter(offreList ?: mutableListOf(), this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = offreAdapter
 
@@ -49,16 +53,16 @@ class AccueilFragment : Fragment() {
 
         database = FirebaseDatabase.getInstance().getReference("offres")
 
-        database.addValueEventListener(object : ValueEventListener {
+        database?.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                offreList.clear()
+                offreList?.clear()
                 for (dataSnapshot in snapshot.children) {
                     val offre = dataSnapshot.getValue(OffreModel::class.java)
                     if (offre != null) {
-                        offreList.add(offre)
+                        offreList?.add(offre)
                     }
                 }
-                offreAdapter.notifyDataSetChanged()
+                offreAdapter?.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -68,9 +72,28 @@ class AccueilFragment : Fragment() {
         })
     }
 
+    override fun onOfferClick(offer: OffreModel) {
+        // Handle item click here, for example:
+        val offreDetailsFragment = OffreDetailsFragment()
+
+        // Pass the OffreModel object as an argument using a Bundle
+        val bundle = Bundle()
+        bundle.putParcelable("offre", offer)
+        offreDetailsFragment.arguments = bundle
+
+        // Use the FragmentManager to begin a FragmentTransaction, replace the current fragment with OffreDetailsFragment, and commit the transaction
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fhome, offreDetailsFragment) // Replace 'container' with the id of your FrameLayout or the container for your fragments
+            .addToBackStack(null)
+            .commit()
+        Toast.makeText(requireContext(), "Clicked on ${offer.nameoffre}", Toast.LENGTH_SHORT).show()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        offreAdapter = null
+        offreList = null
+        database = null
     }
-
 }
