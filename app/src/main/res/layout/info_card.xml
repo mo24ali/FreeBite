@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="offre"
+            type="com.example.freebite2.model.OffreModel" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        app:cardUseCompatPadding="true"
+        android:layout_margin="12dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageIv"
+                android:layout_width="120dp"
+                android:layout_height="150dp"
+                android:layout_marginEnd="30dp"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                app:imageUrl="@{offre.pictureUrl}" />
+
+            <TextView
+                android:id="@+id/titleTv"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@id/imageIv"
+                android:layout_toStartOf="@+id/favBtn"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{offre.nameoffre}" />
+
+            <TextView
+                android:id="@+id/titleTvdesc"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@id/imageIv"
+                android:layout_below="@id/titleTv"
+                android:layout_toStartOf="@id/favBtn"
+                android:ellipsize="end"
+                android:lines="3"
+                android:text="@{offre.details}" />
+
+            <TextView
+                android:id="@+id/addressTv"
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{offre.duration}"
+                android:layout_marginTop="20dp"
+                android:layout_toEndOf="@id/imageIv"
+                android:layout_below="@id/titleTvdesc"
+                android:ellipsize="end"
+                android:maxLines="1" />
+
+            <ImageView
+                android:id="@+id/hide_card"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_alignBottom="@+id/titleTvdesc"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="-56dp"
+                android:clickable="true"
+                app:srcCompat="@drawable/close" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</layout>
