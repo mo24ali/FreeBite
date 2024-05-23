@@ -24,7 +24,7 @@
      app:backgroundTint="@color/btn"
      app:itemIconTint="@color/ic_bottom_nav"
      app:itemPaddingBottom="1dp"
-     app:itemTextColor="@color/bottom"
+     app:itemTextColor="@color/teal_700"
      app:menu="@menu/bottom_nav_menu" />
 
 

@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.app.AlertDialog
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -301,14 +302,14 @@ override fun onMarkerClick(marker: Marker): Boolean {
             .load(profileImageUrl)
             .into(object : CustomTarget<Bitmap>() {
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    val circularBitmap = getCircularBitmapWithBorder(resource, 7)
                     val markerOptions = MarkerOptions()
                         .position(userLocation)
                         .title(offrename)
-                        .icon(BitmapDescriptorFactory.fromBitmap(resource.scale(100, 100)))
+                        .icon(BitmapDescriptorFactory.fromBitmap(circularBitmap))
 
                     val marker = googleMap.addMarker(markerOptions)
                     if (marker != null) {
-                      //  val offre = OffreModel(offrename, offerDetails, profileImageUrl)
                         marker.tag = ooffre
                     }
                 }
@@ -318,6 +319,43 @@ override fun onMarkerClick(marker: Marker): Boolean {
                 }
             })
     }
+
+
+    private fun getCircularBitmapWithBorder(bitmap: Bitmap, borderWidth: Int): Bitmap {
+        val size = 100 // Define a consistent size for all images
+        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, size, size, false)
+
+        val output = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(output)
+
+        val color = 0xff424242.toInt()
+        val paint = Paint()
+        val rect = Rect(0, 0, size, size)
+        val rectF = RectF(rect)
+
+        val radius = size / 2f
+        val borderPaint = Paint()
+
+        // Draw the circular bitmap
+        paint.isAntiAlias = true
+        canvas.drawARGB(0, 0, 0, 0)
+        paint.color = color
+        canvas.drawOval(rectF, paint)
+
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+        canvas.drawBitmap(scaledBitmap, rect, rect, paint)
+
+        // Draw the border
+        borderPaint.color = Color.rgb(0,255,216)
+        borderPaint.style = Paint.Style.STROKE
+        borderPaint.strokeWidth = borderWidth.toFloat()
+        borderPaint.isAntiAlias = true
+        canvas.drawCircle(radius, radius, radius - borderWidth / 2f, borderPaint)
+
+        return output
+    }
+
+
 
     private fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
         val earthRadius = 6371.0 // Radius of the earth in km
