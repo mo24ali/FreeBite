@@ -45,7 +45,6 @@
                     <androidx.appcompat.widget.SearchView
                         android:id="@+id/searchView"
                         android:layout_width="0dp"
-
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:queryHint="Search offers"/>
@@ -53,6 +52,7 @@
                     <ImageView
                         android:layout_marginEnd="20dp"
                         android:id="@+id/filterIcon"
+                        android:clickable="true"
                         android:layout_width="wrap_content"
                         android:gravity="center_vertical"
                         android:layout_height="match_parent"
