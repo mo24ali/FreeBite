@@ -34,31 +34,31 @@
                     android:background="@color/btn"
                     android:orientation="horizontal">
 
-                    <ImageView
+                    <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/imageView3"
+                        style="@style/roundedlogo"
+
                         android:layout_width="53dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:src="@mipmap/logo" />
-
-                    <TextView
-                        android:id="@+id/textView2"
+                    <androidx.appcompat.widget.SearchView
+                        android:id="@+id/searchView"
                         android:layout_width="0dp"
+
                         android:layout_height="match_parent"
-                        android:layout_marginStart="20dp"
                         android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="@string/app_name" />
+                        android:queryHint="Search offers"/>
 
                     <ImageView
-                        android:id="@+id/btn_search"
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="30dp"
-                        android:backgroundTint="@color/black"
-                        android:clickable="true"
+                        android:layout_marginEnd="20dp"
+                        android:id="@+id/filterIcon"
+                        android:layout_width="wrap_content"
                         android:gravity="center_vertical"
-                        android:src="@drawable/baseline_search_24" />
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_filter"
+                        android:contentDescription="filter by distance "/>
+
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

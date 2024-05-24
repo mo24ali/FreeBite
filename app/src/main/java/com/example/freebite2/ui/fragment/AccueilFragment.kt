@@ -1,12 +1,17 @@
 package com.example.freebite2.ui.fragment
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.freebite2.R
@@ -14,6 +19,8 @@ import com.example.freebite2.adapter.OffersAdapter
 import com.example.freebite2.databinding.FragmentAccueilBinding
 import com.example.freebite2.model.OffreModel
 import com.example.freebite2.ui.activity.AddOffreActivity
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -27,6 +34,10 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
     private var offreAdapter: OffersAdapter? = null
     private var offreList: MutableList<OffreModel>? = null
     private var database: DatabaseReference? = null
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var userLocation: Location? = null
+    private val LOCATION_PERMISSION_REQUEST_CODE = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,6 +81,124 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
                 Log.e("DatabaseError", error.message)
             }
         })
+
+        // Initialize FusedLocationProviderClient
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+        // Check location permission
+        checkLocationPermission()
+
+        // Set up filter icon click listener
+        val filterIcon: ImageView = view.findViewById(R.id.filterIcon)
+        filterIcon.setOnClickListener {
+            showFilterMenu(it)
+        }
+
+        // Set up search view listener
+        val searchView: SearchView = view.findViewById(R.id.searchView)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    filterOffersByQuery(query)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    filterOffersByQuery(newText)
+                }
+                return false
+            }
+        })
+    }
+
+    private fun checkLocationPermission() {
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+        } else {
+            // Permissions already granted, fetch location
+            fetchUserLocation()
+        }
+    }
+
+    private fun fetchUserLocation() {
+        try {
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    if (location != null) {
+                        userLocation = location
+                    } else {
+                        Toast.makeText(requireContext(), "Unable to get location. Make sure location is enabled on the device.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        } catch (e: SecurityException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun showFilterMenu(view: View) {
+        val popup = PopupMenu(requireContext(), view)
+        popup.menuInflater.inflate(R.menu.filter_menu, popup.menu)
+
+        popup.setOnMenuItemClickListener { item: MenuItem ->
+            when (item.itemId) {
+                R.id.filter_10km -> {
+                    filterOffersByRadius(10)
+                    true
+                }
+                R.id.filter_20km -> {
+                    filterOffersByRadius(20)
+                    true
+                }
+                R.id.filter_30km -> {
+                    filterOffersByRadius(30)
+                    true
+                }
+                R.id.filter_50km -> {
+                    filterOffersByRadius(50)
+                    true
+                }
+                R.id.filter_reset -> {
+                    resetFilters()
+                    true
+                }
+                else -> false
+            }
+        }
+        popup.show()
+    }
+
+    private fun filterOffersByRadius(radius: Int) {
+        if (userLocation == null) {
+            Toast.makeText(requireContext(), "Location not available. Please try again later.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val filteredList = offreList?.filter { isWithinRadius(it, radius) } ?: listOf()
+        offreAdapter?.updateList(filteredList)
+    }
+
+    private fun filterOffersByQuery(query: String) {
+        val filteredList = offreList?.filter {
+            it.nameoffre?.contains(query, ignoreCase = true) == true ||
+                    it.details?.contains(query, ignoreCase = true) == true
+        } ?: listOf()
+        offreAdapter?.updateList(filteredList)
+    }
+
+    private fun resetFilters() {
+        offreAdapter?.updateList(offreList ?: listOf())
+    }
+
+    private fun isWithinRadius(offre: OffreModel, radius: Int): Boolean {
+        val offerLocation = Location("").apply {
+            latitude = offre.latitude ?: 0.0
+            longitude = offre.longitude ?: 0.0
+        }
+
+        val distance = userLocation?.distanceTo(offerLocation)?.div(1000) // Convert to kilometers
+        return distance != null && distance <= radius
     }
 
     override fun onOfferClick(offer: OffreModel) {

@@ -44,6 +44,7 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var googleMap: GoogleMap
     private lateinit var dialogueProgress: ProgressDialog
+    private lateinit var dialogue_Progress: ProgressDialog
 
     private var imageUri: Uri? = null
     private var imageUploadOffre: Uri? = null
@@ -97,6 +98,10 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
         dialogueProgress = ProgressDialog(this)
         dialogueProgress.setMessage("Uploading Image...")
         dialogueProgress.setCancelable(false)
+
+        dialogue_Progress = ProgressDialog(this)
+        dialogue_Progress.setMessage(" ")
+        dialogue_Progress.setCancelable(false)
 
         auth = FirebaseAuth.getInstance()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -218,6 +223,7 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
             Toast.makeText(this, "Please fill in all fields and select an image", Toast.LENGTH_SHORT).show()
             return
         }
+        dialogue_Progress.show()
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.lastLocation
@@ -237,20 +243,25 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
                         offreRef.setValue(offreModel)
                             .addOnSuccessListener {
                                 Toast.makeText(this, "Offer added successfully", Toast.LENGTH_SHORT).show()
+                                dialogue_Progress.dismiss()
                                 finish()
                             }
                             .addOnFailureListener { e ->
                                 Toast.makeText(this, "Failed to add offer: ${e.message}", Toast.LENGTH_SHORT).show()
+                                dialogue_Progress.dismiss()
                             }
                     } else {
                         Toast.makeText(this, "Failed to get location", Toast.LENGTH_SHORT).show()
+                        dialogue_Progress.dismiss()
                     }
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(this, "Failed to get location: ${e.message}", Toast.LENGTH_SHORT).show()
+                    dialogue_Progress.dismiss()
                 }
         } else {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_CODE)
+            dialogue_Progress.dismiss()
         }
     }
 
