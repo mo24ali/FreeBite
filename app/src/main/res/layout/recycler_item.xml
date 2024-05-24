@@ -5,7 +5,6 @@
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
     android:layout_marginEnd="12dp"
-
     >
     <data>
         <variable
@@ -14,9 +13,7 @@
     </data>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/crd"
         android:layout_width="match_parent"
-        android:theme="@style/Theme.Freebite2"
         android:clickable="true"
         app:cardCornerRadius="8dp"
         android:layout_height="wrap_content"
@@ -30,15 +27,11 @@
 
                 android:layout_width="120dp"
                 android:layout_height="150dp"
-
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="30dp"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/crd"
-                android:adjustViewBounds="true"
+                android:layout_marginEnd="40dp"
                 android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
                 app:imageUrl="@{offre.pictureUrl}"
-                tools:ignore="NotSibling" />
+                 />
 
             <TextView
                 android:id="@+id/titleTv"
@@ -50,18 +43,19 @@
                 android:layout_toStartOf="@+id/moreBtn"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{offre.nameoffre.toUpperCase()}"/>
+                android:text="@{offre.nameoffre}"/>
 
             <TextView
                 android:id="@+id/titleTvdesc"
                 style="@style/TextAppearance.MaterialComponents.Body1"
-                android:layout_width="match_parent"
+                android:layout_width="191dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/titleTv"
-                android:layout_marginStart="39dp"
-                android:layout_marginTop="33dp"
-
-                android:layout_toEndOf="@id/imageIv"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="3dp"
+                android:layout_toStartOf="@id/moreBtn"
+                android:layout_toEndOf="@+id/imageIv"
                 android:ellipsize="end"
                 android:lines="3"
                 android:text="@{offre.details}" />
@@ -84,7 +78,7 @@
                 android:src="@{offre.pictureUrl}"
                 android:layout_marginEnd="10dp"
                 android:layout_alignParentEnd="true"
-
+                android:layout_below="@id/moreBtn"
                 android:visibility="gone"
                 android:background="@android:color/transparent"/>
 

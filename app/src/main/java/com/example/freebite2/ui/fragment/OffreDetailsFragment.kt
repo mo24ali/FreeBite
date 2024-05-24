@@ -94,6 +94,13 @@ class OffreDetailsFragment : Fragment(), OnMapReadyCallback {
         // Initialize map
         mapFragment.getMapAsync(this)
 
+        binding.backBtn2.setOnClickListener {
+            val accueilFragment = AccueilFragment()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fprofil, accueilFragment) // Replace 'fprofil' with the id of your FrameLayout or the container for your fragments
+                .addToBackStack(null)
+                .commit()
+        }
         // Set click listener for take offer button
         takeOfferBtn.setOnClickListener {
             takeOffer(offre)
