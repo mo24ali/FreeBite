@@ -44,6 +44,8 @@ class OffersAdapter(private var offers: List<OffreModel>, private val onOfferCli
     // Interface to handle item clicks
     interface OnOfferClickListener {
         fun onOfferClick(offer: OffreModel)
+        fun onEditOfferClick(offer: OffreModel)
+        fun onDeleteOfferClick(offer: OffreModel)
     }
 
     fun updateList(newOfferList: List<OffreModel>) {

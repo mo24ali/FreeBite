@@ -200,7 +200,14 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
         val distance = userLocation?.distanceTo(offerLocation)?.div(1000) // Convert to kilometers
         return distance != null && distance <= radius
     }
+    override fun onEditOfferClick(offer: OffreModel) {
+        //
+    }
 
+    override fun onDeleteOfferClick(offer: OffreModel) {
+       //
+
+    }
     override fun onOfferClick(offer: OffreModel) {
         // Handle item click here, for example:
         val offreDetailsFragment = OffreDetailsFragment()

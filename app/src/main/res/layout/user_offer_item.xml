@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginStart="12dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginEnd="12dp">
+
+    <data>
+        <variable
+            name="offre"
+            type="com.example.freebite2.model.OffreModel" />
+        <variable
+            name="clickListener"
+            type="com.example.freebite2.adapter.OffersAdapter.OnOfferClickListener" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/crd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:cardCornerRadius="8dp"
+        app:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageIv"
+                android:layout_width="120dp"
+                android:layout_height="150dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="30dp"
+                android:layout_toEndOf="@id/crd"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{offre.pictureUrl}"
+                tools:ignore="NotSibling" />
+
+            <TextView
+                android:id="@+id/titleTv"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@id/imageIv"
+                android:layout_toStartOf="@+id/moreBtn"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{offre.nameoffre.toUpperCase()}" />
+
+            <TextView
+                android:id="@+id/titleTvdesc"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleTv"
+                android:layout_marginStart="39dp"
+                android:layout_marginTop="33dp"
+                android:layout_toEndOf="@id/imageIv"
+                android:ellipsize="end"
+                android:lines="3"
+                android:text="@{offre.details}" />
+
+            <ImageButton
+                android:id="@+id/moreBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:src="@drawable/fav"
+                android:clickable="true"
+                android:layout_alignParentEnd="true"
+                android:background="@android:color/transparent" />
+
+            <ImageButton
+                android:id="@+id/menuButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentEnd="true"
+                android:visibility="gone"
+                android:background="@android:color/transparent" />
+
+            <TextView
+                android:id="@+id/addressTv"
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_toEndOf="@id/imageIv"
+                android:layout_below="@id/titleTvdesc"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{offre.duration}" />
+
+            <Button
+                android:id="@+id/editButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/titleTvdesc"
+                android:layout_marginTop="38dp"
+                android:layout_marginEnd="6dp"
+                android:layout_toStartOf="@+id/deleteButton"
+                android:onClick="@{() -> clickListener.onEditOfferClick(offre)}"
+                android:text="Edit" />
+
+            <Button
+                android:id="@+id/deleteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/addressTv"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="5dp"
+                android:onClick="@{() -> clickListener.onDeleteOfferClick(offre)}"
+                android:text="Delete" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

@@ -18,8 +18,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.example.freebite2.R
 import com.example.freebite2.databinding.FragmentProfilBinding
 import com.example.freebite2.ui.activity.MainActivity
+import com.example.freebite2.ui.activity.UserOffersActivity
 import com.example.freebite2.util.SharedPreferencesUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -85,6 +87,9 @@ class ProfilFragment : Fragment() {
             val intent = Intent(activity, MainActivity::class.java)
             startActivity(intent)
             activity?.finish()
+        }
+        binding.buttonMyOffers.setOnClickListener {
+            navigateToUserOffers()
         }
         binding.actionProfilFragmentToChangeEmailFragment.setOnClickListener{
 
@@ -181,6 +186,7 @@ class ProfilFragment : Fragment() {
         galleryActivityResultLauncher.launch("image/*")
     }
 
+
     private fun uploadImageToFirebase(uri: Uri?) {
         if (uri == null) return
 
@@ -213,5 +219,11 @@ class ProfilFragment : Fragment() {
                 Toast.makeText(requireContext(), "Failed to upload image: ${e.message}", Toast.LENGTH_SHORT).show()
                 dialogueProgress.dismiss()
             }
+    }
+
+
+    private fun navigateToUserOffers() {
+        val intent = Intent(activity, UserOffersActivity::class.java)
+        startActivity(intent)
     }
 }
