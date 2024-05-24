@@ -14,6 +14,7 @@ import com.example.freebite2.adapter.OffersAdapter
 import com.example.freebite2.databinding.FragmentAccueilBinding
 import com.example.freebite2.model.OffreModel
 import com.example.freebite2.ui.activity.AddOffreActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -27,6 +28,7 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
     private var offreAdapter: OffersAdapter? = null
     private var offreList: MutableList<OffreModel>? = null
     private var database: DatabaseReference? = null
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +52,7 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
             val addIntent = Intent(activity, AddOffreActivity::class.java)
             startActivity(addIntent)
         }
-
+        auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().getReference("offres")
 
         database?.addValueEventListener(object : ValueEventListener {
@@ -70,6 +72,38 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
                 Log.e("DatabaseError", error.message)
             }
         })
+
+    }
+
+    override fun onEditOfferClick(offer: OffreModel) {
+        val currentUserUid = auth.currentUser?.uid
+        if (currentUserUid == offer.providerID) {
+            val editFragment = EditOffreFragment()
+            val bundle = Bundle()
+            bundle.putParcelable("offer", offer)
+            editFragment.arguments = bundle
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fhome, editFragment)
+                .addToBackStack(null)
+                .commit()
+        } else {
+            Toast.makeText(requireContext(), "Cela est valable juste pour le propriétaire de poste", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onDeleteOfferClick(offer: OffreModel) {
+        val currentUserUid = auth.currentUser?.uid
+        if (currentUserUid == offer.providerID) {
+            // Allow deleting the offer
+            database?.child(offer.offerID.toString())?.removeValue()?.addOnSuccessListener {
+                Toast.makeText(requireContext(), "Offre supprimé", Toast.LENGTH_SHORT).show()
+            }?.addOnFailureListener {
+                Toast.makeText(requireContext(), "Suppression d'offre a échouée", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(requireContext(), "Cela est valable juste pour le propriétaire de poste", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onOfferClick(offer: OffreModel) {
