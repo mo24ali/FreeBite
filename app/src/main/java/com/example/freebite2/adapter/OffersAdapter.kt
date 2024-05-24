@@ -9,7 +9,7 @@ import com.example.freebite2.R
 import com.example.freebite2.databinding.RecyclerItemBinding
 import com.example.freebite2.model.OffreModel
 
-class OffersAdapter(private val offers: List<OffreModel>, private val onOfferClickListener: OnOfferClickListener) : RecyclerView.Adapter<OffersAdapter.OfferViewHolder>() {
+class OffersAdapter(private var offers: List<OffreModel>, private val onOfferClickListener: OnOfferClickListener) : RecyclerView.Adapter<OffersAdapter.OfferViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OfferViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -68,7 +68,10 @@ class OffersAdapter(private val offers: List<OffreModel>, private val onOfferCli
         }
 
     }
-
+    fun updateList(newOfferList: List<OffreModel>) {
+        offers = newOfferList
+        notifyDataSetChanged()
+    }
     // Interface to handle item clicks
     interface OnOfferClickListener {
         fun onOfferClick(offer: OffreModel)
