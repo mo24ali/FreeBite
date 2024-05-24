@@ -18,6 +18,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
+            android:theme="@style/Theme.Freebite2"
             android:layout_height="wrap_content">
 
             <ImageView
@@ -36,10 +37,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_toEndOf="@id/imageIv"
-                android:layout_toStartOf="@+id/favBtn"
+
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{offre.nameoffre}" />
+                android:text="@{offre.nameoffre.toUpperCase()}" />
 
             <TextView
                 android:id="@+id/titleTvdesc"
@@ -49,7 +50,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_toEndOf="@id/imageIv"
                 android:layout_below="@id/titleTv"
-                android:layout_toStartOf="@id/favBtn"
+
                 android:ellipsize="end"
                 android:lines="3"
                 android:text="@{offre.details}" />

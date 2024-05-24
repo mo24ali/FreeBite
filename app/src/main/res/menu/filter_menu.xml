@@ -1,0 +1,8 @@
+<!-- res/menu/filter_menu.xml -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/filter_10km" android:title="10 km"/>
+    <item android:id="@+id/filter_20km" android:title="20 km"/>
+    <item android:id="@+id/filter_30km" android:title="30 km"/>
+    <item android:id="@+id/filter_50km" android:title="50 km"/>
+    <item android:id="@+id/filter_reset" android:title="Reset"/>
+</menu>
