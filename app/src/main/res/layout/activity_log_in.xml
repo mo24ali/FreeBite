@@ -166,6 +166,16 @@
                 android:text="@string/se_connecter"
                 android:textColor="@color/black"
                 app:cornerRadius="32dp" />
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="30dp" />
+
+
+            <TextView
+                android:id="@+id/adminLoginError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/holo_red_dark" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,6 +15,8 @@ pluginManagement {
         //alias(libs.plugins.jetbrainsKotlinAndroid)
         //alias(libs.plugins.jetbrainsKotlinAndroid)
         //alias(libs.plugins.jetbrainsKotlinAndroid)
+        //alias(libs.plugins.jetbrainsKotlinAndroid)
+        //alias(libs.plugins.jetbrainsKotlinAndroid)
 
     }
 }

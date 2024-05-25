@@ -1,75 +1,97 @@
 package com.example.freebite2.ui.activity
 
+import UserAdapter
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.freebite2.R
+import com.example.freebite2.databinding.ActivityAdminBinding
+import com.example.freebite2.model.User
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class AdminActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityAdminBinding
+    private lateinit var auth: FirebaseAuth
+    private lateinit var database: DatabaseReference
+    private lateinit var userAdapter: UserAdapter
+    private lateinit var recyclerView: RecyclerView
+
+    private var userList: MutableList<User> = mutableListOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_admin)
+        binding = ActivityAdminBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // register all the ImageButtons with their appropriate IDs
-        val backB: ImageButton = findViewById(R.id.backB)
-        val logOutB: ImageButton = findViewById(R.id.logOutB)
-        val profileB: ImageButton = findViewById(R.id.profileB)
+        auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance().reference
 
-        // register all the Buttons with their appropriate IDs
-        val todoB: Button = findViewById(R.id.todoB)
-        val editProfileB: Button = findViewById(R.id.editProfileB)
+        // Assurez-vous que R.id.recyclerViewUserList est bien défini dans activity_admin.xml
+        recyclerView = findViewById(R.id.recyclerViewUsers) ?: throw NullPointerException("RecyclerView not found")
 
-        // register all the card views with their appropriate IDs
-        val contributeCard: CardView = findViewById(R.id.contributeCard)
-        val practiceCard: CardView = findViewById(R.id.practiceCard)
-        val learnCard: CardView = findViewById(R.id.learnCard)
-        val interestsCard: CardView = findViewById(R.id.interestsCard)
-        //val helpCard: CardView = findViewById(R.id.helpCard)
-        //val settingsCard: CardView = findViewById(R.id.settingsCard)
-
-
-        // handle each of the image buttons with the OnClickListener
-        backB.setOnClickListener {
-            Toast.makeText(this, "Back Button", Toast.LENGTH_SHORT).show()
-        }
-        logOutB.setOnClickListener {
-            Toast.makeText(this, "Logout Button", Toast.LENGTH_SHORT).show()
-        }
-        profileB.setOnClickListener {
-            Toast.makeText(this, "Profile Image", Toast.LENGTH_SHORT).show()
+        setupUserRecyclerView()
+        // Handle logout
+        binding.logOutB.setOnClickListener {
+            auth.signOut()
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
 
-
-        // handle each of the buttons with the OnClickListener
-        todoB.setOnClickListener {
-            Toast.makeText(this, "TODO LIST", Toast.LENGTH_SHORT).show()
-        }
-        editProfileB.setOnClickListener {
-            Toast.makeText(this, "Editing Profile", Toast.LENGTH_SHORT).show()
+        // Handle back button
+        binding.backB.setOnClickListener {
+            finish()
         }
 
+        // Handle View Offers button click
+        binding.viewDonorRequestsCard.setOnClickListener {
 
-        // handle each of the cards with the OnClickListener
-        contributeCard.setOnClickListener {
-            Toast.makeText(this, "Contribute Articles", Toast.LENGTH_SHORT).show()
+            viewOffers()
         }
-        practiceCard.setOnClickListener {
-            Toast.makeText(this, "Practice Programming", Toast.LENGTH_SHORT).show()
+
+        // Handle Manage User Accounts button click
+        binding.manageUserAccountsCard.setOnClickListener {
+            startActivity(Intent(this, ManageUsersActivity::class.java))
         }
-        learnCard.setOnClickListener {
-            Toast.makeText(this, "Learn Programming", Toast.LENGTH_SHORT).show()
-        }
-        interestsCard.setOnClickListener {
-            Toast.makeText(this, "Filter your Interests", Toast.LENGTH_SHORT).show()
-        }
-        /*helpCard.setOnClickListener {
-            Toast.makeText(this, "Anything Help you want?", Toast.LENGTH_SHORT).show()
-        }
-        settingsCard.setOnClickListener {
-            Toast.makeText(this, "Change the settings", Toast.LENGTH_SHORT).show()
-        }*/
+
+        // Setup RecyclerView for users
+        setupUserRecyclerView()
+    }
+
+    private fun setupUserRecyclerView() {
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerViewUsers)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        // Fetch user accounts from Firebase
+        database.child("users").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                userList.clear()
+                for (userSnapshot in snapshot.children) {
+                    val user = userSnapshot.getValue(User::class.java)
+                    if (user != null) {
+                        userList.add(user)
+                    }
+                }
+                userAdapter = UserAdapter(userList, this@AdminActivity)
+                recyclerView.adapter = userAdapter
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+                Toast.makeText(this@AdminActivity, "Failed to fetch user accounts", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun viewOffers() {
+        // Handle viewing offers
     }
 }
