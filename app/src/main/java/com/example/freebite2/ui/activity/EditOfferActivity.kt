@@ -2,16 +2,19 @@
 
 package com.example.freebite2.ui.fragment
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.ImageButton
-import android.widget.Toast
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.freebite2.R
 import com.example.freebite2.model.OffreModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -20,172 +23,135 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.storage.FirebaseStorage
-import java.util.UUID
 
 class EditOfferActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private val PICK_IMAGE_REQUEST = 1
-
-    private lateinit var database: DatabaseReference
-    private lateinit var offerID: String
-    private var offer: OffreModel? = null
-
+    private lateinit var motionLayout: MotionLayout
+    private lateinit var titleTextView: TextView
+    private lateinit var backButton: ImageButton
     private lateinit var titleEditText: TextInputEditText
     private lateinit var descriptionEditText: TextInputEditText
-    private lateinit var dureeModifEditText: TextInputEditText
-    private lateinit var uploadedImageView: ImageButton
-    private lateinit var saveButton: MaterialButton
+    private lateinit var durationEditText: TextInputEditText
     private lateinit var mapView: SupportMapFragment
-    private var latitude: Double? = null
-    private var longitude: Double? = null
-    private var imageUri: Uri? = null
+    private lateinit var submitButton: MaterialButton
+
+    private var offerModel: OffreModel? = null
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_offer)
 
-        // Initialisation des vues
+        motionLayout = findViewById(R.id.main)
+        titleTextView = findViewById(R.id.textviewadpost)
+        backButton = findViewById(R.id.btnbackhome)
         titleEditText = findViewById(R.id.titleEditText)
         descriptionEditText = findViewById(R.id.descriptionEditText)
-        dureeModifEditText = findViewById(R.id.DureeModifEditText)
-        uploadedImageView = findViewById(R.id.uploadedImageView)
-        saveButton = findViewById(R.id.btnsubmit)
+        durationEditText = findViewById(R.id.DureeModifEditText)
         mapView = supportFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
+        submitButton = findViewById(R.id.btnsubmit)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        // Récupérer l'offre à modifier depuis l'intent ou autre source
+        offerModel = intent.getParcelableExtra("offre")
+
+        // Remplir les champs avec les données de l'offre
+        offerModel?.let {
+            titleEditText.setText(it.nameoffre)
+            descriptionEditText.setText(it.details)
+            durationEditText.setText(it.duration)
+            updateMapLocation(it.latitude ?: 0.0, it.longitude ?: 0.0)
+        }
+
         mapView.getMapAsync(this)
 
-        // Initialisation de Firebase
-        database = FirebaseDatabase.getInstance().getReference("offres")
-
-        // Récupérer l'ID de l'offre passée en argument
-        offerID = intent.getStringExtra("offerID") ?: ""
-
-        // Charger les données de l'offre
-        loadOfferData()
-
-        // Sauvegarder les modifications
-        saveButton.setOnClickListener {
-            updateOffer()
+        backButton.setOnClickListener {
+            onBackPressed()
         }
 
-        // Choisir une image
-        uploadedImageView.setOnClickListener {
-            val intent = Intent()
-            intent.type = "image/*"
-            intent.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(Intent.createChooser(intent, "Sélectionnez une image"), PICK_IMAGE_REQUEST)
+        submitButton.setOnClickListener {
+            // Enregistrer les modifications de l'offre
+            saveOfferChanges()
         }
-    }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        googleMap.setOnMapClickListener { latLng ->
-            latitude = latLng.latitude
-            longitude = latLng.longitude
-            googleMap.clear()
-            googleMap.addMarker(MarkerOptions().position(latLng).title("Position de l'offre"))
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12f))
-        }
-    }
-
-    private fun loadOfferData() {
-        database.child(offerID).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                try {
-                    offer = snapshot.getValue(OffreModel::class.java)
-                    if (offer != null) {
-                        // Afficher les données de l'offre
-                        titleEditText.setText(offer?.nameoffre)
-                        descriptionEditText.setText(offer?.details)
-                        dureeModifEditText.setText(offer?.duration)
-                        latitude = offer?.latitude
-                        longitude = offer?.longitude
-
-                        // Charger l'image (utilisez une bibliothèque comme Glide)
-                        Glide.with(this@EditOfferActivity)
-                            .load(offer?.pictureUrl)
-                            .into(uploadedImageView)
-
-                        // Positionner la carte
-                        val mapFragment = supportFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
-                        mapFragment.getMapAsync { googleMap ->
-                            val position = LatLng(offer?.latitude ?: 0.0, offer?.longitude ?: 0.0)
-                            googleMap.addMarker(MarkerOptions().position(position).title("Position de l'offre"))
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 12f))
-                        }
-                    } else {
-                        Toast.makeText(this@EditOfferActivity, "Erreur : l'offre est nulle", Toast.LENGTH_SHORT).show()
-                    }
-                } catch (e: Exception) {
-                    Toast.makeText(this@EditOfferActivity, "Erreur de conversion des données", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@EditOfferActivity, "Erreur de chargement des données", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    private fun updateOffer() {
-        val name = titleEditText.text.toString()
-        val details = descriptionEditText.text.toString()
-        val duration = dureeModifEditText.text.toString()
-
-        if (offer != null) {
-            // Mettre à jour l'objet OffreModel
-            offer?.nameoffre = name
-            offer?.details = details
-            offer?.duration = duration
-            offer?.latitude = latitude
-            offer?.longitude = longitude
-
-            // Mettre à jour l'URL de l'image si une nouvelle image a été sélectionnée
-            if (imageUri != null) {
-                uploadImageToFirebase(imageUri!!) { imageUrl ->
-                    offer?.pictureUrl = imageUrl
-                    saveOfferToFirebase()
-                }
-            } else {
-                saveOfferToFirebase()
-            }
+        // Demander la permission d'accès à la localisation si ce n'est pas déjà fait
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_LOCATION_PERMISSION
+            )
         } else {
-            Toast.makeText(this, "Erreur : l'offre est nulle", Toast.LENGTH_SHORT).show()
+            // Obtenir la dernière position connue
+            getLastLocation()
         }
     }
 
-    private fun saveOfferToFirebase() {
-        database.child(offerID).setValue(offer).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Toast.makeText(this@EditOfferActivity, "Offre mise à jour avec succès", Toast.LENGTH_SHORT).show()
-                finish()
-            } else {
-                Toast.makeText(this@EditOfferActivity, "Erreur de mise à jour", Toast.LENGTH_SHORT).show()
+    private fun getLastLocation() {
+        try {
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location ->
+                    location?.let {
+                        updateMapLocation(it.latitude, it.longitude)
+                    }
+                }
+        } catch (e: SecurityException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun updateMapLocation(latitude: Double, longitude: Double) {
+        offerModel?.apply {
+            this.latitude = latitude
+            this.longitude = longitude
+
+            // Mettre à jour la carte avec la nouvelle position
+            val mapFragment = supportFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
+            mapFragment.getMapAsync { googleMap ->
+                val location = LatLng(latitude, longitude)
+                googleMap.addMarker(MarkerOptions().position(location).title("Marker"))
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
             }
         }
     }
 
-    private fun uploadImageToFirebase(imageUri: Uri, callback: (String) -> Unit) {
-        val storageReference = FirebaseStorage.getInstance().reference.child("offres/${UUID.randomUUID()}.jpg")
-        storageReference.putFile(imageUri).addOnSuccessListener { taskSnapshot ->
-            taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri ->
-                callback(uri.toString())
+    private fun saveOfferChanges() {
+        offerModel?.apply {
+            nameoffre = titleEditText.text.toString()
+            details = descriptionEditText.text.toString()
+            duration = durationEditText.text.toString()
+            // TODO: Mettre à jour latitude et longitude si modifiées
+        }
+
+        // Sauvegarder l'offre modifiée, par exemple dans Firebase
+        // Exemple: FirebaseDatabase.getInstance().getReference("offres").child(offerModel.offerID).setValue(offerModel)
+    }
+
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_LOCATION_PERMISSION -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    getLastLocation()
+                }
+                return
             }
-        }.addOnFailureListener {
-            Toast.makeText(this, "Échec du téléchargement de l'image", Toast.LENGTH_SHORT).show()
+            else -> {
+                // Ignore all other requests.
+            }
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
-            imageUri = data.data
-            Glide.with(this).load(imageUri).into(uploadedImageView)
-        }
+    companion object {
+        private const val REQUEST_LOCATION_PERMISSION = 1
+    }
+
+    override fun onMapReady(p0: GoogleMap) {
+        TODO("Not yet implemented")
     }
 }
 
