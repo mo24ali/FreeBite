@@ -2,318 +2,191 @@
 
 package com.example.freebite2.ui.fragment
 
-import android.Manifest
-import android.app.AlertDialog
-import android.app.ProgressDialog
-import android.content.ContentValues
-import android.content.pm.PackageManager
-import android.location.Location
+import android.app.Activity
+import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
+import android.widget.ImageButton
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.freebite2.R
 import com.example.freebite2.model.OffreModel
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.firebase.auth.FirebaseAuth
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import java.util.UUID
 
-class EditOffreActivity : AppCompatActivity(), OnMapReadyCallback {
+class EditOfferActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var editTextNameOffre: EditText
-    private lateinit var editTextDetailsOffre: EditText
-    private lateinit var editTextDurationOffre: EditText
-    private lateinit var imageViewOffer: ImageView
-    private lateinit var buttonSelectImage: Button
-    private lateinit var buttonSaveOffre: Button
+    private val PICK_IMAGE_REQUEST = 1
 
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var googleMap: GoogleMap
-    private lateinit var dialogueProgress: ProgressDialog
-
+    private lateinit var database: DatabaseReference
+    private lateinit var offerID: String
     private var offer: OffreModel? = null
+
+    private lateinit var titleEditText: TextInputEditText
+    private lateinit var descriptionEditText: TextInputEditText
+    private lateinit var dureeModifEditText: TextInputEditText
+    private lateinit var uploadedImageView: ImageButton
+    private lateinit var saveButton: MaterialButton
+    private lateinit var mapView: SupportMapFragment
+    private var latitude: Double? = null
+    private var longitude: Double? = null
     private var imageUri: Uri? = null
-    private var imageUploadOffre: Uri? = null
-    private lateinit var auth: FirebaseAuth
-
-    private val requestCameraPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-        if (permissions[Manifest.permission.CAMERA] == true && permissions[Manifest.permission.WRITE_EXTERNAL_STORAGE] == true) {
-            pickImageCamera()
-        } else {
-            Toast.makeText(requireContext(), "Camera & Storage permissions are required", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private val requestStoragePermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-        if (granted) {
-            pickImageGallery()
-        } else {
-            Toast.makeText(requireContext(), "Storage permission is required", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private val cameraActivityResultLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-        if (success) {
-            imageUri?.let { uploadImageToFirebase(it) }
-        } else {
-            Toast.makeText(requireContext(), "Camera capture failed", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private val galleryActivityResultLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        if (uri != null) {
-            imageUri = uri
-            uploadImageToFirebase(uri)
-        }
-    }
-
-    private val PERMISSIONS_REQUEST_CODE = 100
-    private val REQUIRED_PERMISSIONS = arrayOf(
-        Manifest.permission.CAMERA,
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            offer = it.getParcelable("offer")
+        setContentView(R.layout.activity_edit_offer)
+
+        // Initialisation des vues
+        titleEditText = findViewById(R.id.titleEditText)
+        descriptionEditText = findViewById(R.id.descriptionEditText)
+        dureeModifEditText = findViewById(R.id.DureeModifEditText)
+        uploadedImageView = findViewById(R.id.uploadedImageView)
+        saveButton = findViewById(R.id.btnsubmit)
+        mapView = supportFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
+        mapView.getMapAsync(this)
+
+        // Initialisation de Firebase
+        database = FirebaseDatabase.getInstance().getReference("offres")
+
+        // Récupérer l'ID de l'offre passée en argument
+        offerID = intent.getStringExtra("offerID") ?: ""
+
+        // Charger les données de l'offre
+        loadOfferData()
+
+        // Sauvegarder les modifications
+        saveButton.setOnClickListener {
+            updateOffer()
+        }
+
+        // Choisir une image
+        uploadedImageView.setOnClickListener {
+            val intent = Intent()
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent, "Sélectionnez une image"), PICK_IMAGE_REQUEST)
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_edit_offre, container, false)
-
-        editTextNameOffre = view.findViewById(R.id.editTextNameOffre)
-        editTextDetailsOffre = view.findViewById(R.id.editTextDetailsOffre)
-        editTextDurationOffre = view.findViewById(R.id.editTextDurationOffre)
-        imageViewOffer = view.findViewById(R.id.imageViewOffer)
-        buttonSelectImage = view.findViewById(R.id.buttonSelectImage)
-        buttonSaveOffre = view.findViewById(R.id.buttonSaveOffre)
-
-        dialogueProgress = ProgressDialog(requireContext())
-        dialogueProgress.setMessage("Uploading Image...")
-        dialogueProgress.setCancelable(false)
-
-        auth = FirebaseAuth.getInstance()
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-
-        if (!hasPermissions()) {
-            requestPermissions(REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE)
+    override fun onMapReady(googleMap: GoogleMap) {
+        googleMap.setOnMapClickListener { latLng ->
+            latitude = latLng.latitude
+            longitude = latLng.longitude
+            googleMap.clear()
+            googleMap.addMarker(MarkerOptions().position(latLng).title("Position de l'offre"))
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12f))
         }
-
-
-
-        offer?.let {
-            editTextNameOffre.setText(it.nameoffre)
-            editTextDetailsOffre.setText(it.details)
-            editTextDurationOffre.setText(it.duration)
-            Glide.with(this).load(it.pictureUrl).into(imageViewOffer)
-        }
-
-        buttonSelectImage.setOnClickListener {
-            imagePickDialog()
-        }
-
-        buttonSaveOffre.setOnClickListener {
-            saveOfferChanges()
-        }
-
-        return view
     }
 
-    private fun hasPermissions(): Boolean {
-        for (permission in REQUIRED_PERMISSIONS) {
-            if (ContextCompat.checkSelfPermission(requireContext(), permission) != PackageManager.PERMISSION_GRANTED) {
-                return false
-            }
-        }
-        return true
-    }
+    private fun loadOfferData() {
+        database.child(offerID).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                try {
+                    offer = snapshot.getValue(OffreModel::class.java)
+                    if (offer != null) {
+                        // Afficher les données de l'offre
+                        titleEditText.setText(offer?.nameoffre)
+                        descriptionEditText.setText(offer?.details)
+                        dureeModifEditText.setText(offer?.duration)
+                        latitude = offer?.latitude
+                        longitude = offer?.longitude
 
-    private fun imagePickDialog() {
-        val options = arrayOf("Camera", "Gallery")
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Choose Image From")
-        builder.setItems(options) { _, which ->
-            when (which) {
-                0 -> {
-                    Log.d(ContentValues.TAG, "imagePickDialog: Camera Clicked")
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        pickImageCamera()
+                        // Charger l'image (utilisez une bibliothèque comme Glide)
+                        Glide.with(this@EditOfferActivity)
+                            .load(offer?.pictureUrl)
+                            .into(uploadedImageView)
+
+                        // Positionner la carte
+                        val mapFragment = supportFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
+                        mapFragment.getMapAsync { googleMap ->
+                            val position = LatLng(offer?.latitude ?: 0.0, offer?.longitude ?: 0.0)
+                            googleMap.addMarker(MarkerOptions().position(position).title("Position de l'offre"))
+                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 12f))
+                        }
                     } else {
-                        requestCameraPermissions.launch(
-                            arrayOf(
-                                Manifest.permission.CAMERA,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE
-                            )
-                        )
+                        Toast.makeText(this@EditOfferActivity, "Erreur : l'offre est nulle", Toast.LENGTH_SHORT).show()
                     }
-                }
-                1 -> {
-                    Log.d(ContentValues.TAG, "imagePickDialog: Gallery Clicked")
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        pickImageGallery()
-                    } else {
-                        requestStoragePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    }
+                } catch (e: Exception) {
+                    Toast.makeText(this@EditOfferActivity, "Erreur de conversion des données", Toast.LENGTH_SHORT).show()
                 }
             }
-        }
-        builder.show()
-    }
 
-    private fun pickImageCamera() {
-        val values = ContentValues()
-        values.put(MediaStore.Images.Media.TITLE, "New Picture")
-        values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera")
-        imageUri = requireActivity().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-        imageUri?.let { cameraActivityResultLauncher.launch(it) }
-    }
-
-    private fun pickImageGallery() {
-        galleryActivityResultLauncher.launch("image/*")
-    }
-
-    private fun uploadImageToFirebase(uri: Uri) {
-        val userId = auth.currentUser?.uid ?: return
-        val storageReference = FirebaseStorage.getInstance().getReference("offer_images/${UUID.randomUUID()}.jpg")
-
-        dialogueProgress.show()
-
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                storageReference.putFile(uri).await()
-                val downloadUri = storageReference.downloadUrl.await()
-                imageUploadOffre = downloadUri
-                withContext(Dispatchers.Main) {
-                    Glide.with(this@EditOffreFragment).load(imageUri).into(imageViewOffer)
-                    dialogueProgress.dismiss()
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "Failed to upload image: ${e.message}", Toast.LENGTH_SHORT).show()
-                    dialogueProgress.dismiss()
-                }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@EditOfferActivity, "Erreur de chargement des données", Toast.LENGTH_SHORT).show()
             }
-        }
+        })
     }
 
-    private fun saveOfferChanges() {
-        val userId = auth.currentUser?.uid ?: return
+    private fun updateOffer() {
+        val name = titleEditText.text.toString()
+        val details = descriptionEditText.text.toString()
+        val duration = dureeModifEditText.text.toString()
 
-        val title = editTextNameOffre.text.toString().trim()
-        val description = editTextDetailsOffre.text.toString().trim()
-        val duration = editTextDurationOffre.text.toString().trim()
+        if (offer != null) {
+            // Mettre à jour l'objet OffreModel
+            offer?.nameoffre = name
+            offer?.details = details
+            offer?.duration = duration
+            offer?.latitude = latitude
+            offer?.longitude = longitude
 
-        if (title.isEmpty() || description.isEmpty() || duration.isEmpty() || imageUploadOffre == null) {
-            Toast.makeText(requireContext(), "Please fill in all fields and select an image", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
-                    if (location != null) {
-                        val updatedOffer = offer?.copy(
-                            nameoffre = title,
-                            details = description,
-                            duration = duration,
-                            latitude = location.latitude,
-                            longitude = location.longitude,
-                            pictureUrl = imageUploadOffre.toString()
-                        )
-
-                        val offerRef = FirebaseDatabase.getInstance().getReference("offres").child(offer?.offerID ?: return@addOnSuccessListener)
-                        offerRef.setValue(updatedOffer)
-                            .addOnSuccessListener {
-                                Toast.makeText(requireContext(), "Offer updated successfully", Toast.LENGTH_SHORT).show()
-                                activity?.supportFragmentManager?.popBackStack()
-                            }
-                            .addOnFailureListener { e ->
-                                Toast.makeText(requireContext(), "Failed to update offer: ${e.message}", Toast.LENGTH_SHORT).show()
-                            }
-                    } else {
-                        Toast.makeText(requireContext(), "Failed to get location", Toast.LENGTH_SHORT).show()
-                    }
+            // Mettre à jour l'URL de l'image si une nouvelle image a été sélectionnée
+            if (imageUri != null) {
+                uploadImageToFirebase(imageUri!!) { imageUrl ->
+                    offer?.pictureUrl = imageUrl
+                    saveOfferToFirebase()
                 }
-                .addOnFailureListener { e ->
-                    Toast.makeText(requireContext(), "Failed to get location: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-        } else {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_CODE)
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSIONS_REQUEST_CODE) {
-            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                getCurrentLocation()
             } else {
-                Toast.makeText(requireContext(), "Permissions required", Toast.LENGTH_SHORT).show()
+                saveOfferToFirebase()
             }
-        }
-    }
-
-    override fun onMapReady(map: GoogleMap) {
-        googleMap = map
-        getCurrentLocation()
-    }
-
-    private fun getCurrentLocation() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
-                    if (location != null) {
-                        val latLng = LatLng(location.latitude, location.longitude)
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-                        googleMap.addMarker(MarkerOptions().position(latLng).title("Votre offre"))
-                    }
-                }
         } else {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_CODE)
+            Toast.makeText(this, "Erreur : l'offre est nulle", Toast.LENGTH_SHORT).show()
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(offer: OffreModel) = EditOffreFragment().apply {
-            arguments = Bundle().apply {
-                putParcelable("offer", offer)
+    private fun saveOfferToFirebase() {
+        database.child(offerID).setValue(offer).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(this@EditOfferActivity, "Offre mise à jour avec succès", Toast.LENGTH_SHORT).show()
+                finish()
+            } else {
+                Toast.makeText(this@EditOfferActivity, "Erreur de mise à jour", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun uploadImageToFirebase(imageUri: Uri, callback: (String) -> Unit) {
+        val storageReference = FirebaseStorage.getInstance().reference.child("offres/${UUID.randomUUID()}.jpg")
+        storageReference.putFile(imageUri).addOnSuccessListener { taskSnapshot ->
+            taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri ->
+                callback(uri.toString())
+            }
+        }.addOnFailureListener {
+            Toast.makeText(this, "Échec du téléchargement de l'image", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+            imageUri = data.data
+            Glide.with(this).load(imageUri).into(uploadedImageView)
         }
     }
 }
+
+

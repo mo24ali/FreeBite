@@ -91,6 +91,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.freebite2.adapter.OffersAdapter
 import com.example.freebite2.databinding.ActivityUserOffersBinding
 import com.example.freebite2.model.OffreModel
+import com.example.freebite2.ui.fragment.EditOfferActivity
 import com.example.freebite2.ui.fragment.OffreDetailsFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
