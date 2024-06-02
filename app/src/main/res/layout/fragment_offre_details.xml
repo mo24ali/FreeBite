@@ -8,7 +8,7 @@
     tools:context=".ui.fragment.OffreDetailsFragment">
 
     <androidx.constraintlayout.motion.widget.MotionLayout
-        android:background="@drawable/back"
+        android:background="@color/light_grey"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutDescription="@xml/profil_fragment_scene">
@@ -29,7 +29,7 @@
                 android:scaleType="centerCrop"
                 android:shadowColor="@color/black"
                 android:shadowRadius="99"
-                app:srcCompat="@drawable/profileiamge"
+                app:srcCompat="@drawable/placeholder"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -65,6 +65,7 @@
                 android:padding="8dp">
 
                 <TextView
+                    android:layout_marginLeft="10dp"
                     android:id="@+id/offreName"
                     style="@style/generalTextSubtitleStyle"
                     android:text="offre" />
@@ -74,10 +75,12 @@
                     style="@style/dividerStyle" />
 
                 <TextView
+                    android:layout_marginLeft="10dp"
                     style="@style/generalTextSubtitleStyle"
                     android:text="Description de l'offre" />
 
                 <TextView
+                    android:layout_marginLeft="10dp"
                     android:id="@+id/descritptionRepas"
                     style="@style/generalTextHintStyle"
                     android:text="Sample description" />
@@ -87,10 +90,12 @@
                     style="@style/dividerStyle" />
 
                 <TextView
+                    android:layout_marginLeft="10dp"
                     style="@style/generalTextSubtitleStyle"
                     android:text="Propriétaire de l'offre" />
 
                 <TextView
+                    android:layout_marginLeft="10dp"
                     android:id="@+id/providerTextView"
                     style="@style/generalTextHintStyle"
                     android:text="provider" />
@@ -99,11 +104,19 @@
                     android:id="@+id/divider3"
                     style="@style/dividerStyle" />
 
-                <fragment
-                    android:id="@+id/offerPosition"
-                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp" />
+                    android:layout_height="200dp"
+                    app:cardCornerRadius="10dp">
+
+                    <fragment
+                        android:id="@+id/offerPosition"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </androidx.cardview.widget.CardView>
 
                 <View
                     android:id="@+id/divider4"

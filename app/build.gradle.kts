@@ -8,6 +8,7 @@ plugins {
     id("com.github.ben-manes.versions")
     id("kotlin-kapt")
 
+
 }
 
 
@@ -104,13 +105,16 @@ dependencies {
     // implementation("com.google.android.datatransport:transport-api:3.0.1")
     implementation("com.google.firebase:firebase-storage-ktx:21.0.0")
     implementation(libs.androidx.recyclerview)
+    implementation(libs.generativeai)
     val lottieVersion = "6.4.0"
     implementation ("com.airbnb.android:lottie:$lottieVersion")
     implementation(libs.picasso)
 
     implementation("androidx.core:core:1.6.0")
+    implementation("androidx.core:core-ktx:1.7.0")
    // implementation(libs.glide)
     //kapt(libs.glide.compiler)
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 
     implementation("com.google.firebase:firebase-auth:21.0.1")
     implementation ("com.google.firebase:firebase-database:20.0.3")

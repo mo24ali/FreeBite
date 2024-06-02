@@ -85,6 +85,7 @@ package com.example.freebite2.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.freebite2.adapter.OffersAdapter
@@ -92,7 +93,11 @@ import com.example.freebite2.databinding.ActivityUserOffersBinding
 import com.example.freebite2.model.OffreModel
 import com.example.freebite2.ui.fragment.OffreDetailsFragment
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class UserOffersActivity : AppCompatActivity(), OffersAdapter.OnOfferClickListener {
 
@@ -157,13 +162,18 @@ class UserOffersActivity : AppCompatActivity(), OffersAdapter.OnOfferClickListen
 
     override fun onEditOfferClick(offer: OffreModel) {
         // Navigate to an edit screen
-  /*      val editOfferIntent = Intent(this, EditOfferActivity::class.java)
-        editOfferIntent.putExtra("offer", offer)
-        startActivity(editOfferIntent)*/
+        val intent1 = Intent(this, EditOfferActivity::class.java)
+        intent1.putExtra("offer", offer)
+        startActivity(intent1)
     }
 
     override fun onDeleteOfferClick(offer: OffreModel) {
         // Remove offer from the database
+        if (offer.offerID == null) {
+            Log.e("UserOffersActivity", "Offer ID is null")
+            return
+        }
         database?.child(offer.offerID!!)?.removeValue()
+
     }
 }

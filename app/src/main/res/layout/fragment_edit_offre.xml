@@ -6,6 +6,7 @@
     android:padding="16dp">
 
     <LinearLayout
+        android:id="@+id/linearLayoutEditOffre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 

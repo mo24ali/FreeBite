@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="accueilFragment"
+            type="com.example.freebite2.ui.fragment.AccueilFragment" />
     </data>
 
     <FrameLayout

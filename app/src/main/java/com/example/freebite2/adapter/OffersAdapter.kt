@@ -29,54 +29,56 @@ class OffersAdapter(private var offers: List<OffreModel>, private val onOfferCli
             binding.offre = offer
             binding.executePendingBindings()
 
-            // Load the image using Glide
+            // Charger l'image en utilisant Glide
             offer.pictureUrl?.let { url ->
                 Glide.with(binding.imageIv.context)
                     .load(url)
                     .into(binding.imageIv)
             }
 
-            // Set click listener
+            // Définir un écouteur de clic sur l'élément entier
             binding.root.setOnClickListener {
                 onOfferClickListener.onOfferClick(offer)
             }
-            // Set click listener for the more button
+
+            // Définir un écouteur de clic pour le bouton "plus"
             binding.moreBtn.setOnClickListener { view ->
-                // Create a PopupMenu
+                // Créer un PopupMenu
                 val popup = PopupMenu(view.context, view)
-                // Inflate the menu from xml
+                // Gonfler le menu depuis le fichier XML
                 popup.menuInflater.inflate(R.menu.offer_menu, popup.menu)
-                // Set menu item click listener
+                // Définir un écouteur pour les clics sur les éléments du menu
                 popup.setOnMenuItemClickListener { menuItem ->
                     when (menuItem.itemId) {
                         R.id.edit_offer -> {
-                            // Handle edit offer
+                            // Gérer l'édition de l'offre
                             onOfferClickListener.onEditOfferClick(offer)
                             true
                         }
                         R.id.delete_offer -> {
-                            // Handle delete offer
+                            // Gérer la suppression de l'offre
                             onOfferClickListener.onDeleteOfferClick(offer)
                             true
                         }
                         else -> false
                     }
                 }
-                // Show the PopupMenu
+                // Afficher le PopupMenu
                 popup.show()
             }
         }
-
     }
+
+    // Mettre à jour la liste des offres
     fun updateList(newOfferList: List<OffreModel>) {
         offers = newOfferList
         notifyDataSetChanged()
     }
-    // Interface to handle item clicks
+
+    // Interface pour gérer les clics sur les éléments
     interface OnOfferClickListener {
         fun onOfferClick(offer: OffreModel)
         fun onEditOfferClick(offer: OffreModel)
         fun onDeleteOfferClick(offer: OffreModel)
     }
 }
-

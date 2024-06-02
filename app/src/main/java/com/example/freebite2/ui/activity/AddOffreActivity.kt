@@ -136,9 +136,9 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun imagePickDialog() {
-        val options = arrayOf("Camera", "Gallery")
+        val options = arrayOf("Camera", "Gallerie")
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Choose Image From")
+        builder.setTitle("Choisir d'après la gallerie ou la caméra")
         builder.setItems(options) { _, which ->
             when (which) {
                 0 -> {
@@ -210,8 +210,9 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun saveOfferToFirebase() {
         val userId = auth.currentUser?.uid
+        val userName = auth.currentUser?.displayName
         if (userId == null) {
-            Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Utilisateur non authentifié", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -220,10 +221,9 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
         val duration = binding.horaireRepas.text.toString().trim()
 
         if (title.isEmpty() || description.isEmpty() || duration.isEmpty() || imageUploadOffre == null) {
-            Toast.makeText(this, "Please fill in all fields and select an image", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Veuillez remplir tous les champs et sélectionner une image", Toast.LENGTH_SHORT).show()
             return
         }
-        dialogue_Progress.show()
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.lastLocation
@@ -236,32 +236,30 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
                             duration = duration,
                             latitude = location.latitude,
                             longitude = location.longitude,
-                            pictureUrl = imageUploadOffre.toString()
+                            pictureUrl = imageUploadOffre.toString(),
+                            provider = null, // À remplir avec les données du fournisseur si nécessaire
+                            offerID = null // Cet ID sera automatiquement généré par Firebase
                         )
 
                         val offreRef = FirebaseDatabase.getInstance().getReference("offres").push()
+                        offreModel.offerID = offreRef.key
                         offreRef.setValue(offreModel)
                             .addOnSuccessListener {
-                                Toast.makeText(this, "Offer added successfully", Toast.LENGTH_SHORT).show()
-                                dialogue_Progress.dismiss()
+                                Toast.makeText(this, "Offre ajoutée avec succès", Toast.LENGTH_SHORT).show()
                                 finish()
                             }
                             .addOnFailureListener { e ->
-                                Toast.makeText(this, "Failed to add offer: ${e.message}", Toast.LENGTH_SHORT).show()
-                                dialogue_Progress.dismiss()
+                                Toast.makeText(this, "Échec de l'ajout de l'offre: ${e.message}", Toast.LENGTH_SHORT).show()
                             }
                     } else {
-                        Toast.makeText(this, "Failed to get location", Toast.LENGTH_SHORT).show()
-                        dialogue_Progress.dismiss()
+                        Toast.makeText(this, "Échec de la récupération de la localisation", Toast.LENGTH_SHORT).show()
                     }
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(this, "Failed to get location: ${e.message}", Toast.LENGTH_SHORT).show()
-                    dialogue_Progress.dismiss()
+                    Toast.makeText(this, "Échec de la récupération de la localisation: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         } else {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_CODE)
-            dialogue_Progress.dismiss()
         }
     }
 

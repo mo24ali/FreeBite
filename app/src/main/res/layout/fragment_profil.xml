@@ -92,7 +92,7 @@
         android:layout_marginStart="@dimen/margin_16"
         android:fontFamily="@font/poppins_medium"
         android:text="@string/profile_name"
-        android:textColor="@color/btn"
+        android:textColor="@color/bottom"
         android:textSize="@dimen/font_28"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/profile_status"
@@ -104,7 +104,7 @@
         android:layout_height="@dimen/zero_dimens"
         android:layout_marginBottom="@dimen/margin_16"
         android:text="@string/profile_status"
-        android:textColor="@color/btn"
+        android:textColor="@color/bottom"
         android:textSize="@dimen/font_16"
         app:layout_constraintBottom_toBottomOf="@id/app_bar_container"
         app:layout_constraintStart_toStartOf="@id/profileSmya" />
@@ -159,12 +159,7 @@
                         style="@style/generalTextSubtitleStyle"
                         android:text="@string/user_email" />
 
-                    <TextView
-                        android:id="@+id/action_ProfilFragment_to_ChangeEmailFragment"
-                        style="@style/generalTextHintStyle"
-                        android:text="@string/phone_number_desc"
-                        android:clickable="true"
-                        />
+
 
                     <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
 
@@ -182,6 +177,7 @@
                             <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
     -->
                         <LinearLayout
+
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
@@ -194,7 +190,7 @@
                             <TextView
 
                                 style="@style/generalTextHintStyle"
-                                android:text="@string/tap_to_manage_your_offers"
+                                android:text=" "
                                 />
 
                         </LinearLayout>
@@ -202,90 +198,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                style="@style/generalLinearLayoutStyle"
-                android:layout_marginTop="@dimen/margin_8">
 
-                <TextView
-                    style="@style/generalTextTitleStyle"
-                    android:layout_marginBottom="@dimen/margin_8"
-                    android:text="@string/settings" />
-
-                <TextView
-                    style="@style/generalTextSubtitleStyle"
-                    android:drawablePadding="@dimen/margin_16"
-                    android:text="@string/notifications_and_sounds"
-                    app:drawableStartCompat="@drawable/ic_notifications"
-                    app:drawableTint="@color/md_theme_light_outline" />
-
-                <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
-
-                <TextView
-                    style="@style/generalTextSubtitleStyle"
-                    android:drawablePadding="@dimen/margin_16"
-                    android:text="@string/privacy_and_security"
-                    app:drawableStartCompat="@drawable/ic_lock"
-                    app:drawableTint="@color/md_theme_light_outline" />
-
-                <!--
-                  <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
-
-                               <TextView
-                                        style="@style/generalTextSubtitleStyle"
-                                        android:drawablePadding="@dimen/margin_16"
-                                        android:text="@string/data_and_storage"
-                                        app:drawableStartCompat="@drawable/ic_storage"
-                                   app:drawableTint="@color/md_theme_light_outline" />
-
-                    <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
-
-                       <TextView
-                     style="@style/generalTextSubtitleStyle"
-                     android:drawablePadding="@dimen/margin_16"
-                     android:text="@string/chat_settings"
-                     app:drawableStartCompat="@drawable/ic_chat"
-                     app:drawableTint="@color/md_theme_light_outline" />
-
-
-                   <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
-
-                    <TextView
-                        style="@style/generalTextSubtitleStyle"
-                        android:drawablePadding="@dimen/margin_16"
-                        android:text="@string/stickers_and_emoji"
-                        app:drawableStartCompat="@drawable/ic_emoji"
-                        app:drawableTint="@color/md_theme_light_outline" />
-
-                    <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
-
-                    <TextView
-                        style="@style/generalTextSubtitleStyle"
-                        android:drawablePadding="@dimen/margin_16"
-                        android:text="@string/chat_folders"
-                        app:drawableStartCompat="@drawable/ic_folder"
-                        app:drawableTint="@color/md_theme_light_outline" />
-
-                    <com.google.android.material.divider.MaterialDivider
-                        style="@style/dividerStyle"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        style="@style/generalTextSubtitleStyle"
-                        android:drawablePadding="@dimen/margin_16"
-                        android:text="@string/devices"
-                        app:drawableStartCompat="@drawable/ic_devices"
-                        app:drawableTint="@color/md_theme_light_outline" />
-    -->
-                <com.google.android.material.divider.MaterialDivider style="@style/dividerStyle" />
-
-                <TextView
-                    style="@style/generalTextSubtitleStyle"
-                    android:drawablePadding="@dimen/margin_16"
-                    android:text="@string/language"
-                    app:drawableStartCompat="@drawable/ic_language"
-                    app:drawableTint="@color/md_theme_light_outline" />
-
-            </LinearLayout>
             <!--
                 <LinearLayout
                     style="@style/generalLinearLayoutStyle"

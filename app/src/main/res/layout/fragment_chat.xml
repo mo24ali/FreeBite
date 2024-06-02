@@ -1,0 +1,63 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.ChatFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="FreeBite"
+        app:titleTextColor="@android:color/white" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/profile_image"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="8dp"
+        tools:ignore="MissingClass" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/username"
+        android:textSize="18sp"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:layout_toEndOf="@id/profile_image"
+        android:layout_toRightOf="@id/profile_image"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_alignTop="@id/profile_image"
+        android:layout_marginTop="8dp"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="8dp"
+        tools:listitem="@layout/chat_item_left"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="8dp"
+        tools:listitem="@layout/chat_item_right"
+        />
+</RelativeLayout>

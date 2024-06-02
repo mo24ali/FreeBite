@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.freebite2.R
+import com.example.freebite2.model.User
+
 
 class UserListAdapter(private val userList: List<User>) : RecyclerView.Adapter<UserViewHolder>() {
 
@@ -28,9 +30,9 @@ class UserListAdapter(private val userList: List<User>) : RecyclerView.Adapter<U
 class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(user: User) {
-        itemView.findViewById<TextView>(R.id.nameTextView).text = user.name
+        itemView.findViewById<TextView>(R.id.nameTextView).text = user.nom
         itemView.findViewById<TextView>(R.id.emailTextView).text = user.email
     }
 }
 
-data class User(val name: String, val email: String)
+

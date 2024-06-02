@@ -103,8 +103,18 @@ class OffreDetailsFragment : Fragment(), OnMapReadyCallback {
         }
         // Set click listener for take offer button
         takeOfferBtn.setOnClickListener {
-            takeOffer(offre)
+            val chatFragment = ChatFragment().apply {
+                arguments = Bundle().apply {
+                    putString("userid", offre?.providerID)
+                }
+            }
+
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fhome, chatFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
+
     }
 
     private fun takeOffer(offre: OffreModel) {
