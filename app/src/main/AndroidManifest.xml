@@ -31,21 +31,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Freebite2"
         tools:targetApi="31">
-        <activity
-            android:name=".ui.activity.ChatActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activity.MessageActivity"
-            android:exported="false" />
+
+
         <activity
             android:name=".ui.activity.AdminOffreViewActivity"
             android:exported="false" />
+
         <activity
-            android:name=".ManageUsersActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activity.EditOfferActivity"
-            android:exported="false" />
+            android:name=".ui.fragment.EditOfferActivity"
+            android:exported="false"
+            />
+
         <activity
             android:name=".ui.activity.UserOffersActivity"
             android:exported="false" />
