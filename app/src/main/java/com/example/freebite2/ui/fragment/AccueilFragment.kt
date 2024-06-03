@@ -64,7 +64,6 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
         offreAdapter = OffersAdapter(offreList ?: mutableListOf(), this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = offreAdapter
-        resetFilters()
 
         binding.addOffreButton.setOnClickListener {
             val addIntent = Intent(activity, AddOffreActivity::class.java)
