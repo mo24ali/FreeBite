@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.freebite2.R
@@ -93,7 +92,7 @@ class UserOffersActivity : AppCompatActivity(), OffersAdapterUser.OnOfferClickLi
         val titre: EditText = view.findViewById(R.id.titleEditText)
         val details: EditText = view.findViewById(R.id.descriptionEditText)
         val duration: EditText = view.findViewById(R.id.durationEditText)
-        val imageUrl: ImageView = view.findViewById(R.id.uploadedImageView)
+        val imageUrl: EditText = view.findViewById(R.id.uploadedImageView)
         val btnUpdate: Button = view.findViewById(R.id.modifyOfferPic)
 
         titre.setText(offer.nameoffre)
