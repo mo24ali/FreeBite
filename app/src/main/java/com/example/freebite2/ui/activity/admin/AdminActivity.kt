@@ -1,21 +1,15 @@
-package com.example.freebite2.ui.activity
+package com.example.freebite2.ui.activity.admin
 
 import UserAdapter
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.freebite2.R
 import com.example.freebite2.databinding.ActivityAdminBinding
 import com.example.freebite2.model.User
+import com.example.freebite2.ui.activity.MainActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 class AdminActivity : AppCompatActivity() {
 
@@ -23,7 +17,7 @@ class AdminActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference
     private lateinit var userAdapter: UserAdapter
-    private lateinit var recyclerView: RecyclerView
+
 
     private var userList: MutableList<User> = mutableListOf()
 
@@ -35,10 +29,6 @@ class AdminActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
 
-        // Assurez-vous que R.id.recyclerViewUserList est bien défini dans activity_admin.xml
-        recyclerView = findViewById(R.id.recyclerViewUsers) ?: throw NullPointerException("RecyclerView not found")
-
-        setupUserRecyclerView()
         // Handle logout
         binding.logOutB.setOnClickListener {
             auth.signOut()
@@ -51,22 +41,35 @@ class AdminActivity : AppCompatActivity() {
             finish()
         }
 
-        // Handle View Offers button click
-        binding.viewDonorRequestsCard.setOnClickListener {
 
-            viewOffers()
+        binding.managePost.setOnClickListener {
+            startActivity(Intent(this, ManagePostActivity::class.java))
+
+        }
+        binding.manageUser.setOnClickListener {
+
+            startActivity(Intent(this, ManageUserActivity::class.java))
+
+        }
+        binding.manageNotification.setOnClickListener {
+
+            startActivity(Intent(this, ManageNotificationActivity::class.java))
+        }
+        binding.manageRaport.setOnClickListener {
+
+            startActivity(Intent(this, ManageRaportActivity::class.java))
         }
 
         // Handle Manage User Accounts button click
-        binding.manageUserAccountsCard.setOnClickListener {
-            startActivity(Intent(this, ManageUsersActivity::class.java))
-        }
+      //  binding.manageUserAccountsCard.setOnClickListener {
+     //       startActivity(Intent(this, ManageUsersActivity::class.java))
+    //    }
 
         // Setup RecyclerView for users
-        setupUserRecyclerView()
+       // setupUserRecyclerView()
     }
 
-    private fun setupUserRecyclerView() {
+ /*   private fun setupUserRecyclerView() {
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewUsers)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -93,5 +96,5 @@ class AdminActivity : AppCompatActivity() {
 
     private fun viewOffers() {
         // Handle viewing offers
-    }
+    }   */
 }

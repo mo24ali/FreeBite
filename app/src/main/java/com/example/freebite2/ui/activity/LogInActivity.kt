@@ -7,6 +7,7 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.freebite2.databinding.ActivityLogInBinding
+import com.example.freebite2.ui.activity.admin.AdminActivity
 import com.example.freebite2.util.SharedPreferencesUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException

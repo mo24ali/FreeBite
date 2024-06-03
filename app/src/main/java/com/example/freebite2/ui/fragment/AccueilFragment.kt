@@ -51,6 +51,10 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        resetFilters()
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -60,6 +64,7 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
         offreAdapter = OffersAdapter(offreList ?: mutableListOf(), this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = offreAdapter
+        resetFilters()
 
         binding.addOffreButton.setOnClickListener {
             val addIntent = Intent(activity, AddOffreActivity::class.java)
