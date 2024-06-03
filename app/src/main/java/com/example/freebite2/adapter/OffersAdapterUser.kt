@@ -59,10 +59,11 @@ class OffersAdapterUser(
             }
         }
 
+        // Méthode showPopupMenu dans OfferViewHolder
         private fun showPopupMenu(view: View, offer: OffreModel) {
-            val popup = PopupMenu(view.context, view)
-            popup.inflate(R.menu.offer_menu)
-            popup.setOnMenuItemClickListener { menuItem ->
+            val popupMenu = PopupMenu(view.context, view)
+            popupMenu.menuInflater.inflate(R.menu.offer_menu, popupMenu.menu)
+            popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.edit_offer -> {
                         listener.onEditOfferClick(offer)
@@ -75,7 +76,7 @@ class OffersAdapterUser(
                     else -> false
                 }
             }
-            popup.show()
+            popupMenu.show()
         }
     }
 }

@@ -3,6 +3,9 @@ package com.example.freebite2.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.freebite2.R
@@ -10,13 +13,14 @@ import com.example.freebite2.adapter.OffersAdapterUser
 import com.example.freebite2.databinding.ActivityUserOffersBinding
 import com.example.freebite2.model.OffreModel
 import com.example.freebite2.ui.fragment.OffreDetailsFragment
-import com.example.freebite2.ui.fragment.UpdateOffreFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.orhanobut.dialogplus.DialogPlus
+import com.orhanobut.dialogplus.ViewHolder
 
 class UserOffersActivity : AppCompatActivity(), OffersAdapterUser.OnOfferClickListener {
 
@@ -79,14 +83,24 @@ class UserOffersActivity : AppCompatActivity(), OffersAdapterUser.OnOfferClickLi
     }
 
     override fun onEditOfferClick(offer: OffreModel) {
-        val fragment = UpdateOffreFragment()
-        val bundle = Bundle()
-        bundle.putParcelable("offre", offer)
-        fragment.arguments = bundle
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fhomeUpdateOffer, fragment)
-            .addToBackStack(null)
-            .commit()
+        val dialogPlus = DialogPlus.newDialog(this)
+            .setContentHolder(ViewHolder(R.layout.update_popup))
+            .setExpanded(true, 1200)
+            .create()
+
+        val view = dialogPlus.holderView
+
+        val titre: EditText = view.findViewById(R.id.titleEditText)
+        val details: EditText = view.findViewById(R.id.descriptionEditText)
+        val duration: EditText = view.findViewById(R.id.durationEditText)
+        val imageUrl: ImageView = view.findViewById(R.id.uploadedImageView)
+        val btnUpdate: Button = view.findViewById(R.id.modifyOfferPic)
+
+        titre.setText(offer.nameoffre)
+        details.setText(offer.details)
+        duration.setText(offer.duration)
+        imageUrl.setText(offer.pictureUrl)
+        dialogPlus.show()
     }
 
     override fun onDeleteOfferClick(offer: OffreModel) {
