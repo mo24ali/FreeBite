@@ -9,8 +9,8 @@ import com.example.freebite2.R
 import com.example.freebite2.adapter.OffersAdapterUser
 import com.example.freebite2.databinding.ActivityUserOffersBinding
 import com.example.freebite2.model.OffreModel
-import com.example.freebite2.ui.activity.EditOfferActivity
 import com.example.freebite2.ui.fragment.OffreDetailsFragment
+import com.example.freebite2.ui.fragment.UpdateOffreFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -39,7 +39,7 @@ class UserOffersActivity : AppCompatActivity(), OffersAdapterUser.OnOfferClickLi
         binding.recyclerViewUserOffers.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewUserOffers.adapter = offreAdapter
         binding.backBtn3.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, MainHomeActivity::class.java))
         }
         val currentUser = auth?.currentUser
 
@@ -73,21 +73,25 @@ class UserOffersActivity : AppCompatActivity(), OffersAdapterUser.OnOfferClickLi
         offreDetailsFragment.arguments = bundle
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fhome, offreDetailsFragment)
+            .replace(R.id.fhomeUpdateOffer, offreDetailsFragment)
             .addToBackStack(null)
             .commit()
     }
 
     override fun onEditOfferClick(offer: OffreModel) {
-        val intent = Intent(this@UserOffersActivity, EditOfferActivity::class.java).apply {
-            putExtra("offer", offer)
-        }
-        startActivity(intent)
+        val fragment = UpdateOffreFragment()
+        val bundle = Bundle()
+        bundle.putParcelable("offre", offer)
+        fragment.arguments = bundle
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fhomeUpdateOffer, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onDeleteOfferClick(offer: OffreModel) {
         if (offer.offerID == null) {
-            Log.e("UserOffersActivity", "Offer ID is null")
+            Log.e("UserOffersActivity", "L'ID de l'offre est null")
             return
         }
         database?.child(offer.offerID!!)?.removeValue()

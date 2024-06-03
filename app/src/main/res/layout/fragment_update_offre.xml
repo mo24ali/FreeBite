@@ -3,12 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/fhomeUpdateOffer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layoutDescription="@xml/profil_fragment_scene"
     android:background="@color/white"
-    tools:context=".ui.activity.EditOfferActivity">
+    app:layoutDescription="@xml/profil_fragment_scene"
+    tools:context=".ui.fragment.UpdateOffreFragment">
 
     <RelativeLayout
         android:id="@+id/titleactionbaradpost"
@@ -23,14 +23,14 @@
             android:layout_height="48dp"
             android:layout_centerVertical="true"
             android:background="@color/transparent"
-            android:contentDescription="hhhh"
+            android:contentDescription="Retour"
             android:src="@drawable/back_arrow" />
 
         <TextView
             android:id="@+id/textviewadpost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Modifier la publication"
+            android:text="Modifier l'offre"
             android:layout_centerInParent="true"
             android:textColor="@color/black"
             android:textSize="20dp"/>
@@ -174,7 +174,7 @@
         android:layout_height="wrap_content"
         android:minHeight="60dp"
         android:layout_marginTop="20dp"
-        android:text="Modifier la publication"
+        android:text="Modifier l'offre"
         android:background="@drawable/btn"
         android:textSize="16sp"
         android:textStyle="bold"

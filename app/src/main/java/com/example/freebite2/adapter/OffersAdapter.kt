@@ -76,7 +76,13 @@ class OffersAdapter(private var offers: List<OffreModel>, private val onOfferCli
     // Interface pour gérer les clics sur les éléments
     interface OnOfferClickListener {
         fun onOfferClick(offer: OffreModel)
-        fun onEditOfferClick(offer: OffreModel)
-        fun onDeleteOfferClick(offer: OffreModel)
+
     }
+
+    companion object {
+        fun notifyDataSetChanged(adapter: RecyclerView.Adapter<*>) {
+            adapter.notifyDataSetChanged()
+        }
+    }
+
 }

@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -34,6 +36,8 @@ import com.google.firebase.database.ValueEventListener
 class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
 
     private var _binding: FragmentAccueilBinding? = null
+    private lateinit var handler: Handler
+    private lateinit var runnableCode: Runnable
     private val binding get() = _binding ?: throw IllegalStateException("Binding is not initialized")
     private var offreAdapter: OffersAdapter? = null
     private var offreList: MutableList<OffreModel>? = null
@@ -47,6 +51,20 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        handler = Handler(Looper.getMainLooper())
+        runnableCode = object : Runnable {
+            override fun run() {
+                // Refresh your RecyclerView here
+                // For example:
+                binding.recyclerView.adapter?.let { OffersAdapter.notifyDataSetChanged(it) }
+
+                // Schedule next execution in 10 seconds
+                handler.postDelayed(this, 10000)
+            }
+        }
+
+        // Start auto-refresh
+        startAutoRefresh()
         _binding = FragmentAccueilBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -246,47 +264,14 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
         })
     }
 
-    override fun onEditOfferClick(offer: OffreModel) {
-        val currentUserUid = auth.currentUser?.uid
-        if (currentUserUid == offer.providerID) {
-            val editFragment = EditOffreFragment()
-            val bundle = Bundle()
-            bundle.putParcelable("offer", offer)
-            editFragment.arguments = bundle
 
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fhome, editFragment)
-                .addToBackStack(null)
-                .commit()
-        } else {
-            Toast.makeText(requireContext(), "Cela est valable juste pour le propriétaire de poste", Toast.LENGTH_SHORT).show()
-        }
+
+    private fun startAutoRefresh() {
+        handler.postDelayed(runnableCode, 10000)
     }
 
-    override fun onDeleteOfferClick(offer: OffreModel) {
-        val currentUserUid = auth.currentUser?.uid
-        if (currentUserUid == null) {
-            Toast.makeText(requireContext(), "User not authenticated", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if (offer.offerID == null) {
-            Toast.makeText(requireContext(), "L'identifiant de l'offre est invalide", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if (currentUserUid == offer.providerID) {
-            // Allow deleting the offer
-            database?.child(offer.offerID.toString())?.removeValue()
-                ?.addOnSuccessListener {
-                    Toast.makeText(requireContext(), "Offre supprimée", Toast.LENGTH_SHORT).show()
-                }
-                ?.addOnFailureListener {
-                    Toast.makeText(requireContext(), "Échec de la suppression de l'offre: ${it.message}", Toast.LENGTH_SHORT).show()
-                }
-        } else {
-            Toast.makeText(requireContext(), "Vous n'êtes pas autorisé à supprimer cette offre", Toast.LENGTH_SHORT).show()
-        }
+    private fun stopAutoRefresh() {
+        handler.removeCallbacks(runnableCode)
     }
 
 
@@ -294,6 +279,7 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        stopAutoRefresh()
         _binding = null
         offreAdapter = null
         offreList = null

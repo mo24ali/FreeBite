@@ -9,7 +9,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.freebite2.adapter.OffersAdapter
 import com.example.freebite2.databinding.ActivityManagePostBinding
 import com.example.freebite2.model.OffreModel
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class ManagePostActivity : AppCompatActivity(), OffersAdapter.OnOfferClickListener {
 
@@ -87,12 +91,12 @@ class ManagePostActivity : AppCompatActivity(), OffersAdapter.OnOfferClickListen
         Toast.makeText(this, "Clicked on ${offer.nameoffre}", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onEditOfferClick(offer: OffreModel) {
+     fun onEditOfferClick(offer: OffreModel) {
         // Handle edit offer click
         Toast.makeText(this, "Edit ${offer.nameoffre}", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onDeleteOfferClick(offer: OffreModel) {
+     fun onDeleteOfferClick(offer: OffreModel) {
         // Handle delete offer click
         Toast.makeText(this, "Delete ${offer.nameoffre}", Toast.LENGTH_SHORT).show()
     }

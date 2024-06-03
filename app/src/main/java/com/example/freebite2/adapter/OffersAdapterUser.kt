@@ -40,22 +40,22 @@ class OffersAdapterUser(
         fun bind(offer: OffreModel) {
             binding.offre = offer
             binding.executePendingBindings()
+
+            // Charge l'image avec Glide
             offer.pictureUrl?.let { url ->
                 Glide.with(binding.imageIv.context)
                     .load(url)
                     .into(binding.imageIv)
             }
-            // Définir un écouteur de clic sur l'élément entier
+
+            // Définit un écouteur de clic sur l'élément entier
             binding.root.setOnClickListener {
                 listener.onOfferClick(offer)
             }
 
+            // Gère le clic sur le bouton "Plus" pour afficher le menu contextuel
             binding.moreBtnUser.setOnClickListener {
                 showPopupMenu(it, offer)
-            }
-
-            itemView.setOnClickListener {
-                listener.onOfferClick(offer)
             }
         }
 
