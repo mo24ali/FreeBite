@@ -13,7 +13,6 @@ data class OffreModel(
     var latitude: Double? = null,
     var longitude: Double? = null,
     var pictureUrl: String? = null,
-    var provider: User? = null
 ) :  Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),

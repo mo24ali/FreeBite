@@ -2,10 +2,8 @@ package com.example.freebite2.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.freebite2.R
 import com.example.freebite2.databinding.RecyclerItemBinding
 import com.example.freebite2.model.OffreModel
 
@@ -42,7 +40,7 @@ class OffersAdapter(private var offers: List<OffreModel>, private val onOfferCli
             }
 
             // Définir un écouteur de clic pour le bouton "plus"
-            binding.moreBtn.setOnClickListener { view ->
+            /*binding.moreBtnUser.setOnClickListener { view ->
                 // Créer un PopupMenu
                 val popup = PopupMenu(view.context, view)
                 // Gonfler le menu depuis le fichier XML
@@ -65,7 +63,7 @@ class OffersAdapter(private var offers: List<OffreModel>, private val onOfferCli
                 }
                 // Afficher le PopupMenu
                 popup.show()
-            }
+            }*/
         }
     }
 

@@ -119,7 +119,10 @@ class ProfilFragment : Fragment() {
            databaseReference.get().addOnSuccessListener { dataSnapshot ->
                val profileImageUrl = dataSnapshot.child("profileImage").getValue(String::class.java)
                if (!profileImageUrl.isNullOrEmpty()) {
-                   Glide.with(this).load(profileImageUrl).into(binding.profilePic)
+                   // Check if the fragment is added to an activity and the activity is not null
+                   if (isAdded && activity != null) {
+                       Glide.with(this).load(profileImageUrl).into(binding.profilePic)
+                   }
                }
            }.addOnFailureListener { e ->
                Toast.makeText(requireContext(), "Failed to load profile info: ${e.message}", Toast.LENGTH_SHORT).show()

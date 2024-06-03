@@ -14,7 +14,7 @@ class OffreViewModel : ViewModel() {
 
         db.collection("Users").document(providerID).get().addOnSuccessListener { document ->
             val user = document.toObject(User::class.java)
-            offre.provider = user
+            //offre.provider = user
             onComplete(user)
         }.addOnFailureListener {
             onComplete(null)

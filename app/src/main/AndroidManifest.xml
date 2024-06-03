@@ -31,29 +31,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Freebite2"
         tools:targetApi="31">
-        <activity
-            android:name=".ui.activity.admin.ManageRaportActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activity.admin.ManageNotificationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activity.admin.ManagePostActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activity.admin.ManageUserActivity"
-            android:exported="false" />
+
+
         <activity
             android:name=".ui.activity.AdminOffreViewActivity"
             android:exported="false" />
+
         <activity
-            android:name=".ui.fragment.EditOfferActivity"
-            android:exported="false" />
+            android:name=".ui.activity.EditOfferActivity"
+            android:exported="false"
+            />
+
         <activity
             android:name=".ui.activity.UserOffersActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.admin.AdminActivity"
+            android:name=".ui.activity.AdminActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.ProtoTypeActivity2"
@@ -73,6 +66,17 @@
             android:name=".ui.activity.AddOffreActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.activity.SplashActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Freebite2">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ui.activity.MapActivity"
             android:exported="false"
             android:theme="@style/Theme.Freebite2" />
@@ -90,6 +94,10 @@
             android:foregroundServiceType="location" />
 
         <activity
+            android:name=".ui.activity.DashboardActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Freebite2" />
+        <activity
             android:name=".ui.activity.LogInActivity"
             android:exported="false"
             android:theme="@style/Theme.Freebite2" />
@@ -105,17 +113,6 @@
             android:name=".ui.activity.MainHomeActivity"
             android:exported="false"
             android:theme="@style/Theme.Freebite2" />
-        <activity
-            android:name=".ui.activity.SplashActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Freebite2">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

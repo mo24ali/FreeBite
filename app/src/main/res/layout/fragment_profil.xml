@@ -187,11 +187,7 @@
                                 android:id="@+id/button_my_offers"
                                 style="@style/generalTextSubtitleStyle"
                                 android:text="@string/manage" />
-                            <TextView
 
-                                style="@style/generalTextHintStyle"
-                                android:text=" "
-                                />
 
                         </LinearLayout>
                     </LinearLayout>

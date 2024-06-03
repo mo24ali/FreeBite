@@ -237,7 +237,6 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
                             latitude = location.latitude,
                             longitude = location.longitude,
                             pictureUrl = imageUploadOffre.toString(),
-                            provider = null, // À remplir avec les données du fournisseur si nécessaire
                             offerID = null // Cet ID sera automatiquement généré par Firebase
                         )
 

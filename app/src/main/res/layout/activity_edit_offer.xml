@@ -35,13 +35,15 @@
             android:textColor="@color/black"
             android:textSize="20dp"/>
 
+
+
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/white"
+        android:background="@color/light_grey"
         app:layout_constraintTop_toBottomOf="@id/titleactionbaradpost"
         app:layout_constraintBottom_toTopOf="@id/btnsubmit">
 
@@ -51,7 +53,23 @@
 
             <!-- Image View for displaying uploaded image -->
 
-            <ImageButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/modifyOfferPic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="19dp"
+                android:clickable="true"
+                android:src="@drawable/baseline_add_a_photo_24"
+                app:backgroundTint="@color/light_grey"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.87"
+                app:layout_constraintStart_toStartOf="parent"
+
+                app:layout_constraintVertical_bias="0.92" />
+
+            <ImageView
                 android:id="@+id/uploadedImageView"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
@@ -77,7 +95,7 @@
                     android:id="@+id/titleEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Title"/>
+                    android:hint="TitreReas"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -140,7 +158,7 @@
                         android:id="@+id/mapView"
                         android:name="com.google.android.gms.maps.SupportMapFragment"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="200dp"/>
 
                 </androidx.cardview.widget.CardView>
             </com.google.android.material.card.MaterialCardView>

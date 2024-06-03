@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_toEndOf="@id/imageIv"
-                android:layout_toStartOf="@+id/moreBtn"
+                android:layout_toStartOf="@+id/ghaM7totale"
                 android:ellipsize="end"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -58,7 +58,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="3dp"
-                android:layout_toStartOf="@id/moreBtn"
+                android:layout_toStartOf="@id/ghaM7totale"
                 android:layout_toEndOf="@+id/imageIv"
                 android:ellipsize="end"
                 android:textSize="16sp"
@@ -67,11 +67,10 @@
                 android:text="@{offre.details}" />
 
             <ImageButton
-                android:id="@+id/moreBtn"
+                android:id="@+id/ghaM7totale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:src="@drawable/fav"
                 android:clickable="true"
                 android:layout_alignParentEnd="true"
                 android:background="@android:color/transparent"/>
@@ -84,7 +83,7 @@
                 android:src="@{offre.pictureUrl}"
                 android:layout_marginEnd="10dp"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@id/moreBtn"
+                android:layout_below="@id/ghaM7totale"
                 android:visibility="gone"
                 android:background="@android:color/transparent"/>
 
