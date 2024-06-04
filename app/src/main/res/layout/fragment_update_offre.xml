@@ -152,20 +152,6 @@
                 app:cardCornerRadius="5dp"
                 app:cardUseCompatPadding="true">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/mapCardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    app:cardCornerRadius="10dp">
-
-                    <fragment
-                        android:id="@+id/offerPositionUpdate"
-                        android:name="com.google.android.gms.maps.SupportMapFragment"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        tools:context=".ui.activity.EditOfferActivity" />
-
-                </androidx.cardview.widget.CardView>
 
             </com.google.android.material.card.MaterialCardView>
 
