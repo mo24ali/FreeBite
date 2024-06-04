@@ -31,23 +31,23 @@
             android:layout_height="wrap_content"
             android:alpha="0.6"
             android:text="date"
-            android:textSize="15sp"
+
             android:layout_marginStart="85dp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/usernameTv"
-            android:layout_width="300dp"
+            android:layout_width="126dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="26dp"
             android:layout_marginEnd="16dp"
             android:layout_toEndOf="@id/profileImageIvNotif"
             android:ellipsize="end"
-            android:textSize="16sp"
             android:maxLines="1"
             android:text="John Doe"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+           />
 
         <!-- Texte du nombre d'avertissements -->
         <TextView
@@ -61,7 +61,6 @@
             android:layout_marginTop="4dp"
             android:text="Avertissements: 3"
             android:maxLines="1"
-            android:textSize="16sp"
             android:ellipsize="end"
             android:textColor="@android:color/black" />
         <TextView
@@ -73,34 +72,34 @@
             android:layout_marginStart="16dp"
             android:alpha="0.7"
             android:text="Sender type"
-            android:textSize="14sp"
             android:textColor="@android:color/black" />
 
         <!-- Bouton pour supprimer le compte -->
+
+        <!-- Bouton pour bloquer le compte -->
         <Button
             android:id="@+id/deleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
-            android:text="Supprimer"
-            android:textSize="14sp"
+            android:layout_marginEnd="17dp"
             android:backgroundTint="@color/md_theme_dark_errorContainer"
-            android:textColor="@android:color/white" />
+            android:text="Supprimer"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
 
-        <!-- Bouton pour bloquer le compte -->
         <Button
             android:id="@+id/seenButton"
-            android:layout_width="wrap_content"
+            android:layout_width="69dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/deleteButton"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
-            android:text="Vu"
-            android:textSize="14sp"
             android:backgroundTint="@color/green"
-            android:textColor="@android:color/white" />
+            android:text="Vu"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

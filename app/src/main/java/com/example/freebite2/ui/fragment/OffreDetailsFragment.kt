@@ -141,7 +141,8 @@ class OffreDetailsFragment : Fragment(), OnMapReadyCallback {
             "message" to message,
             "timestamp" to LocalDate.now().toString(),
             "type" to "offer_taken",
-            "OfferID" to off.offerID
+            "OfferID" to off.offerID,
+            "senderId" to FirebaseAuth.getInstance().currentUser?.displayName.toString(),
         )
 
         // Add the notification to the Firebase database
