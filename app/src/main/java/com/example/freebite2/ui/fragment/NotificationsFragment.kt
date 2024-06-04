@@ -45,10 +45,35 @@ class NotificationsFragment : Fragment() {
         binding.recyclerView2.adapter = notificationsAdapter
     }
 
-    private fun fetchNotifications() {
+    /*private fun fetchNotifications() {
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
         if (currentUserId != null) {
             database.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    notificationList.clear()
+                    for (dataSnapshot in snapshot.children) {
+                        val notification = dataSnapshot.getValue(Notification::class.java)
+                        if (notification != null) {
+                            // Assigner l'ID de la notification à la clé du dataSnapshot
+                            notification.id = dataSnapshot.key.toString()
+                            notificationList.add(notification)
+                        }
+                    }
+                    Log.d("NotificationsFragment", "Récupéré ${notificationList.size} notifications")
+                    notificationsAdapter.notifyDataSetChanged() // Forcer la mise à jour de l'UI
+                    toggleEmptyView()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("NotificationsFragment", "Erreur de la base de données : ${error.message}")
+                }
+            })
+        }
+    }*/
+    private fun fetchNotifications() {
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+        if (currentUserId != null) {
+            database.child(currentUserId).addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     notificationList.clear()
                     for (dataSnapshot in snapshot.children) {
