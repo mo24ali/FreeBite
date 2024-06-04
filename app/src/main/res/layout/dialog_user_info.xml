@@ -19,7 +19,8 @@
             android:layout_height="100dp"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
-            android:src="@drawable/profile_holder_user" />
+            app:imageUrl="@{user.profilePictureUrl}"
+             />
 
         <TextView
             android:id="@+id/userName"

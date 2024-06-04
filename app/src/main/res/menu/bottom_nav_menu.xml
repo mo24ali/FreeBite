@@ -12,9 +12,9 @@
         android:id="@+id/nav_map"
         android:icon="@drawable/map"/>
 
-    <item android:title="Discussions"
+    <item android:title="Notifications"
         android:id="@+id/nav_discussions"
-        android:icon="@drawable/discussions"/>
+        android:icon="@drawable/notifications"/>
 
     <item android:title="Profil"
         android:id="@+id/nav_profil"

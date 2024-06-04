@@ -20,11 +20,13 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.time.LocalDate
 
 class OffreDetailsFragment : Fragment(), OnMapReadyCallback {
 
@@ -103,29 +105,52 @@ class OffreDetailsFragment : Fragment(), OnMapReadyCallback {
         }
         // Set click listener for take offer button
         takeOfferBtn.setOnClickListener {
-            val chatFragment = ChatFragment().apply {
-                arguments = Bundle().apply {
-                    putString("userid", offre?.providerID)
-                }
-            }
-
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fhome, chatFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
+            takeOffer(offre)
         }
 
     }
 
-    private fun takeOffer(offre: OffreModel) {
+    /*private fun takeOffer(offre: OffreModel) {
         // Remove offer from Firebase
         databaseReference.child(offre.offerID.toString()).removeValue().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Toast.makeText(context, "Offer taken!", Toast.LENGTH_SHORT).show()
                 requireActivity().onBackPressed()
                 // If you need to update UI or perform additional actions after taking the offer, do it here
+
+                // Create a new notification in the Firebase database
+                val notificationMessage = "User ${FirebaseAuth.getInstance().currentUser?.displayName} wants to take your offer ${offre.nameoffre}"
+                createNotification(offre.providerID.toString(), notificationMessage)
+
             } else {
                 Toast.makeText(context, "Failed to take offer. Try again.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }*/
+    private fun takeOffer(offre: OffreModel) {
+        // Do not remove offer from Firebase immediately
+        // Instead, create a new notification in the Firebase database
+        val notificationMessage = "User ${FirebaseAuth.getInstance().currentUser?.displayName} veut prendre ton repas ${offre.nameoffre}"
+        Toast.makeText(context, "Demande envoyé!", Toast.LENGTH_SHORT).show()
+        createNotification(offre.providerID.toString(), notificationMessage,offre)
+    }
+
+    private fun createNotification(userId: String, message: String,off:OffreModel) {
+        // Create a new notification object
+        val notification = mapOf(
+            "message" to message,
+            "timestamp" to LocalDate.now().toString(),
+            "type" to "offer_taken",
+            "OfferID" to off.offerID
+        )
+
+        // Add the notification to the Firebase database
+        val notificationsRef = FirebaseDatabase.getInstance().getReference("Notifications")
+        notificationsRef.child(userId).push().setValue(notification).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d("Firebase", "Notification created successfully")
+            } else {
+                Log.e("Firebase", "Failed to create notification: ${task.exception?.message}")
             }
         }
     }

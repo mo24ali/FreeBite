@@ -8,7 +8,7 @@
     tools:context=".ui.fragment.OffreDetailsFragment">
 
     <androidx.constraintlayout.motion.widget.MotionLayout
-        android:background="@color/light_grey"
+        android:background="@color/bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutDescription="@xml/profil_fragment_scene">

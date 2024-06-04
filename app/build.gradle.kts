@@ -106,6 +106,7 @@ dependencies {
     implementation("com.google.firebase:firebase-storage-ktx:21.0.0")
     implementation(libs.androidx.recyclerview)
     implementation(libs.generativeai)
+    implementation(libs.androidx.datastore.core.android)
     val lottieVersion = "6.4.0"
     implementation ("com.airbnb.android:lottie:$lottieVersion")
     implementation(libs.picasso)

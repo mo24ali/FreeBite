@@ -37,8 +37,8 @@ class UsersAdapter(private var users: List<User>, private val onUserClickListene
                 popup.menuInflater.inflate(R.menu.user_menu, popup.menu)
                 popup.setOnMenuItemClickListener { menuItem ->
                     when (menuItem.itemId) {
-                        R.id.edit_user -> {
-                            onUserClickListener.onEditUserClick(user)
+                        R.id.warn_user -> {
+                            onUserClickListener.onSendWarningToUserClick(user)
                             true
                         }
                         R.id.delete_user -> {
@@ -60,7 +60,7 @@ class UsersAdapter(private var users: List<User>, private val onUserClickListene
 
     interface OnUserClickListener {
         fun onUserClick(user: User)
-        fun onEditUserClick(user: User)
+        fun onSendWarningToUserClick(user: User)
         fun onDeleteUserClick(user: User)
     }
 }

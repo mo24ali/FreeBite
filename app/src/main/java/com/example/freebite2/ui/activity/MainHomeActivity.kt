@@ -15,7 +15,7 @@ class MainHomeActivity : AppCompatActivity() {
     private val accueilF = AccueilFragment()
     private val profilF = ProfilFragment()
     private val mapsF = MapsFragment()
-    private val discussionsF = DiscussionsFragment()
+    private val discussionsF = NotificationsFragment()
     private lateinit var binding: ActivityMainHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

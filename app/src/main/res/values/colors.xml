@@ -22,8 +22,7 @@
     <color name="low_dark">#7C000000</color>
     <color name="btn">#CEFAEF</color>
     <color name="back">#C7F0E4</color>
-    <color name="light_grey">#e4e4e4</color>
-
+    <color name="light_grey">#C3BCBC</color>
 
 <!--                 profile                     -->
     <color name="seed">#1D3557</color>
