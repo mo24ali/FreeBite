@@ -192,7 +192,7 @@ class ManageUserActivity : AppCompatActivity(), UsersAdapter.OnUserClickListener
             positiveButton.setOnClickListener {
                 val warningMessage = dialogBinding.warningMessage.text.toString()
 
-                // Create a new notification in Firebase Database
+            // Create a new notification in Firebase Database
                 val notificationRef = FirebaseDatabase.getInstance().getReference("Notifications").child(user.uid)
                 val notificationId = notificationRef.push().key
                 val notification = mapOf(

@@ -9,12 +9,14 @@
 
     <androidx.constraintlayout.motion.widget.MotionLayout
         android:background="@color/bottom"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutDescription="@xml/profil_fragment_scene">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/app_bar_container"
+            style="@style/generalLinearLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_container_height"
             app:layout_constraintEnd_toEndOf="parent"
@@ -25,15 +27,15 @@
                 android:id="@+id/offerPicDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:contentDescription="@null"
-                android:scaleType="centerCrop"
                 android:shadowColor="@color/black"
                 android:shadowRadius="99"
-                app:srcCompat="@drawable/placeholder"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/placeholder" />
 
 
 
@@ -49,6 +51,7 @@
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollViewOfferDetails"
+            style="@style/generalLinearLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/zero_dimens"
             android:scrollbars="none"
@@ -123,11 +126,19 @@
                     style="@style/dividerStyle" />
 
                 <Button
+                    android:visibility="visible"
                     android:id="@+id/takeOfferBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/prend_le_repas"
                     android:background="@drawable/btn" />
+                <Button
+                android:id="@+id/manageMyOffreBtn"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_mon_offre"
+                android:background="@drawable/btn" />
 
             </LinearLayout>
 

@@ -92,7 +92,7 @@
         android:layout_marginStart="@dimen/margin_16"
         android:fontFamily="@font/poppins_medium"
         android:text="@string/profile_name"
-        android:textColor="@color/bottom"
+        android:textColor="@color/md_theme_light_onPrimary"
         android:textSize="@dimen/font_28"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/profile_status"

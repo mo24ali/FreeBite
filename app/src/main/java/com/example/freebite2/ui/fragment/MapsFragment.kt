@@ -275,7 +275,7 @@ override fun onMarkerClick(marker: Marker): Boolean {
                         )
 
                         if (distance <= maxDistance) {
-                            val bitmap = BitmapFactory.decodeResource(resources, R.drawable.map_marker).scale(90,90)
+                            val bitmap = BitmapFactory.decodeResource(resources, R.drawable.map_marker_user).scale(90,90)
                             val markerOptions = MarkerOptions()
                                 .position(userLocation)
                                 .title(/* title = */ username)

@@ -1,5 +1,6 @@
 package com.example.freebite2.ui.fragment
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.graphics.scale
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.freebite2.R
@@ -18,6 +20,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -61,11 +64,11 @@ class OffreDetailsFragment : Fragment(), OnMapReadyCallback {
         val descriptionTextView: TextView = binding.descritptionRepas
         val providerTextView: TextView = binding.providerTextView // Added providerTextView
         val providerUID = offre.providerID // Assuming you have the UID of the provider in offre model
-        val usersReference = FirebaseDatabase.getInstance().getReference("users").child(providerUID.toString())
+        val usersReference = FirebaseDatabase.getInstance().getReference("Users").child(providerUID.toString())
         usersReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    val providerName = dataSnapshot.child("name").value.toString()
+                    val providerName = dataSnapshot.child("nom").value.toString()
                     // Set provider name to TextView
                     providerTextView.text = providerName
                 } else {
@@ -159,7 +162,12 @@ class OffreDetailsFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
         val offerLocation = LatLng(offre.latitude!!, offre.longitude!!)
-        googleMap.addMarker(MarkerOptions().position(offerLocation).title(offre.nameoffre))
+        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.map_marker_logo).scale(90,90)
+                            val markerOptions = MarkerOptions()
+                                .position(offerLocation)
+                                .title(offre.nameoffre)
+                                .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+        googleMap.addMarker(markerOptions)
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(offerLocation, 15f))
     }
 }

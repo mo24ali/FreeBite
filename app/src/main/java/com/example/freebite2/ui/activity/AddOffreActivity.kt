@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.location.Location
 import android.net.Uri
 import android.os.Build
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.scale
 import com.bumptech.glide.Glide
 import com.example.freebite2.R
 import com.example.freebite2.databinding.ActivityAddOffreBinding
@@ -26,6 +28,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -284,8 +287,12 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
                 .addOnSuccessListener { location: Location? ->
                     if (location != null) {
                         val latLng = LatLng(location.latitude, location.longitude)
+                        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.map_marker_user).scale(100,100)
+                        val markerOptions = MarkerOptions().position(latLng)
+                            .title("Votre offre")
+                            .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
                         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-                        googleMap.addMarker(MarkerOptions().position(latLng).title("Votre offre"))
+                        googleMap.addMarker(markerOptions)
                     }
                 }
         } else {

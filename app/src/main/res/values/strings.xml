@@ -63,5 +63,6 @@
     <string name="proprietaire_de_l_offre">Proprietaire de l\'offre</string>
     <string name="tap_to_manage_your_offers">Cliquez pour manager tes offres</string>
     <string name="aucune_notification">Aucune notification</string>
+    <string name="edit_mon_offre">edit mon offre</string>
 
 </resources>

@@ -3,6 +3,7 @@ package com.example.freebite2.ui.activity
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
@@ -10,6 +11,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.graphics.scale
 import com.example.freebite2.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -19,6 +21,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -86,7 +89,11 @@ class MapActivity : AppCompatActivity() {
                             val currentLocation = LatLng(currentLat, currentLong)
                             map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
                             // Add a marker at the current location
-                            map.addMarker(MarkerOptions().position(currentLocation).title("Current Location"))
+                            val bitmap = BitmapFactory.decodeResource(resources, R.drawable.map_marker_logo).scale(90,90)
+                            val markerOptions = MarkerOptions().position(currentLocation)
+                                                           .title("Current Location")
+                                                           .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+                            map.addMarker(markerOptions)
                         }
                     } else {
                         Toast.makeText(this@MapActivity, "Echec d'obtenir ta position actuelle", Toast.LENGTH_SHORT).show()
