@@ -9,23 +9,34 @@
     </data>
 
     <LinearLayout
+        android:id="@+id/layoutManageOffre"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/light_grey"
         android:orientation="vertical">
         <ImageView
             android:id="@+id/backBtn3"
+            android:visibility="visible"
             style="@style/appBarIconsStyle"
             android:contentDescription="@null"
             android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <androidx.recyclerview.widget.RecyclerView
             android:clickable="true"
+            android:visibility="visible"
             android:id="@+id/recyclerViewUserOffers"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/recycler_item_user" />
+            tools:listitem="@layout/recycler_item_user" >
+
+        </androidx.recyclerview.widget.RecyclerView>
+        <FrameLayout
+            android:id="@+id/hoolde"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
     </LinearLayout>
 </layout>
