@@ -36,13 +36,7 @@
         app:layout_constraintStart_toStartOf="@id/app_bar_container"
         app:layout_constraintTop_toTopOf="@id/app_bar_container" />
 
-    <ImageView
-        android:id="@+id/backBtnProfile"
-        style="@style/appBarIconsStyle"
-        android:contentDescription="@null"
-        android:src="@drawable/ic_back"
-        app:layout_constraintStart_toStartOf="@id/app_bar_container"
-        app:layout_constraintTop_toTopOf="@id/app_bar_container" />
+
 
     <!--  <ImageView
           android:id="@+id/ic_more_vert"

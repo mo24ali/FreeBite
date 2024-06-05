@@ -17,7 +17,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import com.example.freebite2.R
 import com.example.freebite2.databinding.FragmentProfilBinding
 import com.example.freebite2.ui.activity.MainActivity
 import com.example.freebite2.ui.activity.UserOffersActivity
@@ -90,11 +89,7 @@ class ProfilFragment : Fragment() {
         binding.buttonMyOffers.setOnClickListener {
             navigateToUserOffers()
         }
-        binding.backBtnProfile.setOnClickListener {
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fhome, AccueilFragment())
-            transaction.commit()
-        }
+
 
 
         return binding.root
