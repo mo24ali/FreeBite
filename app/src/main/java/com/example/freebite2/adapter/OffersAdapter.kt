@@ -39,31 +39,7 @@ class OffersAdapter(private var offers: List<OffreModel>, private val onOfferCli
                 onOfferClickListener.onOfferClick(offer)
             }
 
-            // Définir un écouteur de clic pour le bouton "plus"
-            /*binding.moreBtnUser.setOnClickListener { view ->
-                // Créer un PopupMenu
-                val popup = PopupMenu(view.context, view)
-                // Gonfler le menu depuis le fichier XML
-                popup.menuInflater.inflate(R.menu.offer_menu, popup.menu)
-                // Définir un écouteur pour les clics sur les éléments du menu
-                popup.setOnMenuItemClickListener { menuItem ->
-                    when (menuItem.itemId) {
-                        R.id.edit_offer -> {
-                            // Gérer l'édition de l'offre
-                            onOfferClickListener.onEditOfferClick(offer)
-                            true
-                        }
-                        R.id.delete_offer -> {
-                            // Gérer la suppression de l'offre
-                            onOfferClickListener.onDeleteOfferClick(offer)
-                            true
-                        }
-                        else -> false
-                    }
-                }
-                // Afficher le PopupMenu
-                popup.show()
-            }*/
+
         }
     }
 
@@ -76,6 +52,7 @@ class OffersAdapter(private var offers: List<OffreModel>, private val onOfferCli
     // Interface pour gérer les clics sur les éléments
     interface OnOfferClickListener {
         fun onOfferClick(offer: OffreModel)
+
 
     }
 

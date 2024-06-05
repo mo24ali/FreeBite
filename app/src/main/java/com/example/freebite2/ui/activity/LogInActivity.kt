@@ -70,7 +70,7 @@ class LogInActivity : AppCompatActivity() {
     }
 
     private fun checkIfUserIsAdmin(email: String, password: String) {
-        if (email == "admin0@freebite.com" && password == "admin0123") {
+        if (email == "admin0@freebite.com" && password == "admin0123" ) {
             loginAdmin(email, password)
         } else {
             loginRegularUser(email, password)

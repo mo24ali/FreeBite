@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import java.time.LocalDate
 
 class ManageUserActivity : AppCompatActivity(), UsersAdapter.OnUserClickListener {
@@ -232,7 +233,10 @@ class ManageUserActivity : AppCompatActivity(), UsersAdapter.OnUserClickListener
     override fun onDeleteUserClick(user: User) {
         if (user.uid.isNotEmpty()) {
             val userRef = FirebaseDatabase.getInstance().getReference("Users").child(user.uid)
-            val offersRef = FirebaseDatabase.getInstance().getReference("Offers").orderByChild("providerID").equalTo(user.uid)
+            val offersRef = FirebaseDatabase.getInstance().getReference("offres").orderByChild("providerID").equalTo(user.uid)
+            val notifRef = FirebaseDatabase.getInstance().getReference("Notifications").child(user.uid)
+            val picLinkRef = FirebaseDatabase.getInstance().getReference("users").child(user.uid).child("profileImage")
+            val picStorageRef = FirebaseStorage.getInstance().getReference("profile_images/${user.uid}.jpg")
 
             // Suppression de l'utilisateur
             userRef.removeValue().addOnCompleteListener { userDeletionTask ->
@@ -241,19 +245,60 @@ class ManageUserActivity : AppCompatActivity(), UsersAdapter.OnUserClickListener
                     offersRef.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             val tasks = mutableListOf<Task<Void>>()
+                            val offerImageDeletionTasks = mutableListOf<Task<Void>>()
+
                             for (offerSnapshot in snapshot.children) {
+                                // Récupération des liens des images des offres
+                                val offerImageLink = offerSnapshot.child("pictureUrl").getValue(String::class.java)
+                                if (offerImageLink != null) {
+                                    val offerImageRef = FirebaseStorage.getInstance().getReferenceFromUrl(offerImageLink)
+                                    offerImageRef.delete().also { offerImageDeletionTasks.add(it) }
+                                }
                                 offerSnapshot.ref.removeValue().also { tasks.add(it) }
                             }
-                            Tasks.whenAll(tasks).addOnCompleteListener { offersDeletionTask ->
-                                if (offersDeletionTask.isSuccessful) {
-                                    // Si toutes les suppressions sont réussies
-                                    user.isSupprimer = true
-                                    userList?.remove(user)
-                                    usersAdapter?.notifyDataSetChanged()
-                                    Toast.makeText(this@ManageUserActivity, "Utilisateur et ses offres supprimés avec succès", Toast.LENGTH_SHORT).show()
+
+                            // Suppression des images des offres dans Firebase Storage
+                            Tasks.whenAll(offerImageDeletionTasks).addOnCompleteListener { offerImagesDeletionTask ->
+                                if (offerImagesDeletionTask.isSuccessful) {
+                                    Tasks.whenAll(tasks).addOnCompleteListener { offersDeletionTask ->
+                                        if (offersDeletionTask.isSuccessful) {
+                                            // Suppression des notifications de l'utilisateur
+                                            notifRef.removeValue().addOnCompleteListener { notifDeletionTask ->
+                                                if (notifDeletionTask.isSuccessful) {
+                                                    // Suppression de l'image de profil dans Firebase Storage
+                                                    picStorageRef.delete().addOnCompleteListener { picStorageDeletionTask ->
+                                                        if (picStorageDeletionTask.isSuccessful) {
+                                                            // Suppression du lien de l'image de profil dans Firebase Database
+                                                            picLinkRef.removeValue().addOnCompleteListener { picLinkDeletionTask ->
+                                                                if (picLinkDeletionTask.isSuccessful) {
+                                                                    // Si toutes les suppressions sont réussies
+                                                                    user.isSupprimer = true
+                                                                    userList?.remove(user)
+                                                                    usersAdapter?.notifyDataSetChanged()
+                                                                    Toast.makeText(this@ManageUserActivity, "Utilisateur, ses offres, images d'offres, notifications et image de profil supprimés avec succès", Toast.LENGTH_SHORT).show()
+                                                                } else {
+                                                                    Toast.makeText(this@ManageUserActivity, "La suppression du lien de l'image de profil de l'utilisateur a échoué", Toast.LENGTH_SHORT).show()
+                                                                    Log.e("DeleteUser", "La suppression du lien de l'image de profil de l'utilisateur a échoué")
+                                                                }
+                                                            }
+                                                        } else {
+                                                            Toast.makeText(this@ManageUserActivity, "La suppression de l'image de profil de l'utilisateur a échoué", Toast.LENGTH_SHORT).show()
+                                                            Log.e("DeleteUser", "La suppression de l'image de profil de l'utilisateur a échoué")
+                                                        }
+                                                    }
+                                                } else {
+                                                    Toast.makeText(this@ManageUserActivity, "La suppression des notifications de l'utilisateur a échoué", Toast.LENGTH_SHORT).show()
+                                                    Log.e("DeleteUser", "La suppression des notifications de l'utilisateur a échoué")
+                                                }
+                                            }
+                                        } else {
+                                            Toast.makeText(this@ManageUserActivity, "La suppression des offres de l'utilisateur a échoué", Toast.LENGTH_SHORT).show()
+                                            Log.e("DeleteUser", "La suppression des offres de l'utilisateur a échoué")
+                                        }
+                                    }
                                 } else {
-                                    Toast.makeText(this@ManageUserActivity, "La suppression des offres de l'utilisateur a échoué", Toast.LENGTH_SHORT).show()
-                                    Log.e("DeleteUser", "La suppression des offres de l'utilisateur a échoué")
+                                    Toast.makeText(this@ManageUserActivity, "La suppression des images des offres de l'utilisateur a échoué", Toast.LENGTH_SHORT).show()
+                                    Log.e("DeleteUser", "La suppression des images des offres de l'utilisateur a échoué")
                                 }
                             }
                         }
@@ -273,6 +318,10 @@ class ManageUserActivity : AppCompatActivity(), UsersAdapter.OnUserClickListener
             Log.e("DeleteUser", "L'UID de l'utilisateur est invalide")
         }
     }
+
+
+
+
 
 
 

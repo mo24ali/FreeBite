@@ -25,6 +25,9 @@ import com.example.freebite2.databinding.FragmentAccueilBinding
 import com.example.freebite2.model.OffreModel
 import com.example.freebite2.ui.activity.AddOffreActivity
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -55,15 +58,11 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
         runnableCode = object : Runnable {
             override fun run() {
                 // Refresh your RecyclerView here
-                // For example:
                 binding.recyclerView.adapter?.let { OffersAdapter.notifyDataSetChanged(it) }
-
-                // Schedule next execution in 10 seconds
                 handler.postDelayed(this, 10000)
             }
         }
 
-        // Start auto-refresh
         startAutoRefresh()
         _binding = FragmentAccueilBinding.inflate(inflater, container, false)
         return binding.root
@@ -73,12 +72,11 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
         super.onResume()
         resetFilters()
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         offreList = mutableListOf()
-
-        // Pass the fragment instance as the OnOfferClickListener
         offreAdapter = OffersAdapter(offreList ?: mutableListOf(), this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = offreAdapter
@@ -108,19 +106,15 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
             }
         })
 
-        // Initialize FusedLocationProviderClient
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-        // Check location permission
         checkLocationPermission()
 
-        // Set up filter icon click listener
         val filterIcon: ImageView = view.findViewById(R.id.filterIcon)
         filterIcon.setOnClickListener {
             showFilterMenu(it)
         }
 
-        // Set up search view listener
         val searchView: SearchView = view.findViewById(R.id.searchView)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -143,23 +137,51 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
         } else {
-            // Permissions already granted, fetch location
             fetchUserLocation()
         }
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                fetchUserLocation()
+            } else {
+                Toast.makeText(requireContext(), "Location permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun fetchUserLocation() {
-        try {
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
-                    if (location != null) {
-                        userLocation = location
-                    } else {
-                        Toast.makeText(requireContext(), "Unable to get location. Make sure location is enabled on the device.", Toast.LENGTH_SHORT).show()
-                    }
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    userLocation = location
+                } else {
+                    requestNewLocationData()
                 }
-        } catch (e: SecurityException) {
-            e.printStackTrace()
+            }.addOnFailureListener {
+                Toast.makeText(requireContext(), "Failed to get location", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun requestNewLocationData() {
+        val locationRequest = LocationRequest.create().apply {
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            interval = 10000
+            fastestInterval = 5000
+        }
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+    }
+
+    private val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            val location = locationResult.lastLocation
+            if (location != null) {
+                userLocation = location
+                fusedLocationClient.removeLocationUpdates(this)
+            }
         }
     }
 
@@ -232,43 +254,18 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
     }
 
     override fun onOfferClick(offer: OffreModel) {
-        // Handle item click here, for example:
         val offreDetailsFragment = OffreDetailsFragment()
 
-        // Pass the OffreModel object as an argument using a Bundle
         val bundle = Bundle()
         bundle.putParcelable("offre", offer)
         offreDetailsFragment.arguments = bundle
 
-        // Use the FragmentManager to begin a FragmentTransaction, replace the current fragment with OffreDetailsFragment, and commit the transaction
         parentFragmentManager.beginTransaction()
-            .replace(R.id.fhome, offreDetailsFragment) // Replace 'container' with the id of your FrameLayout or the container for your fragments
+            .replace(R.id.fhome, offreDetailsFragment)
             .addToBackStack(null)
             .commit()
         Toast.makeText(requireContext(), "Clicked on ${offer.nameoffre}", Toast.LENGTH_SHORT).show()
     }
-
-    private fun loadOffers() {
-        database?.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                offreList?.clear()
-                for (dataSnapshot in snapshot.children) {
-                    val offre = dataSnapshot.getValue(OffreModel::class.java)
-                    offre?.let {
-                        offreList?.add(it)
-                    }
-                }
-                offreAdapter?.notifyDataSetChanged()
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.e("DatabaseError", error.message)
-                Toast.makeText(requireContext(), "Failed to load offers", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-
 
     private fun startAutoRefresh() {
         handler.postDelayed(runnableCode, 10000)
@@ -278,9 +275,6 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
         handler.removeCallbacks(runnableCode)
     }
 
-
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         stopAutoRefresh()
@@ -288,5 +282,6 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
         offreAdapter = null
         offreList = null
         database = null
+        fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 }

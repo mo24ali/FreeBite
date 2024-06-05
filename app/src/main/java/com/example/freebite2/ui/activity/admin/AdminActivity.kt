@@ -4,7 +4,6 @@ package com.example.freebite2.ui.activity.admin
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.freebite2.adapter.OffersAdapter
 import com.example.freebite2.databinding.ActivityAdminBinding
 import com.example.freebite2.ui.activity.MainActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -79,14 +78,14 @@ class AdminActivity : AppCompatActivity() {
             startActivity(Intent(this, ManageUserActivity::class.java))
 
         }
-        binding.manageNotification.setOnClickListener {
+        /*binding.manageNotification.setOnClickListener {
 
             startActivity(Intent(this, ManageNotificationActivity::class.java))
-        }
-        binding.manageRaport.setOnClickListener {
+        }*/
+       /* binding.manageRaport.setOnClickListener {
 
             startActivity(Intent(this, ManageRaportActivity::class.java))
-        }
+        }*/
 
 
     }

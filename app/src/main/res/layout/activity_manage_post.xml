@@ -20,6 +20,14 @@
             android:layout_marginBottom="5dp"
             android:background="@color/btn"
             android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/backBtn3Admin"
+                android:visibility="visible"
+                style="@style/appBarIconsStyle"
+                android:contentDescription="@null"
+                android:src="@drawable/back_arrow"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imageView3"
@@ -40,9 +48,14 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:clickable="true"
-            android:id="@+id/recyclerView"
+            android:id="@+id/recyclerViewPostsAdmin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:listitem="@layout/admin_post_item" />
+        <FrameLayout
+            android:id="@+id/hooldeAdmin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
