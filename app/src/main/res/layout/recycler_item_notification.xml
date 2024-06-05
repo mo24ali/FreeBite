@@ -1,105 +1,110 @@
-<!-- item_avertissement.xml -->
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardCornerRadius="8dp"
-    android:elevation="5dp"
-    app:cardUseCompatPadding="true">
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="notifi"
+            type="com.example.freebite2.model.Notification" />
+    </data>
 
-    <RelativeLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        app:cardCornerRadius="8dp"
+        android:elevation="5dp"
+        app:cardUseCompatPadding="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
 
-        <!-- Image circulaire -->
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/profileImageIvNotif"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-
-            android:src="@drawable/profile_holder_user"
-            app:shapeAppearanceOverlay="@style/CircleShape1"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true" />
-
-        <!-- Texte du nom de l'utilisateur -->
-
-        <TextView
-            android:id="@+id/dateTv"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:alpha="0.6"
-            android:text="date"
+            android:padding="16dp">
 
-            android:layout_marginStart="85dp"
-            android:textStyle="bold" />
+            <!-- Image circulaire -->
 
-        <TextView
-            android:id="@+id/usernameTv"
-            android:layout_width="126dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="26dp"
-            android:layout_marginEnd="16dp"
-            android:layout_toEndOf="@id/profileImageIvNotif"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="John Doe"
-            android:textColor="@android:color/black"
-           />
+            <!-- Texte du nom de l'utilisateur -->
 
-        <!-- Texte du nombre d'avertissements -->
-        <TextView
-            android:id="@+id/messageTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/usernameTv"
-            android:layout_toEndOf="@id/profileImageIvNotif"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="4dp"
-            android:text="Avertissements: 3"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textColor="@android:color/black" />
-        <TextView
-            android:id="@+id/senderTypeTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/messageTv"
-            android:layout_toEndOf="@id/profileImageIvNotif"
-            android:layout_marginStart="16dp"
-            android:alpha="0.7"
-            android:text="Sender type"
-            android:textColor="@android:color/black" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/profileImageIvNotif"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/profile_holder_user"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:shapeAppearanceOverlay="@style/CircleShape1" />
 
-        <!-- Bouton pour supprimer le compte -->
+            <TextView
+                android:id="@+id/dateTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.6"
+                android:text="@{String.valueOf(notifi.timestamp)}"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/profileImageIvNotif"
+                app:layout_constraintStart_toEndOf="@+id/profileImageIvNotif" />
 
-        <!-- Bouton pour bloquer le compte -->
-        <Button
-            android:id="@+id/deleteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="17dp"
-            android:backgroundTint="@color/md_theme_dark_errorContainer"
-            android:text="Supprimer"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/usernameTv"
+                android:layout_width="126dp"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/profileImageIvNotif"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="sender"
+                android:textColor="@android:color/black"
+                app:layout_constraintStart_toEndOf="@+id/profileImageIvNotif"
+                app:layout_constraintTop_toTopOf="@+id/profileImageIvNotif" />
 
-        <Button
-            android:id="@+id/seenButton"
-            android:layout_width="69dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/deleteButton"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
-            android:backgroundTint="@color/green"
-            android:text="Vu"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
-    </RelativeLayout>
-</androidx.cardview.widget.CardView>
+            <!-- Texte du nombre d'avertissements -->
+            <TextView
+                android:id="@+id/messageTv"
+                android:layout_width="171dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/usernameTv"
+                android:layout_toEndOf="@id/profileImageIvNotif"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{notifi.message}"
+                android:textColor="@android:color/black"
+                app:layout_constraintBottom_toTopOf="@+id/dateTv"
+                app:layout_constraintStart_toEndOf="@+id/profileImageIvNotif"
+                app:layout_constraintTop_toBottomOf="@+id/usernameTv" />
+
+
+
+            <!-- Bouton pour supprimer le compte -->
+
+            <Button
+                android:id="@+id/deleteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:backgroundTint="@color/bottom"
+                android:text="accepter "
+                android:textColor="@android:color/white"
+                android:textSize="8sp"
+                app:layout_constraintBottom_toTopOf="@+id/seenButton"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <Button
+                android:id="@+id/seenButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@+id/deleteButton"
+                android:layout_alignParentEnd="true"
+                android:backgroundTint="@color/bienvenue"
+                android:text="réponse"
+                android:textColor="@android:color/white"
+                android:textSize="8sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

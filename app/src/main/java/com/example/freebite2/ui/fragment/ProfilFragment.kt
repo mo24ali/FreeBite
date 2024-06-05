@@ -183,9 +183,43 @@ class ProfilFragment : Fragment() {
     private fun pickImageGallery() {
         galleryActivityResultLauncher.launch("image/*")
     }
+////
+private fun uploadImageToFirebase(uri: Uri?) {
+    if (uri == null) return
 
+    val userId = auth.currentUser?.uid ?: return
+    val storageReference = FirebaseStorage.getInstance().getReference("profile_images/$userId.jpg")
 
-    private fun uploadImageToFirebase(uri: Uri?) {
+    dialogueProgress.show()
+
+    storageReference.putFile(uri)
+        .addOnSuccessListener { taskSnapshot ->
+            taskSnapshot.storage.downloadUrl.addOnSuccessListener { downloadUri ->
+                // Update user's profile image URL in Firebase Database
+                FirebaseDatabase.getInstance().getReference("Users")
+                    .child(userId)
+                    .child("profilePictureUrl")
+                    .setValue(downloadUri.toString())
+                    .addOnSuccessListener {
+                        Toast.makeText(requireContext(), "Image uploaded successfully", Toast.LENGTH_SHORT).show()
+                        dialogueProgress.dismiss()
+                        // Load the new image into the ImageView using Glide
+                        Glide.with(this).load(downloadUri).into(binding.profilePic)
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(requireContext(), "Failed to upload image URL: ${e.message}", Toast.LENGTH_SHORT).show()
+                        dialogueProgress.dismiss()
+                    }
+            }
+        }
+        .addOnFailureListener { e ->
+            Toast.makeText(requireContext(), "Failed to upload image: ${e.message}", Toast.LENGTH_SHORT).show()
+            dialogueProgress.dismiss()
+        }
+}
+    //////
+
+    /*private fun uploadImageToFirebase(uri: Uri?) {
         if (uri == null) return
 
         val userId = auth.currentUser?.uid ?: return
@@ -217,7 +251,7 @@ class ProfilFragment : Fragment() {
                 Toast.makeText(requireContext(), "Failed to upload image: ${e.message}", Toast.LENGTH_SHORT).show()
                 dialogueProgress.dismiss()
             }
-    }
+    }*/
 
 
     private fun navigateToUserOffers() {

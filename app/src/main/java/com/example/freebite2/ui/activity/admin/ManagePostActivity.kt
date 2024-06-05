@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 class ManagePostActivity : AppCompatActivity(), OffersAdapterAdmin.OnOfferClickListener {
 
@@ -147,9 +148,10 @@ class ManagePostActivity : AppCompatActivity(), OffersAdapterAdmin.OnOfferClickL
                 val notificationId = notificationRef.push().key
                 val notification = mapOf(
                     "title" to "Avertissement",
-                    "body" to warningMessage,
+                    "message" to warningMessage,
                     "type" to "admin",
-                    "timestamp" to LocalDate.now().toString()
+                    "timestamp" to LocalDateTime.now().toString(),
+                    "offreID" to userOffre.offerID.toString()
                 )
                 if (notificationId != null) {
                     notificationRef.child(notificationId).setValue(notification)

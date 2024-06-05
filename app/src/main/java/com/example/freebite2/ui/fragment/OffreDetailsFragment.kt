@@ -32,6 +32,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 class OffreDetailsFragment : Fragment(), OnMapReadyCallback {
 
@@ -159,12 +161,13 @@ class OffreDetailsFragment : Fragment(), OnMapReadyCallback {
 
     private fun createNotification(userId: String, message: String,off:OffreModel) {
         // Create a new notification object
+        val time = LocalDate.now().toString() + " "+ LocalTime.now().toString()
         val notification = mapOf(
             "message" to message,
-            "timestamp" to LocalDate.now().toString(),
+            "timestamp" to time,
             "type" to "offer_taken",
             "OfferID" to off.offerID,
-            "senderId" to FirebaseAuth.getInstance().currentUser?.displayName.toString(),
+            "senderId" to FirebaseAuth.getInstance().currentUser?.uid.toString(),
         )
 
         // Add the notification to the Firebase database
