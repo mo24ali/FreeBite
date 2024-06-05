@@ -95,7 +95,19 @@ class ProfilFragment : Fragment() {
         return binding.root
     }
 
-
+   /* private fun loadInfos() {
+        val userId = auth.currentUser?.uid ?: return
+        val databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId)
+        databaseReference.get().addOnSuccessListener { dataSnapshot ->
+            val profileImageUrl = dataSnapshot.child("profileImage").getValue(String::class.java)
+            if (!profileImageUrl.isNullOrEmpty()) {
+                Glide.with(this).load(profileImageUrl).into(binding.profilePic)
+            }
+            // Load other user information if needed
+        }.addOnFailureListener { e ->
+            Toast.makeText(requireContext(), "Failed to load profile info: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }*/
    private fun loadInfos() {
        val user = auth.currentUser
        if (user != null) {
