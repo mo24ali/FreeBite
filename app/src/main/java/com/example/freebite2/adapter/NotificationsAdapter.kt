@@ -483,11 +483,11 @@ class NotificationsAdapter(
         }
 
         holder.binding.accepteButton.setOnClickListener {
-            sendResponseNotification(notification.OfferID, notification.senderId)
+            sendAcceptNotification(notification.OfferID, notification.senderId)
         }
     }
 
-    private fun sendResponseNotification(offerID: String?, senderId: String) {
+    private fun sendAcceptNotification(offerID: String?, senderId: String) {
         if (offerID == null) {
             Log.e("NotificationsAdapter", "L'ID de l'offre est null")
             return
@@ -514,7 +514,7 @@ class NotificationsAdapter(
         }
     }
 
-    private fun sendAcceptNotification(offerID: String?, senderId: String) {
+    private fun sendResponseNotification(offerID: String?, senderId: String) {
         if (offerID == null) {
             Log.e("NotificationsAdapter", "L'ID de l'offre est null")
             return
@@ -575,11 +575,11 @@ class NotificationsAdapter(
                     )
                     if (notificationId != null) {
                         notificationRef.child(notificationId).setValue(notification)
-                        Toast.makeText(context, "Avertissement envoyé avec succès", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "reponce envoyé avec succès", Toast.LENGTH_SHORT).show()
                     }
                     dialog.dismiss()
                 } else {
-                    Toast.makeText(context, "Le message d'avertissement ne peut pas être vide", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Le message ne peut pas être vide", Toast.LENGTH_SHORT).show()
                 }
             }
         }

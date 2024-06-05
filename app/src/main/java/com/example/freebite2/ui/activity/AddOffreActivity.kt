@@ -3,13 +3,17 @@ package com.example.freebite2.ui.activity
 import android.Manifest
 import android.app.ProgressDialog
 import android.content.ContentValues
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.location.Location
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -114,6 +118,8 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
         auth = FirebaseAuth.getInstance()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
+        checkGPSStatus()
+
         if (!hasPermissions()) {
             ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE)
         }
@@ -122,16 +128,22 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         binding.uploadImgBtn.setOnClickListener {
-           // binding.uploadImgLayout.visibility = android.view.View.GONE
-           // binding.offerPicLayout.visibility = android.view.View.VISIBLE
             imagePickDialog()
         }
-        binding.offerPic.setOnClickListener{
+        binding.offerPic.setOnClickListener {
             imagePickDialog()
         }
         binding.addOfferBtn.setOnClickListener {
             saveOfferToFirebase()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkGPSStatus()
+        // Refresh map after checking GPS status
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.offerPosition) as SupportMapFragment
+        mapFragment.getMapAsync(this)
     }
 
     private fun hasPermissions(): Boolean {
@@ -173,10 +185,30 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
         builder.setOnCancelListener {
-            // Allow reopening the dialog if it was dismissed
             binding.uploadImgBtn.isEnabled = true
         }
         builder.show()
+    }
+
+    private fun checkGPSStatus() {
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            showGPSDisabledDialog()
+        }
+    }
+
+    private fun showGPSDisabledDialog() {
+        android.app.AlertDialog.Builder(this)
+            .setMessage("Le GPS est désactivé. Voulez-vous l'activer ?")
+            .setCancelable(false)
+            .setPositiveButton("Oui") { _, _ ->
+                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            }
+            .setNegativeButton("Non") { dialog, _ ->
+                dialog.cancel()
+            }
+            .create()
+            .show()
     }
 
     private fun pickImageCamera() {
@@ -203,7 +235,6 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
                 val downloadUri = storageReference.downloadUrl.await()
                 imageUploadOffre = downloadUri
                 withContext(Dispatchers.Main) {
-                    // Load the new image into the ImageView using Glide
                     Glide.with(this@AddOffreActivity).load(imageUri).into(binding.offerPic)
                     dialogueProgress.dismiss()
                 }
@@ -245,7 +276,7 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
                             latitude = location.latitude,
                             longitude = location.longitude,
                             pictureUrl = imageUploadOffre.toString(),
-                            offerID = null // Cet ID sera automatiquement généré par Firebase
+                            offerID = null
                         )
 
                         val offreRef = FirebaseDatabase.getInstance().getReference("offres").push()
@@ -292,7 +323,7 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
                 .addOnSuccessListener { location: Location? ->
                     if (location != null) {
                         val latLng = LatLng(location.latitude, location.longitude)
-                        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.map_marker_user).scale(100,100)
+                        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.map_marker_user).scale(100, 100)
                         val markerOptions = MarkerOptions().position(latLng)
                             .title("Votre offre")
                             .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
@@ -302,12 +333,6 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
         } else {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_CODE)
-            // Retry getting the location after permissions are granted
-            ActivityCompat.OnRequestPermissionsResultCallback { requestCode, permissions, grantResults ->
-                if (requestCode == PERMISSIONS_REQUEST_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getCurrentLocation()
-                }
-            }
         }
     }
 }
