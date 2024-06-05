@@ -1,6 +1,9 @@
 package com.example.freebite2.ui.fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +18,9 @@ import com.google.firebase.database.FirebaseDatabase
 
 class UpdateOffreFragment : Fragment() {
 
+    companion object {
+        private const val REQUEST_CODE = 123
+    }
     private lateinit var offre: OffreModel
     private var _binding: FragmentUpdateOffreBinding? = null
     private val binding get() = _binding!!
@@ -49,8 +55,12 @@ class UpdateOffreFragment : Fragment() {
         Glide.with(this)
             .load(offre.pictureUrl)
             .into(offerPicDetails)
-        binding.modifyOfferPic.setOnClickListener {
 
+
+        binding.modifyOfferPic.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, REQUEST_CODE)
         }
 
         binding.btnsubmit.setOnClickListener {
@@ -70,7 +80,17 @@ class UpdateOffreFragment : Fragment() {
             onDestroy()
         }
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
+            val uri = data.data
+            val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, uri)
+
+            // Utilisez Glide ou Picasso pour charger l'image dans votre ImageView
+            Glide.with(this).load(bitmap).into(binding.uploadedImageView)
+        }
+    }
     private fun initializeViews() {
         titleEditText.setText(offre.nameoffre)
         descriptionEditText.setText(offre.details)

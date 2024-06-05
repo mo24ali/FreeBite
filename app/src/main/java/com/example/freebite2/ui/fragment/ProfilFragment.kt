@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.example.freebite2.R
 import com.example.freebite2.databinding.FragmentProfilBinding
 import com.example.freebite2.ui.activity.MainActivity
 import com.example.freebite2.ui.activity.UserOffersActivity
@@ -89,24 +90,17 @@ class ProfilFragment : Fragment() {
         binding.buttonMyOffers.setOnClickListener {
             navigateToUserOffers()
         }
+        binding.backBtnProfile.setOnClickListener {
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fhome, AccueilFragment())
+            transaction.commit()
+        }
 
 
         return binding.root
     }
 
-   /* private fun loadInfos() {
-        val userId = auth.currentUser?.uid ?: return
-        val databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId)
-        databaseReference.get().addOnSuccessListener { dataSnapshot ->
-            val profileImageUrl = dataSnapshot.child("profileImage").getValue(String::class.java)
-            if (!profileImageUrl.isNullOrEmpty()) {
-                Glide.with(this).load(profileImageUrl).into(binding.profilePic)
-            }
-            // Load other user information if needed
-        }.addOnFailureListener { e ->
-            Toast.makeText(requireContext(), "Failed to load profile info: ${e.message}", Toast.LENGTH_SHORT).show()
-        }
-    }*/
+
    private fun loadInfos() {
        val user = auth.currentUser
        if (user != null) {
@@ -231,9 +225,9 @@ private fun uploadImageToFirebase(uri: Uri?) {
             .addOnSuccessListener { taskSnapshot ->
                 taskSnapshot.storage.downloadUrl.addOnSuccessListener { downloadUri ->
                     // Update user's profile image URL in Firebase Database
-                    FirebaseDatabase.getInstance().getReference("users")
+                    FirebaseDatabase.getInstance().getReference("Users")
                         .child(userId)
-                        .child("profileImage")
+                        .child("profilePictureUrl")
                         .setValue(downloadUri.toString())
                         .addOnSuccessListener {
                             Toast.makeText(requireContext(), "Image uploaded successfully", Toast.LENGTH_SHORT).show()

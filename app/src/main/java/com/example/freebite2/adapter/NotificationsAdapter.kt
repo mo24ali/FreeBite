@@ -461,8 +461,8 @@ class NotificationsAdapter(
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
                         val profileImageUrl = dataSnapshot.child("profilePictureUrl").value.toString()
-                        val nom = dataSnapshot.child("nom").value.toString()
-                        val prenom = dataSnapshot.child("prenom").value.toString()
+                        val nom = dataSnapshot.child("nom").value.toString() ?: "inconnu"
+                        val prenom = dataSnapshot.child("prenom").value.toString() ?: "inconnu"
                         Glide.with(context)
                             .load(profileImageUrl)
                             .placeholder(R.drawable.profile_holder_user)
@@ -502,6 +502,7 @@ class NotificationsAdapter(
                 "title" to "réponse",
                 "message" to warningMessage,
                 "type" to "offer_taken",
+                "senderId" to FirebaseAuth.getInstance().currentUser?.uid,
                 "timestamp" to timestamp,
                 "offreID" to offerID
             )
@@ -569,13 +570,14 @@ class NotificationsAdapter(
                     val notification = mapOf(
                         "title" to "réponse",
                         "message" to warningMessage,
-                        "type" to "admin",
+                        "type" to "offer_taken",
                         "timestamp" to timestamp,
+                        "senderId" to FirebaseAuth.getInstance().currentUser?.uid,
                         "offreID" to offerModel.offerID.toString()
                     )
                     if (notificationId != null) {
                         notificationRef.child(notificationId).setValue(notification)
-                        Toast.makeText(context, "reponce envoyé avec succès", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "reponse envoyé avec succès", Toast.LENGTH_SHORT).show()
                     }
                     dialog.dismiss()
                 } else {
