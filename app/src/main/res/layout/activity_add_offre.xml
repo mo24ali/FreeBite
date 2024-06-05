@@ -62,57 +62,47 @@
             android:layout_width="match_parent"
             android:text="Titre" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_height="wrap_content">
 
-            <com.google.android.material.textfield.TextInputEditText
+
+            <EditText
                 android:id="@+id/titreRepas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="Entrez le titre de votre repas"
                 android:background="@drawable/edut_text"/>
-        </com.google.android.material.textfield.TextInputLayout>
+
 
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:text="Description" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_height="wrap_content">
 
-            <com.google.android.material.textfield.TextInputEditText
+
+            <EditText
                 android:id="@+id/descritptionRepas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="Description de votre repas"
                 android:background="@drawable/edut_text"/>
-        </com.google.android.material.textfield.TextInputLayout>
+
 
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:text="Valable jusqu'à" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_height="wrap_content">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <EditText
                 android:id="@+id/horaireRepas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/edut_text"
                 android:hint="Aujourd'hui de 12h à 14h" />
-        </com.google.android.material.textfield.TextInputLayout>
+
 
         <View
             android:layout_width="match_parent"
