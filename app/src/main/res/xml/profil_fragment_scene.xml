@@ -129,7 +129,7 @@
             android:layout_marginStart="16dp"
             motion:layout_constraintBottom_toTopOf="@id/profile_status"
             motion:layout_constraintStart_toEndOf="@id/profilePic"
-            motion:layout_constraintTop_toTopOf="@id/backBtnProfile">
+            motion:layout_constraintTop_toTopOf="@id/ic_back">
             <CustomAttribute
                 motion:attributeName="textSize"
                 motion:customFloatValue="18" />
@@ -141,7 +141,7 @@
             android:layout_height="55dp"
             android:layout_marginStart="16dp"
             motion:layout_constraintBottom_toBottomOf="@id/app_bar_container"
-            motion:layout_constraintStart_toEndOf="@id/backBtnProfile"
+            motion:layout_constraintStart_toEndOf="@id/ic_back"
             motion:layout_constraintTop_toTopOf="@id/app_bar_container">
             <CustomAttribute
                 motion:attributeName="roundPercent"
