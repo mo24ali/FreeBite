@@ -20,11 +20,13 @@ class MainActivity : AppCompatActivity() {
         binding.sInscBtn.setOnClickListener {
             val scInt = Intent( this@MainActivity, SignUpActivity::class.java)
             startActivity(scInt)
+
         }
 
         binding.button3.setOnClickListener {
             val conInt = Intent(this@MainActivity, LogInActivity::class.java)
             startActivity(conInt)
+            finish()
         }
     }
 }

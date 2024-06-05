@@ -24,6 +24,7 @@ class SplashActivity : AppCompatActivity() {
                 // User is not logged in, navigate to SignupActivity
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
+
             }
             finish()
         }, 3000) // 3 seconds delay

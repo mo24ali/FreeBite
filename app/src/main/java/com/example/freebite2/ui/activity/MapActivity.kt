@@ -89,7 +89,7 @@ class MapActivity : AppCompatActivity() {
                             val currentLocation = LatLng(currentLat, currentLong)
                             map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
                             // Add a marker at the current location
-                            val bitmap = BitmapFactory.decodeResource(resources, R.drawable.map_marker_logo).scale(90,90)
+                            val bitmap = BitmapFactory.decodeResource(resources, R.drawable.map_marker_logo).scale(120,120)
                             val markerOptions = MarkerOptions().position(currentLocation)
                                                            .title("Current Location")
                                                            .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
@@ -114,6 +114,7 @@ class MapActivity : AppCompatActivity() {
                     // Start new Activity
                     val intent = Intent(this, MainHomeActivity::class.java)
                     startActivity(intent)
+                    finish()
                 }
                 .addOnFailureListener {
                     Toast.makeText(this, "échec d'enregistrer ta position", Toast.LENGTH_SHORT).show()

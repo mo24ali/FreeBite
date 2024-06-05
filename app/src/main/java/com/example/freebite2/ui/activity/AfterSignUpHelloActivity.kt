@@ -61,6 +61,7 @@ class AfterSignUpHelloActivity : AppCompatActivity() {
     private fun startMapActivity() {
         val intent = Intent(this, MapActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

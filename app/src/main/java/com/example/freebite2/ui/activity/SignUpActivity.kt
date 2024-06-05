@@ -109,6 +109,7 @@ class SignUpActivity : AppCompatActivity() {
                     updateLocation(user)
                     SharedPreferencesUtil.setUserLoggedIn(this, true)
                     startActivity(Intent(this, AfterSignUpHelloActivity::class.java))
+
                 } else {
                     if (task.exception is FirebaseAuthUserCollisionException) {
                         Toast.makeText(this@SignUpActivity, "L'utilisateur existe déjà ! Veuillez se connecter.", Toast.LENGTH_SHORT).show()
