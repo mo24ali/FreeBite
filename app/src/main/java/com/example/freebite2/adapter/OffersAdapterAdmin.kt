@@ -17,7 +17,7 @@ class OffersAdapterAdmin(
 
     interface OnOfferClickListener {
         fun onOfferClick(offer: OffreModel)
-        fun onEditOfferClick(offer: OffreModel)
+        fun onWarningOfferClick(offer: OffreModel)
         fun onDeleteOfferClick(offer: OffreModel)
     }
 
@@ -66,7 +66,7 @@ class OffersAdapterAdmin(
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.action_edit -> {
-                        listener.onEditOfferClick(offer)
+                        listener.onWarningOfferClick(offer)
                         true
                     }
                     R.id.action_delete -> {
