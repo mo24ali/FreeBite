@@ -177,6 +177,10 @@ class AccueilFragment : Fragment(), OffersAdapter.OnOfferClickListener {
                     filterOffersByRadius(20)
                     true
                 }
+                R.id.filter_05km -> {
+                    filterOffersByRadius(5)
+                    true
+                }
                 R.id.filter_30km -> {
                     filterOffersByRadius(30)
                     true

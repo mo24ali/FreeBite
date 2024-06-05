@@ -75,9 +75,9 @@
     <style name="appBarIconsStyle" parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">@dimen/margin_16</item>
+        <item name="android:layout_marginStart">@dimen/margin_18</item>
         <item name="android:layout_marginTop">@dimen/margin_16</item>
-        <item name="android:tint">@color/md_theme_light_onTertiary</item>
+        <item name="android:tint">@color/black</item>
     </style>
     <style name="ImageViewFrameStyle">
         <item name="android:background">@drawable/circleshape2</item>

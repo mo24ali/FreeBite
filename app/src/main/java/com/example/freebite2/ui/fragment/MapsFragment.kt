@@ -1,6 +1,8 @@
 package com.example.freebite2.ui.fragment
 
 import android.Manifest
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -22,16 +24,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
+import android.widget.RadioButton
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.scale
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil.*
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.freebite2.R
+import com.example.freebite2.databinding.FragmentMapsBinding
 import com.example.freebite2.databinding.InfoCardBinding
 import com.example.freebite2.model.OffreModel
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -44,6 +50,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -56,11 +63,15 @@ import kotlin.math.sqrt
 
 class MapsFragment : Fragment(), OnMapReadyCallback , GoogleMap.OnMarkerClickListener{
 
+
+    //private var rotate = false
     private lateinit var googleMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var database: DatabaseReference
     private var radius = 50 // Default radius in km
     private lateinit var binding: InfoCardBinding
+   // private lateinit var binding2: FragmentMapsBinding
+
 
     private fun checkGPSStatus() {
         val locationManager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -116,14 +127,20 @@ class MapsFragment : Fragment(), OnMapReadyCallback , GoogleMap.OnMarkerClickLis
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val mapFragment = childFragmentManager.findFragmentById(R.id.fmap) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
         // Initialize Firebase Realtime Database
         database = FirebaseDatabase.getInstance().reference
 
-        binding = DataBindingUtil.bind(view.findViewById(R.id.infoCard))!!
-        binding.hideCard.setOnClickListener { binding.root.visibility = View.GONE }
+        binding = bind(view.findViewById(R.id.infoCard))!!
 
+        binding.hideCard.setOnClickListener { binding.root.visibility = View.GONE }
+      /*  val fabAdd= binding2.fabAdd
+        val fabUser = binding2.fabUser
+        val fabOffre = binding2.fabOffre
+        initShowOut(fabOffre)
+        initShowOut(fabUser)*/
         // Initialize location client
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
@@ -136,8 +153,21 @@ class MapsFragment : Fragment(), OnMapReadyCallback , GoogleMap.OnMarkerClickLis
         btnChooseType.setOnClickListener {
             showChooseTypeDialog()
         }
+       /* fabUser.setOnClickListener {  }
+        fabOffre.setOnClickListener {  }
+         fabAdd.setOnClickListener {
+         rotate = rotateFab(it, !rotate)
+             if (rotate) {
+                 showIn(fabOffre)
+                 showIn(fabUser)
+         } else {
+                 showOut(fabOffre)
+                 showOut(fabUser) }
+         }*/
+
 
         // Set up the seek bar
+
         val seekBarDistance = view.findViewById<SeekBar>(R.id.seekBarDistance)
         val tvDistanceLabel = view.findViewById<TextView>(R.id.tvDistanceLabel)
         seekBarDistance.setOnSeekBarChangeListener(object : SeekBar
@@ -154,7 +184,22 @@ class MapsFragment : Fragment(), OnMapReadyCallback , GoogleMap.OnMarkerClickLis
              override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 // Do nothing
              }
+
         } )
+        val checkBox = view.findViewById<CheckBox>(R.id.checkBox)
+        checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                radius = 9999999
+                seekBarDistance.visibility = View.GONE
+                tvDistanceLabel.visibility = View.GONE
+            } else {
+                radius = 50
+                seekBarDistance.visibility = View.VISIBLE
+                seekBarDistance.progress =50
+                tvDistanceLabel.visibility = View.VISIBLE
+                tvDistanceLabel.text = "Radius (km): 50"
+            }
+        }
 
 
 
@@ -256,6 +301,51 @@ override fun onMarkerClick(marker: Marker): Boolean {
             }
             .show()
     }
+/*/////////
+      private fun showOut(v: View) {
+          v.visibility = View.VISIBLE
+    v.alpha = 1f
+    v.translationY = 0f
+    v.animate() .setDuration(200) .translationY(v.height.toFloat()) .setListener(object : AnimatorListenerAdapter() {
+        override fun onAnimationEnd(animation: Animator) {
+            v.visibility = View.GONE
+            super.onAnimationEnd(animation)
+        }
+    })
+        .alpha(0f)
+        .start() }
+
+
+///////////
+     private fun showIn(v: View) {
+     v.visibility = View.VISIBLE
+     v.alpha = 0f
+      v.translationY = v.height.toFloat()
+      v.animate() .setDuration(200) .translationY(0f)
+          .setListener(object : AnimatorListenerAdapter() {
+              override fun onAnimationEnd(animation: Animator) {
+                  super.onAnimationEnd(animation) }
+          })
+          .alpha(1f)
+          .start() }
+
+    /////////
+     private fun rotateFab(v: View, rotate: Boolean): Boolean {
+     v.animate().setDuration(200)
+   .setListener(object : AnimatorListenerAdapter() {
+       override fun onAnimationEnd(animation: Animator) {
+           super.onAnimationEnd(animation) } })
+     .rotation(if (rotate) 135f else 0f)
+        return rotate }
+    ///////////
+    private fun initShowOut(v: View) {
+        v.visibility = View.GONE
+        v.translationY = v.height.toFloat()
+        v.alpha = 0f
+    }
+
+    *//////////
+
 
     private fun updateOffersManually() {
         if (ActivityCompat.checkSelfPermission(
