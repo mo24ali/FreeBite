@@ -12,6 +12,9 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
+/**
+ * dfghjklmù
+ */
 class EditPostActivity : AppCompatActivity() {
 
     private lateinit var offre: OffreModel

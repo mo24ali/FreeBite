@@ -67,7 +67,9 @@ class AdminActivity : AppCompatActivity() {
         binding.backB.setOnClickListener {
             finish()
         }
-
+        /**
+         * dfghjklmù
+         */
 
         binding.managePost.setOnClickListener {
             startActivity(Intent(this, ManagePostActivity::class.java))

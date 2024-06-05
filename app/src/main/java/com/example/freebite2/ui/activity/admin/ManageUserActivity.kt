@@ -229,7 +229,7 @@ class ManageUserActivity : AppCompatActivity(), UsersAdapter.OnUserClickListener
             Toast.makeText(this, "L'UID de l'utilisateur est invalide", Toast.LENGTH_SHORT).show()
             Log.e("DeleteUser", "L'UID de l'utilisateur est invalide")
         }
-    }*/
+    }*/   /** aedeade*/
     override fun onDeleteUserClick(user: User) {
         if (user.uid.isNotEmpty()) {
             val userRef = FirebaseDatabase.getInstance().getReference("Users").child(user.uid)

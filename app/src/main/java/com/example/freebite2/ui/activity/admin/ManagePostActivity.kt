@@ -102,6 +102,9 @@ class ManagePostActivity : AppCompatActivity(), OffersAdapterAdmin.OnOfferClickL
             .addToBackStack(null)
             .commit()
     }*/
+    /**
+     * dfghjklm
+     */
     override fun onEditOfferClick(offer: OffreModel) {
         toggleVisibility(View.GONE)
         val intent = Intent(this,EditPostActivity::class.java)
