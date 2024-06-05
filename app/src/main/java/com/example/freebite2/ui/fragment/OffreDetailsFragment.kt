@@ -1,5 +1,6 @@
 package com.example.freebite2.ui.fragment
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.example.freebite2.R
 import com.example.freebite2.databinding.FragmentOffreDetailsBinding
 import com.example.freebite2.model.OffreModel
+import com.example.freebite2.ui.activity.UserOffersActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -39,12 +41,13 @@ class OffreDetailsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var googleMap: GoogleMap
     private var _binding: FragmentOffreDetailsBinding? = null
     private val binding get() = _binding!!
-
+    private lateinit var auth: FirebaseAuth
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentOffreDetailsBinding.inflate(inflater, container, false)
+        auth = FirebaseAuth.getInstance()
         return binding.root
     }
 
@@ -59,6 +62,7 @@ class OffreDetailsFragment : Fragment(), OnMapReadyCallback {
 
         // Set up UI components
 
+        managebutton(offre.providerID.toString())
         val offerPicDetails: ImageView = binding.offerPicDetails
         val offreName: TextView = binding.offreName
         val descriptionTextView: TextView = binding.descritptionRepas
@@ -109,6 +113,21 @@ class OffreDetailsFragment : Fragment(), OnMapReadyCallback {
         // Set click listener for take offer button
         takeOfferBtn.setOnClickListener {
             takeOffer(offre)
+        }
+        binding.manageMyOffreBtn.setOnClickListener {
+            val intent = Intent(activity, UserOffersActivity::class.java)
+            startActivity(intent)
+
+            /* val updateFragment = UpdateOffreFragment()
+            val offer = offre
+            val updateOffreFragment = UpdateOffreFragment()
+            val bundle = Bundle()
+            bundle.putParcelable("offre", offer)
+            updateOffreFragment.arguments = bundle
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fhome, updateFragment) // Replace 'fprofil' with the id of your FrameLayout or the container for your fragments
+                .addToBackStack(null)
+                .commit()*/
         }
 
     }
@@ -169,5 +188,15 @@ class OffreDetailsFragment : Fragment(), OnMapReadyCallback {
                                 .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
         googleMap.addMarker(markerOptions)
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(offerLocation, 15f))
+    }
+    private fun managebutton(providerUID : String){
+        val userId = auth.currentUser?.uid
+        if (userId.toString() == providerUID){
+            binding.manageMyOffreBtn.visibility = View.VISIBLE
+            binding.takeOfferBtn.visibility = View.GONE
+        }else{
+            binding.manageMyOffreBtn.visibility = View.GONE
+            binding.takeOfferBtn.visibility = View.VISIBLE
+        }
     }
 }
