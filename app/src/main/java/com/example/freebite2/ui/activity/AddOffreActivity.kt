@@ -64,6 +64,7 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
     private val requestStoragePermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         if (granted) {
             pickImageGallery()
+
         } else {
             Toast.makeText(this, "Storage permission is required", Toast.LENGTH_SHORT).show()
         }
@@ -71,6 +72,8 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val cameraActivityResultLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
         if (success) {
+            binding.uploadImgLayout.visibility = android.view.View.GONE
+            binding.offerPicLayout.visibility = android.view.View.VISIBLE
             imageUri?.let { uploadImageToFirebase(it) }
         } else {
             Toast.makeText(this, "Camera capture failed", Toast.LENGTH_SHORT).show()
@@ -80,6 +83,8 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
     private val galleryActivityResultLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
             imageUri = uri
+            binding.uploadImgLayout.visibility = android.view.View.GONE
+            binding.offerPicLayout.visibility = android.view.View.VISIBLE
             uploadImageToFirebase(uri)
         }
     }
@@ -117,8 +122,8 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         binding.uploadImgBtn.setOnClickListener {
-            binding.uploadImgLayout.visibility = android.view.View.GONE
-            binding.offerPicLayout.visibility = android.view.View.VISIBLE
+           // binding.uploadImgLayout.visibility = android.view.View.GONE
+           // binding.offerPicLayout.visibility = android.view.View.VISIBLE
             imagePickDialog()
         }
         binding.offerPic.setOnClickListener{

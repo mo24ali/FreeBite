@@ -33,7 +33,7 @@
                 android:id="@+id/uploadImgBtn"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/baseline_add_a_photo_24"
+                android:src="@drawable/place_holde_add_offre"
                 android:clickable="true"
                 />
 
@@ -67,6 +67,7 @@
             <EditText
                 android:id="@+id/titreRepas"
                 android:layout_width="match_parent"
+                android:padding="@dimen/font_12"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="Entrez le titre de votre repas"
@@ -84,6 +85,7 @@
                 android:id="@+id/descritptionRepas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/font_18"
                 android:layout_marginTop="10dp"
                 android:hint="Description de votre repas"
                 android:background="@drawable/edut_text"/>
@@ -99,6 +101,7 @@
                 android:id="@+id/horaireRepas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/font_12"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/edut_text"
                 android:hint="Aujourd'hui de 12h à 14h" />
