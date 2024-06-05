@@ -16,6 +16,8 @@ import com.example.freebite2.databinding.ActivityManageUserBinding
 import com.example.freebite2.databinding.DialogUserInfoBinding
 import com.example.freebite2.databinding.DialogWarningBinding
 import com.example.freebite2.model.User
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -124,49 +126,6 @@ class ManageUserActivity : AppCompatActivity(), UsersAdapter.OnUserClickListener
             .show()
     }
 
-    /*fun sendWarningToUser(user: User) {
-        val dialogBinding = DialogWarningBinding.inflate(LayoutInflater.from(this))
-
-        dialogBinding.userName.text = "${user.nom} ${user.prenom}"
-
-        val dialog = AlertDialog.Builder(this)
-            .setTitle("Envoyer un avertissement à l'utilisateur")
-            .setView(dialogBinding.root)
-            .setPositiveButton("Envoyer", null) // Set null here
-            .setNegativeButton("Annuler", null)
-            .create()
-
-        dialog.setOnShowListener {
-            // Change the color of the positive button
-            val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            positiveButton.setTextColor(Color.GREEN) // Change this to your desired color
-
-            // Change the color of the negative button
-            val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-            negativeButton.setTextColor(Color.RED) // Change this to your desired color
-
-            // Set the click listener for the positive button here
-            positiveButton.setOnClickListener {
-                val warningMessage = dialogBinding.warningMessage.text.toString()
-
-                // Create a new notification in Firebase Database
-                val notificationRef = FirebaseDatabase.getInstance().getReference("Notifications").child(user.uid)
-                val notificationId = notificationRef.push().key
-                val notification = mapOf(
-                    "title" to "Avertissement",
-                    "body" to warningMessage,
-                    "type" to "admin",
-                )
-                if (notificationId != null) {
-                    notificationRef.child(notificationId).setValue(notification)
-                    Toast.makeText(this, "Avertissement envoyé avec succès", Toast.LENGTH_SHORT).show()
-                }
-                dialog.dismiss()
-            }
-        }
-
-        dialog.show()
-    }*/
     fun sendWarningToUser(user: User) {
         val dialogBinding = DialogWarningBinding.inflate(LayoutInflater.from(this))
 
@@ -215,14 +174,95 @@ class ManageUserActivity : AppCompatActivity(), UsersAdapter.OnUserClickListener
         sendWarningToUser(user)
     }
 
-    override fun onDeleteUserClick(user: User) {
-        if (user.uid != null && user.uid.isNotEmpty()) {
-            val userRef = database?.child(user.uid)
+    /*override fun onDeleteUserClick(user: User) {
+        if (user.uid.isNotEmpty()) {
+            val userRef = FirebaseDatabase.getInstance().getReference("Users").child(user.uid)
+            val offersRef = FirebaseDatabase.getInstance().getReference("offres").orderByChild("providerID").equalTo(user.uid)
 
-            userRef?.removeValue()?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    userList?.remove(user)
-                    usersAdapter?.notifyDataSetChanged()
+            // Suppression de l'utilisateur
+            userRef.removeValue().addOnCompleteListener { userDeletionTask ->
+                if (userDeletionTask.isSuccessful) {
+                    val firebaseUser = FirebaseAuth.getInstance().currentUser
+                    firebaseUser?.delete()?.addOnCompleteListener { authDeleteTask ->
+                        if (authDeleteTask.isSuccessful) {
+                            Toast.makeText(this, "Utilisateur supprimé avec succès", Toast.LENGTH_SHORT).show()
+                            Log.d("onDeleteUserClick", "Utilisateur supprimé avec succès")
+                            userList?.remove(user)
+                            usersAdapter?.notifyDataSetChanged()
+                        } else {
+                            Toast.makeText(this, "Erreur lors de la suppression de l'utilisateur de l'authentification", Toast.LENGTH_SHORT).show()
+                            Log.e("onDeleteUserClick", "Erreur lors de la suppression de l'utilisateur de l'authentification", authDeleteTask.exception)
+                        }
+                    }
+                    // Suppression des offres de l'utilisateur
+                    offersRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val tasks = mutableListOf<Task<Void>>()
+                            for (offerSnapshot in snapshot.children) {
+                                offerSnapshot.ref.removeValue().also { tasks.add(it) }
+                            }
+                            Tasks.whenAll(tasks).addOnCompleteListener { offersDeletionTask ->
+                                if (offersDeletionTask.isSuccessful) {
+                                    // Si toutes les suppressions sont réussies
+                                    userList?.remove(user)
+                                    usersAdapter?.notifyDataSetChanged()
+                                    Toast.makeText(this@ManageUserActivity, "Utilisateur et ses offres supprimés avec succès", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(this@ManageUserActivity, "La suppression des offres de l'utilisateur a échoué", Toast.LENGTH_SHORT).show()
+                                    Log.e("DeleteUser", "La suppression des offres de l'utilisateur a échoué")
+                                }
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            Toast.makeText(this@ManageUserActivity, "Erreur lors de la suppression des offres de l'utilisateur", Toast.LENGTH_SHORT).show()
+                            Log.e("DeleteUser", "Erreur lors de la suppression des offres de l'utilisateur : ${error.message}")
+                        }
+                    })
+                } else {
+                    Toast.makeText(this, "La suppression de l'utilisateur a échoué", Toast.LENGTH_SHORT).show()
+                    Log.e("DeleteUser", "La suppression de l'utilisateur a échoué")
+                }
+            }
+        } else {
+            Toast.makeText(this, "L'UID de l'utilisateur est invalide", Toast.LENGTH_SHORT).show()
+            Log.e("DeleteUser", "L'UID de l'utilisateur est invalide")
+        }
+    }*/
+    override fun onDeleteUserClick(user: User) {
+        if (user.uid.isNotEmpty()) {
+            val userRef = FirebaseDatabase.getInstance().getReference("Users").child(user.uid)
+            val offersRef = FirebaseDatabase.getInstance().getReference("Offers").orderByChild("providerID").equalTo(user.uid)
+
+            // Suppression de l'utilisateur
+            userRef.removeValue().addOnCompleteListener { userDeletionTask ->
+                if (userDeletionTask.isSuccessful) {
+                    // Suppression des offres de l'utilisateur
+                    offersRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val tasks = mutableListOf<Task<Void>>()
+                            for (offerSnapshot in snapshot.children) {
+                                offerSnapshot.ref.removeValue().also { tasks.add(it) }
+                            }
+                            Tasks.whenAll(tasks).addOnCompleteListener { offersDeletionTask ->
+                                if (offersDeletionTask.isSuccessful) {
+                                    // Si toutes les suppressions sont réussies
+                                    user.isSupprimer = true
+                                    userList?.remove(user)
+                                    usersAdapter?.notifyDataSetChanged()
+                                    Toast.makeText(this@ManageUserActivity, "Utilisateur et ses offres supprimés avec succès", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(this@ManageUserActivity, "La suppression des offres de l'utilisateur a échoué", Toast.LENGTH_SHORT).show()
+                                    Log.e("DeleteUser", "La suppression des offres de l'utilisateur a échoué")
+                                }
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            Toast.makeText(this@ManageUserActivity, "Erreur lors de la suppression des offres de l'utilisateur", Toast.LENGTH_SHORT).show()
+                            Log.e("DeleteUser", "Erreur lors de la suppression des offres de l'utilisateur : ${error.message}")
+                        }
+                    })
                 } else {
                     Toast.makeText(this, "La suppression de l'utilisateur a échoué", Toast.LENGTH_SHORT).show()
                     Log.e("DeleteUser", "La suppression de l'utilisateur a échoué")
@@ -233,4 +273,9 @@ class ManageUserActivity : AppCompatActivity(), UsersAdapter.OnUserClickListener
             Log.e("DeleteUser", "L'UID de l'utilisateur est invalide")
         }
     }
+
+
+
+
+
 }

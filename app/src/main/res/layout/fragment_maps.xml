@@ -59,8 +59,8 @@
         android:layout_above="@id/tvDistanceLabel"
         android:layout_margin="16dp"
         android:backgroundTint="@color/black"
-        android:max="100"
-        android:progress="50"
+        android:max="100000"
+        android:progress="500"
         app:layout_constraintBottom_toTopOf="@+id/btnChooseType"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

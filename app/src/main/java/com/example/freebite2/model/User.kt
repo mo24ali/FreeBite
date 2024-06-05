@@ -1,13 +1,13 @@
 package com.example.freebite2.model
 
-import android.location.Location
 data class User(
     var uid: String = "",
     val nom: String = "",
     val prenom: String = "",
     val email: String = "",
     val profilePictureUrl: String = "",
-    val location: UserLocation = UserLocation()
+    val location: UserLocation = UserLocation(),
+    var isSupprimer: Boolean = false
 ) {
     // No-argument constructor for Firebase
     constructor() : this("", "", "", "", "", UserLocation())

@@ -1,13 +1,23 @@
 package com.example.freebite2.ui.fragment
 
 import android.Manifest
-import android.content.pm.PackageManager
 import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
+import android.graphics.Rect
+import android.graphics.RectF
 import android.graphics.drawable.Drawable
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,12 +40,19 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.firebase.database.*
-import kotlin.math.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 class MapsFragment : Fragment(), OnMapReadyCallback , GoogleMap.OnMarkerClickListener{
 
@@ -45,14 +62,58 @@ class MapsFragment : Fragment(), OnMapReadyCallback , GoogleMap.OnMarkerClickLis
     private var radius = 50 // Default radius in km
     private lateinit var binding: InfoCardBinding
 
+    private fun checkGPSStatus() {
+        val locationManager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            showGPSDisabledDialog()
+        }
+    }
 
+    private fun showGPSDisabledDialog() {
+        AlertDialog.Builder(requireContext())
+            .setMessage("Le GPS est désactivé. Voulez-vous l'activer ?")
+            .setCancelable(false)
+            .setPositiveButton("Oui") { _, _ ->
+                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            }
+            .setNegativeButton("Non") { dialog, _ ->
+                dialog.cancel()
+            }
+            .create()
+            .show()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
+    private fun updateUserLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+                1
+            )
+            return
+        }
 
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            if (location != null) {
+                val currentLocation = LatLng(location.latitude, location.longitude)
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
+                googleMap.addMarker(MarkerOptions().position(currentLocation).title("Current Location"))
+            }
+        }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.fmap) as SupportMapFragment?
@@ -66,6 +127,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback , GoogleMap.OnMarkerClickLis
         // Initialize location client
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
+        checkGPSStatus()
+        updateUserLocation()
 
 
         // Set up the choose type button
@@ -182,9 +245,9 @@ override fun onMarkerClick(marker: Marker): Boolean {
     }
 
     private fun showChooseTypeDialog() {
-        val options = arrayOf("Nearby Users", "Nearby Offers")
+        val options = arrayOf("Utilisateurs à proximité", "Offres à proximité ")
         AlertDialog.Builder(requireContext())
-            .setTitle("Choose Information Type")
+            .setTitle("Que cherches tu ?")
             .setItems(options) { dialog, which ->
                 when (which) {
                     0 -> updateLocationManually()

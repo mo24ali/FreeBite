@@ -7,11 +7,16 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.freebite2.databinding.ActivityLogInBinding
+import com.example.freebite2.model.User
 import com.example.freebite2.ui.activity.admin.AdminActivity
 import com.example.freebite2.util.SharedPreferencesUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class LogInActivity : AppCompatActivity() {
 
@@ -65,7 +70,7 @@ class LogInActivity : AppCompatActivity() {
     }
 
     private fun checkIfUserIsAdmin(email: String, password: String) {
-        if (email == "admin@freebite.com" && password == "admin123") {
+        if (email == "admin0@freebite.com" && password == "admin0123") {
             loginAdmin(email, password)
         } else {
             loginRegularUser(email, password)
@@ -93,11 +98,35 @@ class LogInActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Toast.makeText(baseContext, "Connexion réussie", Toast.LENGTH_SHORT).show()
-                    SharedPreferencesUtil.setUserLoggedIn(this, true)
-                    startActivity(Intent(this, MainHomeActivity::class.java))
-                    finish()
+                    val user: FirebaseUser? = auth.currentUser
+                    if (user != null) {
+                        // Get a reference to the user in the database
+                        val userRef = FirebaseDatabase.getInstance().getReference("Users").child(user.uid)
+                        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                // Get user data from snapshot
+                                val userData = dataSnapshot.getValue(User::class.java)
+                                if (userData != null) {
+                                    // Check if isSupprimer is false
+                                    if (!userData.isSupprimer) {
+                                        // Proceed with login
+                                        Toast.makeText(this@LogInActivity, "Connexion réussie", Toast.LENGTH_SHORT).show()
+                                        SharedPreferencesUtil.setUserLoggedIn(this@LogInActivity, true)
+                                        startActivity(Intent(this@LogInActivity, MainHomeActivity::class.java))
+                                        finish()
+                                    } else {
+                                        // User is marked as deleted, do not proceed with login
+                                        Toast.makeText(this@LogInActivity, "Ce compte a été supprimé", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }
+
+                            override fun onCancelled(databaseError: DatabaseError) {
+                                // Handle possible errors.
+                                Toast.makeText(baseContext, "Erreur de connexion", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                    }
                 } else {
                     // Handle the exceptions
                     when (task.exception) {

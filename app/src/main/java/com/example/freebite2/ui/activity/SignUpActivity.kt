@@ -164,7 +164,8 @@ class SignUpActivity : AppCompatActivity() {
                         "location" to mapOf(
                             "latitude" to location.latitude,
                             "longitude" to location.longitude
-                        )
+                        ),
+                        "isSupprimer" to false
                     )
                     database.child(user.uid).setValue(userData)
                         .addOnSuccessListener {
