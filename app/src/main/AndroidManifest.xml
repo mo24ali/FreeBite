@@ -22,9 +22,9 @@
         android:required="true" />
 
     <application
-        android:enableOnBackInvokedCallback="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/logo"
         android:label="@string/freebite2"
@@ -32,6 +32,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Freebite2"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.activity.admin.AccessPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.admin.EditPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.admin.MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Freebite2" />
+        <activity
+            android:name=".adapter.EditPostActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Freebite2" />
         <activity
             android:name=".ui.activity.admin.ManageRaportActivity"
             android:exported="false" />
@@ -47,12 +61,9 @@
         <activity
             android:name=".ui.activity.AdminOffreViewActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.activity.EditOfferActivity"
-            android:exported="false"
-            />
-
+            android:exported="false" />
         <activity
             android:name=".ui.activity.UserOffersActivity"
             android:exported="false" />
@@ -120,6 +131,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">

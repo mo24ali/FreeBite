@@ -7,11 +7,9 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.freebite2.R
 import com.example.freebite2.adapter.OffersAdapterAdmin
 import com.example.freebite2.databinding.ActivityManagePostBinding
 import com.example.freebite2.model.OffreModel
-import com.example.freebite2.ui.fragment.OffreDetailsFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -71,7 +69,7 @@ class ManagePostActivity : AppCompatActivity(), OffersAdapterAdmin.OnOfferClickL
         }
     }
 
-    override fun onOfferClick(offer: OffreModel) {
+    /*override fun onOfferClick(offer: OffreModel) {
         toggleVisibility(View.GONE)
         val offreDetailsFragment = OffreDetailsFragment()
 
@@ -82,9 +80,17 @@ class ManagePostActivity : AppCompatActivity(), OffersAdapterAdmin.OnOfferClickL
             .replace(R.id.hooldeAdmin, offreDetailsFragment)
             .addToBackStack(null)
             .commit()
+    }*/
+    override fun onOfferClick(offer: OffreModel) {
+        toggleVisibility(View.GONE)
+
+        val intent = Intent(this, AccessPostActivity::class.java)
+        intent.putExtra("offre", offer)
+        startActivity(intent)
     }
 
-    override fun onEditOfferClick(offer: OffreModel) {
+
+    /*override fun onEditOfferClick(offer: OffreModel) {
         toggleVisibility(View.GONE)
         val editDeletePostFragment = ManageEditDeletePostFragment()
         val bundle = Bundle()
@@ -92,10 +98,17 @@ class ManagePostActivity : AppCompatActivity(), OffersAdapterAdmin.OnOfferClickL
         editDeletePostFragment.arguments = bundle
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.hoolde, editDeletePostFragment)
+            .replace(R.id.hooldeAdmin, editDeletePostFragment)
             .addToBackStack(null)
             .commit()
+    }*/
+    override fun onEditOfferClick(offer: OffreModel) {
+        toggleVisibility(View.GONE)
+        val intent = Intent(this,EditPostActivity::class.java)
+        intent.putExtra("offre", offer)
+        startActivity(intent)
     }
+
 
     private fun toggleVisibility(visibility: Int) {
         binding.recyclerViewPostsAdmin.visibility = visibility
