@@ -194,7 +194,13 @@ class AddOffreActivity : AppCompatActivity(), OnMapReadyCallback {
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             showGPSDisabledDialog()
+            refresh()
         }
+    }
+
+    private fun refresh() {
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.offerPosition) as SupportMapFragment
+        mapFragment.getMapAsync(this)
     }
 
     private fun showGPSDisabledDialog() {
