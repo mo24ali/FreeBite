@@ -38,20 +38,7 @@
         <activity
             android:name=".ui.activity.admin.EditPostActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.activity.admin.MainActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Freebite2" />
-        <activity
-            android:name=".adapter.EditPostActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Freebite2" />
-        <activity
-            android:name=".ui.activity.admin.ManageRaportActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activity.admin.ManageNotificationActivity"
-            android:exported="false" />
+
         <activity
             android:name=".ui.activity.admin.ManagePostActivity"
             android:exported="false" />
@@ -69,9 +56,6 @@
             android:exported="false" />
         <activity
             android:name=".ui.activity.admin.AdminActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activity.ProtoTypeActivity2"
             android:exported="false" />
 
         <provider
