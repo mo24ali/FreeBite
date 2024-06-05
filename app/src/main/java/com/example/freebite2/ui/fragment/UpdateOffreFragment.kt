@@ -15,6 +15,9 @@ import com.example.freebite2.databinding.FragmentUpdateOffreBinding
 import com.example.freebite2.model.OffreModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import android.net.Uri
+import android.app.AlertDialog
 
 class UpdateOffreFragment : Fragment() {
 
@@ -62,7 +65,9 @@ class UpdateOffreFragment : Fragment() {
             intent.type = "image/*"
             startActivityForResult(intent, REQUEST_CODE)
         }
-
+        binding.btnbackhome.setOnClickListener {
+            onDestroy()
+        }
         binding.btnsubmit.setOnClickListener {
             val updatedOffre = OffreModel(
                 offre.providerID,
@@ -88,7 +93,20 @@ class UpdateOffreFragment : Fragment() {
             val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, uri)
 
             // Utilisez Glide ou Picasso pour charger l'image dans votre ImageView
-            Glide.with(this).load(bitmap).into(binding.uploadedImageView)
+           // Glide.with(this).load(bitmap).into(binding.uploadedImageView)
+            val storageRef = FirebaseStorage.getInstance().reference.child("offer_images/${offre.providerID}")
+            val uploadTask = storageRef.putFile(uri!!)
+            uploadTask.addOnSuccessListener {
+                storageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                    // Update the pictureUrl field of the OffreModel
+                    offre.pictureUrl = downloadUri.toString()
+
+                    // Load the image into the ImageView
+                    Glide.with(this).load(bitmap).into(binding.uploadedImageView)
+                }
+            }.addOnFailureListener {
+                Toast.makeText(requireContext(), "Failed to upload image", Toast.LENGTH_SHORT).show()
+            }
         }
     }
     private fun initializeViews() {
