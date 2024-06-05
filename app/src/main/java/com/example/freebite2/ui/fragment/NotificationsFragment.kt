@@ -84,6 +84,7 @@ class NotificationsFragment : Fragment() {
                             notificationList.add(notification)
                         }
                     }
+
                     Log.d("NotificationsFragment", "Récupéré ${notificationList.size} notifications")
                     notificationsAdapter.notifyDataSetChanged() // Forcer la mise à jour de l'UI
                     toggleEmptyView()

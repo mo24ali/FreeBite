@@ -23,6 +23,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 class ManagePostActivity : AppCompatActivity(), OffersAdapterAdmin.OnOfferClickListener {
 
@@ -146,11 +148,13 @@ class ManagePostActivity : AppCompatActivity(), OffersAdapterAdmin.OnOfferClickL
                 // Create a new notification in Firebase Database
                 val notificationRef = FirebaseDatabase.getInstance().getReference("Notifications").child(userOffre.providerID.toString())
                 val notificationId = notificationRef.push().key
+                val time= LocalDate.now().toString() + " " + LocalTime.now().format(
+                    DateTimeFormatter.ofPattern("HH:mm"))
                 val notification = mapOf(
                     "title" to "Avertissement",
                     "message" to warningMessage,
                     "type" to "admin",
-                    "timestamp" to LocalDateTime.now().toString(),
+                    "timestamp" to time,
                     "offreID" to userOffre.offerID.toString()
                 )
                 if (notificationId != null) {

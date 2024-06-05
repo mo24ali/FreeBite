@@ -25,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 class ManageUserActivity : AppCompatActivity(), UsersAdapter.OnUserClickListener {
 
@@ -155,11 +157,13 @@ class ManageUserActivity : AppCompatActivity(), UsersAdapter.OnUserClickListener
             // Create a new notification in Firebase Database
                 val notificationRef = FirebaseDatabase.getInstance().getReference("Notifications").child(user.uid)
                 val notificationId = notificationRef.push().key
+                val time= LocalDate.now().toString() + " " + LocalTime.now().format(
+                    DateTimeFormatter.ofPattern("HH:mm"))
                 val notification = mapOf(
                     "title" to "Avertissement",
-                    "body" to warningMessage,
+                    "message" to warningMessage,
                     "type" to "admin",
-                    "timestamp" to LocalDate.now().toString()
+                    "timestamp" to time
                 )
                 if (notificationId != null) {
                     notificationRef.child(notificationId).setValue(notification)
