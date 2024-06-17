@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragment.OffreDetailsFragment">
-
     <androidx.constraintlayout.motion.widget.MotionLayout
         android:background="@color/bottom"
 
@@ -91,7 +90,20 @@
                 <View
                     android:id="@+id/divider2"
                     style="@style/dividerStyle" />
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    style="@style/generalTextSubtitleStyle"
+                    android:text="Duration de l'offre" />
 
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/durationRepas"
+                    style="@style/generalTextHintStyle"
+                    android:text="Sample description" />
+
+                <View
+                    android:id="@+id/divider66"
+                    style="@style/dividerStyle" />
                 <TextView
                     android:layout_marginLeft="10dp"
                     style="@style/generalTextSubtitleStyle"

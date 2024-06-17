@@ -87,7 +87,7 @@ class UpdateOffreFragment : Fragment() {
             val uri = data.data
             val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, uri)
 
-            // Utilisez Glide ou Picasso pour charger l'image dans votre ImageView
+
             Glide.with(this).load(bitmap).into(binding.uploadedImageView)
         }
     }

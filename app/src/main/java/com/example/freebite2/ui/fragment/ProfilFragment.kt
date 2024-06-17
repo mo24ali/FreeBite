@@ -33,6 +33,7 @@ class ProfilFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var dialogueProgress: ProgressDialog
     private var imageUri: Uri? = null
+    private var imageprofile: Uri? = null
 
     private val requestCameraPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
         if (permissions[Manifest.permission.CAMERA] == true && permissions[Manifest.permission.WRITE_EXTERNAL_STORAGE] == true) {
@@ -116,9 +117,9 @@ class ProfilFragment : Fragment() {
            val userMail = user.email
            // Get user's profile picture URL from Firebase Database
            val userId = user.uid
-           val databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId)
+           val databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userId)
            databaseReference.get().addOnSuccessListener { dataSnapshot ->
-               val profileImageUrl = dataSnapshot.child("profileImage").getValue(String::class.java)
+               val profileImageUrl = dataSnapshot.child("profilePictureUrl").getValue(String::class.java)
                if (!profileImageUrl.isNullOrEmpty()) {
                    // Check if the fragment is added to an activity and the activity is not null
                    if (isAdded && activity != null) {

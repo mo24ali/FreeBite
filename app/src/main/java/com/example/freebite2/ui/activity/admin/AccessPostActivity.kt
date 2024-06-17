@@ -83,7 +83,7 @@ class AccessPostActivity : AppCompatActivity(), OnMapReadyCallback {
 
         mapFragment = supportFragmentManager.findFragmentById(R.id.offerPosition) as SupportMapFragment
 
-        val takeOfferBtn: Button = binding.takeOfferBtn
+
 
         Glide.with(this)
             .load(offre.pictureUrl)
@@ -98,42 +98,14 @@ class AccessPostActivity : AppCompatActivity(), OnMapReadyCallback {
             onBackPressed()
         }
 
-        takeOfferBtn.setOnClickListener {
-            takeOffer(offre)
-        }
 
-        binding.manageMyOffreBtn.setOnClickListener {
-            val intent = Intent(this, UserOffersActivity::class.java)
-            startActivity(intent)
-        }
 
-        manageButton(offre.providerID.toString())
+
+        manageButton()
     }
 
-    private fun takeOffer(offre: OffreModel) {
-        val notificationMessage = "User ${FirebaseAuth.getInstance().currentUser?.displayName} veut prendre ton repas ${offre.nameoffre}"
-        Toast.makeText(this, "Demande envoyé!", Toast.LENGTH_SHORT).show()
-        createNotification(offre.providerID.toString(), notificationMessage, offre)
-    }
 
-    private fun createNotification(userId: String, message: String, off: OffreModel) {
-        val notification = mapOf(
-            "message" to message,
-            "timestamp" to LocalDate.now().toString(),
-            "type" to "offer_taken",
-            "OfferID" to off.offerID,
-            "senderId" to FirebaseAuth.getInstance().currentUser?.displayName.toString(),
-        )
 
-        val notificationsRef = FirebaseDatabase.getInstance().getReference("Notifications")
-        notificationsRef.child(userId).push().setValue(notification).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Log.d("Firebase", "Notification created successfully")
-            } else {
-                Log.e("Firebase", "Failed to create notification: ${task.exception?.message}")
-            }
-        }
-    }
 
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
@@ -147,14 +119,10 @@ class AccessPostActivity : AppCompatActivity(), OnMapReadyCallback {
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(offerLocation, 15f))
     }
 
-    private fun manageButton(providerUID: String) {
-        val userId = auth.currentUser?.uid
-        if (userId.toString() == providerUID) {
-            binding.manageMyOffreBtn.visibility = View.VISIBLE
-            binding.takeOfferBtn.visibility = View.GONE
-        } else {
+    private fun manageButton( ) {
+           binding.takeOfferBtn.visibility = View.GONE
+
             binding.manageMyOffreBtn.visibility = View.GONE
-            binding.takeOfferBtn.visibility = View.VISIBLE
-        }
+
     }
 }

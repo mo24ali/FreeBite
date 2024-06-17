@@ -68,6 +68,7 @@ class OffreDetailsFragment : Fragment(), OnMapReadyCallback {
         val offerPicDetails: ImageView = binding.offerPicDetails
         val offreName: TextView = binding.offreName
         val descriptionTextView: TextView = binding.descritptionRepas
+        val durationTextView: TextView = binding.durationRepas
         val providerTextView: TextView = binding.providerTextView // Added providerTextView
         val providerUID = offre.providerID // Assuming you have the UID of the provider in offre model
         val usersReference = FirebaseDatabase.getInstance().getReference("Users").child(providerUID.toString())
@@ -101,6 +102,8 @@ class OffreDetailsFragment : Fragment(), OnMapReadyCallback {
 
         // Set description
         descriptionTextView.text = offre.details
+
+        durationTextView.text =offre.duration
 
         // Initialize map
         mapFragment.getMapAsync(this)
